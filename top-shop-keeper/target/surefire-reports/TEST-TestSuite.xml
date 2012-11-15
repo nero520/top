@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite failures="1" time="0.105" errors="0" skipped="0" tests="13" name="TestSuite">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.7.0_07\jre\bin"/>
+    <property name="java.vm.version" value="23.3-b01"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="java.vendor.url" value="http://java.oracle.com/"/>
+    <property name="path.separator" value=";"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="idea.launcher.port" value="7537"/>
+    <property name="user.script" value=""/>
+    <property name="user.country" value="CN"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="C:\Users\zhanghaojie\Documents\GitHub\top\top-shop-keeper"/>
+    <property name="java.runtime.version" value="1.7.0_07-b11"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.7.0_07\jre\lib\endorsed"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.io.tmpdir" value="C:\Users\ZHANGH~1\AppData\Local\Temp\"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 8"/>
+    <property name="classworlds.conf" value="C:\Users\zhanghaojie\.m2\apache-maven-3.0.4\bin\m2.conf"/>
+    <property name="sun.jnu.encoding" value="GBK"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.7.0_07\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files (x86)\JetBrains\IntelliJ IDEA 11.1.3\bin\..\.\bin;G:\oracle\product\11.2.0\dbhome_2\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\;C:\Program Files (x86)\Windows Kits\8.0\Windows Performance Toolkit\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files\Microsoft SQL Server\110\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\110\Tools\Binn\ManagementStudio\;C:\Program Files (x86)\Microsoft SQL Server\110\DTS\Binn\;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\PrivateAssemblies\;G:\TDDOWNLOAD\apache-ant-1.8.4-bin\apache-ant-1.8.4\bin;c:\program files (x86)\jetbrains\intellij idea 11.1.3\jre\jre\bin;."/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="51.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="6.2"/>
+    <property name="user.home" value="C:\Users\zhanghaojie"/>
+    <property name="user.timezone" value="Asia/Shanghai"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="java.specification.version" value="1.7"/>
+    <property name="idea.launcher.bin.path" value="C:\Program Files (x86)\JetBrains\IntelliJ IDEA 11.1.3\bin"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="user.name" value="zhanghaojie"/>
+    <property name="java.class.path" value="C:\Users\zhanghaojie\.m2\apache-maven-3.0.4\boot\plexus-classworlds-2.4.jar;C:\Program Files (x86)\JetBrains\IntelliJ IDEA 11.1.3\lib\idea_rt.jar"/>
+    <property name="java.vm.specification.version" value="1.7"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk1.7.0_07\jre"/>
+    <property name="sun.java.command" value="com.intellij.rt.execution.application.AppMain org.codehaus.classworlds.Launcher --no-plugin-registry --fail-fast --strict-checksums --update-snapshots -f C:\Users\zhanghaojie\Documents\GitHub\top\top-shop-keeper\pom.xml test"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.language" value="zh"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.7.0_07"/>
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.7.0_07\jre\lib\ext;C:\Windows\Sun\Java\lib\ext"/>
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.7.0_07\jre\lib\resources.jar;C:\Program Files\Java\jdk1.7.0_07\jre\lib\rt.jar;C:\Program Files\Java\jdk1.7.0_07\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.7.0_07\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.7.0_07\jre\lib\jce.jar;C:\Program Files\Java\jdk1.7.0_07\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.7.0_07\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.7.0_07\jre\classes"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="maven.home" value="C:\Users\zhanghaojie\.m2\apache-maven-3.0.4"/>
+    <property name="file.separator" value="\"/>
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.desktop" value="windows"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+  </properties>
+  <testcase time="0.003" classname="com.shopkeeper.TestUnit" name="testMethod1"/>
+  <testcase time="0.004" classname="com.sktest.DbMysqlDriverTest" name="testExecute"/>
+  <testcase time="0.004" classname="com.sktest.DbMysqlDriverTest" name="testExecuteUpdate"/>
+  <testcase time="0.004" classname="com.sktest.DbMysqlDriverTest" name="testRollback"/>
+  <testcase time="0.004" classname="com.sktest.DbMysqlDriverTest" name="testUpdate"/>
+  <testcase time="0.004" classname="com.sktest.DbMysqlDriverTest" name="testSelect"/>
+  <testcase time="0.004" classname="com.sktest.DbMysqlDriverTest" name="testStartTrans"/>
+  <testcase time="0.004" classname="com.sktest.DbMysqlDriverTest" name="testDelete"/>
+  <testcase time="0.004" classname="com.sktest.DbMysqlDriverTest" name="testCommit"/>
+  <testcase time="0.004" classname="com.sktest.DbMysqlDriverTest" name="testInsert"/>
+  <testcase time="0" classname="com.sktest.DbMysqlDriverTest" name="testClose"/>
+  <testcase time="0" classname="com.sktest.DbMysqlDriverTest" name="testFree"/>
+  <testcase time="0.066" classname="com.sktest.DbMysqlDriverTest" name="testQuery">
+    <failure type="java.lang.NullPointerException">java.lang.NullPointerException
+	at com.shopkeeper.db.DbMysqlDriver.getStatement(DbMysqlDriver.java:69)
+	at com.shopkeeper.db.DbMysqlDriver.query(DbMysqlDriver.java:117)
+	at com.sktest.DbMysqlDriverTest.testQuery(DbMysqlDriverTest.java:25)
+</failure>
+    <system-err>SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/C:/Users/zhanghaojie/.m2/repository/org/slf4j/slf4j-log4j12/1.6.1/slf4j-log4j12-1.6.1.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/C:/Users/zhanghaojie/.m2/repository/org/slf4j/slf4j-nop/1.4.3/slf4j-nop-1.4.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+log4j:ERROR Could not find value for key log4j.appender.R
+log4j:ERROR Could not instantiate appender named &quot;R&quot;.
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:423)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:356)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:186)
+	at com.shopkeeper.db.DbMysqlDriver.connect(DbMysqlDriver.java:53)
+	at com.shopkeeper.db.DbMysqlDriver.&lt;init&gt;(DbMysqlDriver.java:46)
+	at com.shopkeeper.db.DatabaseDriverFactory.defaultDriver(DatabaseDriverFactory.java:23)
+	at com.sktest.DbMysqlDriverTest.testQuery(DbMysqlDriverTest.java:24)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:580)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:478)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:617)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:885)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:126)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:110)
+	at org.testng.internal.thread.ThreadUtil$CountDownLatchedRunnable.run(ThreadUtil.java:132)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:722)
+</system-err>
+  </testcase>
+</testsuite>

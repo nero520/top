@@ -1,0 +1,39 @@
+package com.shopkeeper.service.request;
+
+import com.rop.AbstractRopRequest;
+import com.rop.annotation.AliasName;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: zhanghaojie
+ * Date: 12-9-29
+ * Time: 上午4:58
+ * To change this template use File | Settings | File Templates.
+ */
+public class TestRequest extends AbstractRopRequest {
+
+    @AliasName(aliasName = "user_name")
+    private String userName = null;
+
+    @AliasName(aliasName = "user_id")
+    private String userId = null;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+
+}
