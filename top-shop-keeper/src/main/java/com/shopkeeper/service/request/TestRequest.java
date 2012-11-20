@@ -12,10 +12,10 @@ import com.rop.annotation.AliasName;
  */
 public class TestRequest extends AbstractRopRequest {
 
-    @AliasName(aliasName = "user_name")
+    @AliasName(name = "user_name")
     private String userName = null;
 
-    @AliasName(aliasName = "user_id")
+    @AliasName(name = "user_id")
     private String userId = null;
 
     public String getUserName() {

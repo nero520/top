@@ -5,9 +5,6 @@ import com.rop.annotation.NeedInSessionType;
 import com.rop.annotation.ServiceMethod;
 import com.rop.annotation.ServiceMethodBean;
 import com.shopkeeper.TopAccessor;
-import com.shopkeeper.db.DatabaseDriver;
-import com.shopkeeper.db.DatabaseDriverFactory;
-import com.shopkeeper.db.DbMysqlDriver;
 import com.shopkeeper.service.request.TestRequest;
 import com.shopkeeper.service.response.TestResponse;
 import com.taobao.api.ApiException;
@@ -30,8 +27,9 @@ import java.util.Map;
 
 @ServiceMethodBean(version = "1.0", needInSession = NeedInSessionType.NO)
 public class TestService {
-	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
+/*
     @ServiceMethod(method = "test.Mysql", version = "1.0")
     public Object TestMethod1(TestRequest request) {
 	    try {
@@ -156,4 +154,5 @@ public class TestService {
         response.setResult(ret.toString());
         return response;
     }
+    */
 }

@@ -32,10 +32,10 @@ public class AliasServletRequestDataBinder extends ServletRequestDataBinder {
             Field field = fields[i];
             AliasName aliasNameAnnotation = field.getAnnotation(AliasName.class);
             if (aliasNameAnnotation != null) {
-                String aliasName = aliasNameAnnotation.aliasName();
+                String aliasName = aliasNameAnnotation.name();
                 String fieldName = field.getName();
                 PropertyValue pv = mpvs.getPropertyValue(aliasName);
-                Object value = pv.getValue();
+                Object value = pv == null ? null : pv.getValue();
                 if (pv != null && value != null) {
                     mpvs.addPropertyValue(fieldName, value);
                 }

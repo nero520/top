@@ -1,60 +1,58 @@
 package com.shopkeeper.model;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.rop.client.RopUnmarshaller;
+import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
 import com.shopkeeper.TopAccessor;
 import com.shopkeeper.exception.ModelException;
-import com.taobao.api.ApiException;
+import com.shopkeeper.exception.SkException;
+import com.shopkeeper.service.domain.TopUser;
+import com.shopkeeper.service.domain.User;
+import com.shopkeeper.utils.Utils;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
  * User: zhanghaojie
- * Date: 12-10-23
- * Time: 下午8:33
+ * Date: 12-11-18
+ * Time: 上午2:20
  * To change this template use File | Settings | File Templates.
  */
-public class TopUserModel extends Model
+public class TopUserModel extends AbstractModel
 {
-    protected String userId;
+    private static String COLLECTION_NAME = "sk_top_user";
 
-    public TopUserModel() throws ModelException {
-        this(null);
+    private static String forbiddenFields = "_id";
+
+    public TopUserModel() {
+
     }
 
-    public TopUserModel(String userId) throws ModelException {
-        this.userId = userId;
-        table("sk_top_user");
+    public String getCollectionName() {
+        return COLLECTION_NAME;
     }
 
-    public void updateFromTop(String accessToken) throws ModelException {
-        TopAccessor topAccessor = new TopAccessor(accessToken);
+    @Override
+    public void updateFromTop() throws ModelException {
+        TopAccessor topAccessor = new TopAccessor(this.getAccessToken());
         try {
-            Map<String, Object> rsp = topAccessor.getUserInfo();
-            String userId = rsp.get("user_id").toString();
-            where("user_id=" + userId);
-            Map<String, Object> buyerCredit = (Map<String, Object>) rsp.get("buyer_credit");
-            Map<String, Object> sellerCredit = (Map<String, Object>) rsp.get("seller_credit");
-            Map<String, Object> userLocation = (Map<String, Object>) rsp.get("location");
-            buyerCredit.put("user_id", userId);
-            sellerCredit.put("user_id", userId);
-            userLocation.put("user_id", userId);
-            List<Map<String, Object>> ret = select();
-            rsp.remove("buyer_credit");
-            rsp.remove("seller_credit");
-            rsp.remove("location");
-
-            add(rsp, ret.size() > 0);
-            TopBuyerCreditModel buyerCreditModel = new TopBuyerCreditModel();
-            buyerCreditModel.add(buyerCredit);
-            TopSellerCreditModel sellerCreditModel = new TopSellerCreditModel();
-            sellerCreditModel.add(sellerCredit);
-            TopUserLocationModel userLocationModel = new TopUserLocationModel();
-            userLocationModel.add(userLocation);
-
-
-        } catch (ApiException e) {
-            throw new ModelException(e.getMessage());
+            Map<String, Object> userInfo = topAccessor.getUserInfo();
+            BasicDBObject query = new BasicDBObject("user_id", this.getUserId());
+            BasicDBObject update = new BasicDBObject(userInfo);
+            collection.update(query, update, true, false);
+        } catch (SkException e) {
+            throw new ModelException(e.getErrorCode(), e.getMsg(), e.getSubCode(), e.getSubMsg());
         }
+    }
+
+    public TopUser getTopUser(String fields, Long userId) throws ModelException{
+        Map<String, Object> query = new HashMap<String, Object>();
+        query.put("user_id", userId);
+        TopUser topUser = get(query, fields, forbiddenFields, TopUser.class);
+        return topUser;
     }
 }

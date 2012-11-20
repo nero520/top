@@ -7,11 +7,13 @@ package com.rop.client.unmarshaller;
 import com.rop.RopException;
 import com.rop.client.RopUnmarshaller;
 import org.codehaus.jackson.map.AnnotationIntrospector;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.xc.JaxbAnnotationIntrospector;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 /**
  * <pre>
@@ -38,10 +40,11 @@ public class JacksonJsonRopUnmarshaller implements RopUnmarshaller {
         if (this.objectMapper == null) {
             ObjectMapper objectMapper = new ObjectMapper();
             AnnotationIntrospector introspector = new JaxbAnnotationIntrospector();
-            SerializationConfig serializationConfig = objectMapper.getSerializationConfig();
-            serializationConfig = serializationConfig.with(SerializationConfig.Feature.WRAP_ROOT_VALUE)
-                                                     .withAnnotationIntrospector(introspector);
-            objectMapper.setSerializationConfig(serializationConfig);
+            DeserializationConfig serializationConfig = objectMapper.getDeserializationConfig();
+            serializationConfig = serializationConfig.without(DeserializationConfig.Feature.UNWRAP_ROOT_VALUE)
+                                                     .withAnnotationIntrospector(introspector)
+                                                     .withDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
+            objectMapper.setDeserializationConfig(serializationConfig);
             this.objectMapper = objectMapper;
         }
         return this.objectMapper;

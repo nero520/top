@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class UserGetRequest extends AbstractRopRequest
 {
     @NotNull()
-    @AliasName(aliasName = "fields")
+    @AliasName(name = "fields")
     private String fields;
 
     public String getFields() {

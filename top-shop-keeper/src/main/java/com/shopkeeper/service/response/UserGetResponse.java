@@ -16,10 +16,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "logout_response")
+@XmlRootElement(name = "user_get_response")
 public class UserGetResponse
 {
-    @XmlElement(name = "user")
+    @XmlElement
     private User user;
 
     public User getUser() {

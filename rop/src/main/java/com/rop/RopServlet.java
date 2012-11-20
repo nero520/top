@@ -45,7 +45,7 @@ public class RopServlet extends HttpServlet {
 
     private ServiceRouter serviceRouter;
 /*
-    private String aliasName(String name) {
+    private String name(String name) {
         String[] subStr = StringUtils.split(name, "_");
         StringBuffer sb = new StringBuffer();
         sb.append(subStr[0]);
@@ -63,7 +63,7 @@ public class RopServlet extends HttpServlet {
         while (enumeration.hasMoreElements()) {
             String paramName = (String)enumeration.nextElement();
             Object paramValue = req.getAttribute(paramName);
-            String paramAliasName = aliasName(paramName);
+            String paramAliasName = name(paramName);
             logger.info(paramAliasName);
             req.setAttribute(paramAliasName, paramValue);
         }

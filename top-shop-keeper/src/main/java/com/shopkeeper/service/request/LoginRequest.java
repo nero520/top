@@ -15,48 +15,50 @@ import javax.validation.constraints.NotNull;
 
 public class LoginRequest extends AbstractRopRequest
 {
-    @AliasName(aliasName = "user_id")
+    @NotNull
+    @AliasName(name = "user_id")
     private Long userId;
 
-    @AliasName(aliasName = "nick")
+    @NotNull
+    @AliasName(name = "nick")
     private String userNick = null;
 
     @NotNull()
-    @AliasName(aliasName = "access_token")
+    @AliasName(name = "access_token")
     private String accessToken = null;
 
     @NotNull()
-    @AliasName(aliasName = "refresh_token")
+    @AliasName(name = "refresh_token")
     private String refreshToken = null;
 
-    @AliasName(aliasName = "sub_user_id")
+    @AliasName(name = "sub_user_id")
     private String subUserId;
 
-    @AliasName(aliasName = "sub_user_nick")
+    @AliasName(name = "sub_user_nick")
     private String subUserNick = null;
 
     @NotNull()
-    @AliasName(aliasName = "expires_in")
+    @AliasName(name = "expires_in")
     private int expiresIn;
 
     @NotNull()
-    @AliasName(aliasName = "re_expires_in")
+    @AliasName(name = "re_expires_in")
     private int reExpiresIn;
 
     @NotNull()
-    @AliasName(aliasName = "r1_expires_in")
+    @AliasName(name = "r1_expires_in")
     private int r1ExpiresIn;
 
     @NotNull()
-    @AliasName(aliasName = "r2_expires_in")
+    @AliasName(name = "r2_expires_in")
     private int r2ExpiresIn;
 
     @NotNull()
-    @AliasName(aliasName = "w1_expires_in")
+    @AliasName(name = "w1_expires_in")
     private int w1ExpiresIn;
 
     @NotNull()
-    @AliasName(aliasName = "w2_expires_in")
+    @AliasName(name = "w2_expires_in")
     private int w2ExpiresIn;
 
     public Long getUserId() {

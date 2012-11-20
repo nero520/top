@@ -8,11 +8,17 @@ import com.rop.response.ErrorResponse;
 import com.rop.session.SimpleSession;
 import com.shopkeeper.SkSession;
 import com.shopkeeper.exception.ModelException;
+import com.shopkeeper.model.ItemModel;
+import com.shopkeeper.model.TopUserModel;
 import com.shopkeeper.model.UserModel;
+import com.shopkeeper.service.domain.TopUser;
+import com.shopkeeper.service.domain.User;
 import com.shopkeeper.service.request.LoginRequest;
 import com.shopkeeper.service.request.UserGetRequest;
 import com.shopkeeper.service.response.LoginResponse;
 import com.shopkeeper.service.response.LogoutResponse;
+import com.shopkeeper.service.response.TopUserGetResponse;
+import com.shopkeeper.service.response.UserGetResponse;
 import com.taobao.api.ApiException;
 
 import java.sql.SQLException;
@@ -48,7 +54,7 @@ public class UserService
         try {
             UserModel userModel = new UserModel();
             userModel.login(datas);
-            String accessToken = request.getUserId().toString();
+            String accessToken = request.getAccessToken();
 
             LoginResponse response = new LoginResponse();
             response.setSession(accessToken);
@@ -57,6 +63,10 @@ public class UserService
             session.setAttribute("user_id", request.getUserId());
             session.setAttribute("user_nick", request.getUserNick());
             request.getRopRequestContext().addSession(accessToken, session);
+
+            ItemModel itemModel = new ItemModel();
+            itemModel.setAccessToken(accessToken);
+            //itemModel.updateFromTop();
 
             return response;
         } catch (ModelException e) {
@@ -78,13 +88,31 @@ public class UserService
     @ServiceMethod(method = "user.get", version = "1.0", needInSession = NeedInSessionType.YES)
     public Object getUser(UserGetRequest request) {
         String fields = request.getFields();
-        String accessToken = request.getRopRequestContext().getSessionId();
+        SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         try {
             UserModel userModel = new UserModel();
-            Map<String, Object> user = (Map<String, Object>)userModel.getUser(fields, accessToken);
-
+            User user = userModel.getUser(fields, (Long)session.getAttribute("user_id"));
+            UserGetResponse response = new UserGetResponse();
+            response.setUser(user);
+            return response;
         } catch (ModelException e) {
+            // TODO
+        }
+        return null;
+    }
 
+    @ServiceMethod(method = "top.user.get", version = "1.0", needInSession = NeedInSessionType.YES)
+    public Object getTopUser(UserGetRequest request) {
+        String fields = request.getFields();
+        SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
+        try {
+            TopUserModel topUserModel = new TopUserModel();
+            TopUser topUser = topUserModel.getTopUser(fields, (Long)session.getAttribute("user_id"));
+            TopUserGetResponse response = new TopUserGetResponse();
+            response.setTopUser(topUser);
+            return response;
+        } catch (ModelException e) {
+            // TODO
         }
         return null;
     }

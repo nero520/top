@@ -16,6 +16,7 @@
     <rop:annotation-driven
             session-manager="sampleSessionManager"
             app-secret-manager="appSecretManager"
+            formatting-conversion-service="conversionService"
             ext-error-base-name="i18n/rop/sampleRopError"
             service-timeout-seconds="10"
             upload-file-max-size="10"
@@ -27,7 +28,7 @@
             sign-enable="false" />
             <!--
             service-access-controller="serviceAccessController"
-            formatting-conversion-service="conversionService"
+
             thread-ferry-class="com.rop.sample.SampleThreadFerry"
             invoke-times-controller="invokeTimesController"
             -->
@@ -41,15 +42,16 @@
     -->
 
     <!--设置自定义的类型转换服务，注册自定义的类型转换器-->
-    <!--
+
     <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="converters">
             <set>
-                <bean class="com.rop.sample.request.TelephoneConverter"/>
+                <bean class="com.shopkeeper.service.request.converter.DateConverter"/>
+                <bean class="com.shopkeeper.service.request.converter.TimeSlotsConverter"/>
             </set>
         </property>
     </bean>
-    -->
+
 
     <!--注册拦截器，可配置多个
     <rop:interceptors>

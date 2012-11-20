@@ -2,8 +2,7 @@ package com.sktest;
 
 //import org.junit.*;
 
-import com.shopkeeper.db.DatabaseDriver;
-import com.shopkeeper.db.DatabaseDriverFactory;
+
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -24,9 +23,7 @@ public class DbMysqlDriverTest {
 
     @Test
     public void testQuery() throws Exception {
-        DatabaseDriver dirver = DatabaseDriverFactory.getInstance().defaultDriver();
-        List<Map<String, Object>> result = dirver.query("SELECT * FROM db_top.sk_user");
-        System.out.print(result);
+
     }
 
     @Test

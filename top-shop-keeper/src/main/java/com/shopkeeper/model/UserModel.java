@@ -1,75 +1,93 @@
 package com.shopkeeper.model;
-import java.beans.BeanDescriptor;
-import java.lang.reflect.InvocationTargetException;
 
-
-import com.shopkeeper.Config;
-import com.shopkeeper.TopAccessor;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.rop.client.RopUnmarshaller;
+import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
 import com.shopkeeper.exception.ModelException;
-import com.shopkeeper.exception.TopException;
-import com.taobao.api.ApiException;
-import com.taobao.api.internal.util.WebUtils;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
+import com.shopkeeper.service.domain.User;
+import com.shopkeeper.utils.Utils;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.sql.SQLException;
-import java.util.List;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 /**
  * Created with IntelliJ IDEA.
  * User: zhanghaojie
- * Date: 12-9-29
- * Time: 上午12:08
+ * Date: 12-11-17
+ * Time: 下午4:15
  * To change this template use File | Settings | File Templates.
  */
-public class UserModel extends Model
+public class UserModel extends AbstractModel
 {
-    public UserModel() throws ModelException {
-        table("sk_user");
+    private static String COLLECTION_NAME = "sk_user";
+
+    private static String forbiddenFields = "_id, access_token";
+
+    private Long userId;
+
+    private String userNick;
+
+    private String accessToken;
+
+    public UserModel() {
     }
 
-    private String calMatchString(String fields) {
-        int c = StringUtils.countMatches(fields, ",") + 1;
-        StringBuffer sb = new StringBuffer();
-        for(int i = 0; i < c; i++) {
-            sb.append("?,");
-        }
-        return sb.substring(0, sb.length() - 1);
+    public String getCollectionName() {
+        return COLLECTION_NAME;
+    }
+
+    @Override
+    public void updateFromTop() throws ModelException {
     }
 
     public boolean login(Map<String, Object> data) throws ModelException {
-        TopAccessor accessor = new TopAccessor((String)data.get("access_token"), (String)data.get("refresh_token"));
-        try {
-            Map<String, Object> ret = accessor.getUserInfo();
-            where("user_id=" + data.get("user_id"));
-            List<Map<String, Object>> t = select();
-            add(data, t.size() > 0);
+        data.put("last_login", new Date().toString());
 
-            TopUserModel topUserModel = new TopUserModel();
-            topUserModel.updateFromTop((String)data.get("access_token"));
+        userId = (Long)data.get("user_id");
+        userNick = (String)data.get("nick");
+        accessToken = (String)data.get("access_token");
 
+        BasicDBObject update = new BasicDBObject(data);
+        BasicDBObject query = new BasicDBObject("user_id", data.get("user_id"));
+        collection.update(query, new BasicDBObject("$set", update), true, false);
 
-        } catch (ApiException e) {
-            throw new ModelException(e.getMessage());
-        }
+        TopUserModel topUserModel = new TopUserModel();
+        topUserModel.setAccessToken(accessToken);
+        topUserModel.updateFromTop();
         return true;
     }
 
-    public Object getUser(String fields, String userId) throws ModelException {
-        field(fields);
-        where("user_id=" + userId);
-        List<Map<String, Object>> ret = select();
-        if (ret != null && ret.size() > 0) {
-            return ret.get(0);
-        }
-        return null;
+    public User getUser(String fields, Long userId) throws ModelException {
+        Map<String, Object> query = new HashMap<String, Object>();
+        query.put("user_id", userId);
+        User user = get(query, fields, forbiddenFields, User.class);
+        return user;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserNick() {
+        return userNick;
+    }
+
+    public void setUserNick(String userNick) {
+        this.userNick = userNick;
     }
 
 
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
 }
