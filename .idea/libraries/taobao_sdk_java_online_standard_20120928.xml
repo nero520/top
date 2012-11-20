@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="taobao-sdk-java-online_standard-20120928">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/top-shop-keeper/libs/taobao-sdk-java-online_standard-20120928.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Downloads/taobao-sdk-java-online_standard(1)/taobao-sdk-java-online_standard-20120928-source.jar!/" />
+    </SOURCES>
+  </library>
+</component>

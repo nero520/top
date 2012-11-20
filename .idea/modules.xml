@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/rop/rop.iml" filepath="$PROJECT_DIR$/rop/rop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rop-sample/rop-sample.iml" filepath="$PROJECT_DIR$/rop-sample/rop-sample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/top-shop-keeper/top-shop-keeper.iml" filepath="$PROJECT_DIR$/top-shop-keeper/top-shop-keeper.iml" />
+    </modules>
+  </component>
+</project>
+

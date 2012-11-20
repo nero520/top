@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?><component name="dataSourceStorage">
+  <data-source source="LOCAL" name="Data Source" product="MySQL" version="5.5.27-log" jdbc-version="4.0" driver-name="MySQL-AB JDBC Driver" driver-version="mysql-connector-java-5.1.22 ( Revision: ${bzr.revision-id} )" uuid="a7bb8237-f2b4-4a9d-b751-b113c9f56dcc">
+    <extra-name-characters>#@</extra-name-characters>
+    <identifier-quote-string>`</identifier-quote-string>
+    <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+    <jdbc-url>jdbc:mysql://localhost:3306/db_top</jdbc-url>
+    <user-name>root</user-name>
+    <user-password>dfcfdfcedfdddfc5dfd8dfce</user-password>
+    <schema-pattern>db_top.*</schema-pattern>
+    <default-schemas>db_top.*</default-schemas>
+    <default-dialect>MySQL</default-dialect>
+    <libraries>
+      <library>
+        <url>jar://$PROJECT_DIR$/top-shop-keeper/libs/mysql-connector-java-5.1.22-bin.jar!/</url>
+      </library>
+    </libraries>
+    <table name="sk_admin_user" schema="" catalog="db_top" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true" />
+      <column name="user_name" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="password" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="privilege" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <primary-key name="PRIMARY" columns="id" />
+    </table>
+    <table name="sk_autoshowcase" schema="" catalog="db_top" type="TABLE">
+      <column name="user_id" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="used_include" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="used_exclude" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="used_limitdiscount" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="is_launch" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <primary-key name="PRIMARY" columns="user_id" />
+      <foreign-key name="fk_sk_autoshowcase_sk_user1" columns="user_id" ref-table="sk_user" ref-schema="" ref-catalog="db_top" ref-columns="user_id" update-rule="0" delete-rule="0" deferrability="2" />
+      <index name="fk_sk_autoshowcase_sk_user1_idx" unique="false" columns="user_id" />
+    </table>
+    <table name="sk_group" schema="" catalog="db_top" type="TABLE">
+      <column name="group_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true" />
+      <column name="user_id" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="name" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="description" sqlType="VARCHAR" length="400" precision="0" nullable="true" jdbcType="12" />
+      <column name="item_count" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="category" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <primary-key name="PRIMARY" columns="group_id" />
+      <foreign-key name="fk_sk_group_sk_user1" columns="user_id" ref-table="sk_user" ref-schema="" ref-catalog="db_top" ref-columns="user_id" update-rule="0" delete-rule="0" deferrability="2" />
+      <index name="fk_sk_group_sk_user1_idx" unique="false" columns="user_id" />
+    </table>
+    <table name="sk_item" schema="" catalog="db_top" type="TABLE">
+      <column name="num_iid" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="user_id" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="group_id" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="task_id" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="time_onsale" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="is_adjust_onsale" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="showcase_status" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <primary-key name="PRIMARY" columns="num_iid" />
+      <foreign-key name="fk_sk_item_sk_group1" columns="group_id" ref-table="sk_group" ref-schema="" ref-catalog="db_top" ref-columns="group_id" update-rule="0" delete-rule="2" deferrability="2" />
+      <foreign-key name="fk_sk_item_sk_onsale_task1" columns="task_id" ref-table="sk_onsale_task" ref-schema="" ref-catalog="db_top" ref-columns="task_id" update-rule="0" delete-rule="2" deferrability="2" />
+      <foreign-key name="fk_sk_item_sk_user1" columns="user_id" ref-table="sk_user" ref-schema="" ref-catalog="db_top" ref-columns="user_id" update-rule="0" delete-rule="0" deferrability="2" />
+      <index name="fk_sk_item_sk_user1_idx" unique="false" columns="user_id" />
+      <index name="fk_sk_item_sk_group1_idx" unique="false" columns="group_id" />
+      <index name="fk_sk_item_sk_onsale_task1_idx" unique="false" columns="task_id" />
+    </table>
+    <table name="sk_onsale_task" schema="" catalog="db_top" type="TABLE">
+      <column name="task_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true" />
+      <column name="user_id" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="name" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="description" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="created_time" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="item_count" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="adjust_count" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="time_slots" sqlType="VARCHAR" length="400" precision="0" nullable="true" jdbcType="12" />
+      <column name="is_launch" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <primary-key name="PRIMARY" columns="task_id" />
+      <foreign-key name="fk_sk_onsale_task_sk_user1" columns="user_id" ref-table="sk_user" ref-schema="" ref-catalog="db_top" ref-columns="user_id" update-rule="0" delete-rule="0" deferrability="2" />
+      <index name="fk_sk_onsale_task_sk_user1_idx" unique="false" columns="user_id" />
+    </table>
+    <table name="sk_order" schema="" catalog="db_top" type="TABLE">
+      <column name="oid" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="tid" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="status" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="title" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12" />
+      <column name="price" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="num_iid" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="item_meal_id" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="sku_id" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="num" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="outer_sku_id" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="total_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="payment" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="discount_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="adjust_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="modified" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="sku_properties_name" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12" />
+      <column name="refund_id" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="is_oversold" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="is_service_order" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="end_time" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="item_meal_name" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="pic_path" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12" />
+      <column name="seller_nick" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="buyer_nick" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="refund_status" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="outer_iid" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="snapshot_url" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12" />
+      <column name="timeout_action_time" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="buyer_rate" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="seller_rate" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="seller_type" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="cid" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <primary-key name="PRIMARY" columns="oid" />
+      <foreign-key name="fk_sk_order_sk_trade1" columns="tid" ref-table="sk_top_trade" ref-schema="" ref-catalog="db_top" ref-columns="tid" update-rule="0" delete-rule="0" deferrability="2" />
+      <index name="fk_sk_order_sk_trade1_idx" unique="false" columns="tid" />
+    </table>
+    <table name="sk_promotion_detail" schema="" catalog="db_top" type="TABLE">
+      <column name="id" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="tid" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="promotion_name" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="discount_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="gift_itme_name" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="gift_item_id" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="gift_item_num" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="promotion_desc" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12" />
+      <column name="promotion_id" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <primary-key name="PRIMARY" columns="id" />
+      <foreign-key name="fk_sk_promotion_detail_sk_trade1" columns="tid" ref-table="sk_top_trade" ref-schema="" ref-catalog="db_top" ref-columns="tid" update-rule="0" delete-rule="0" deferrability="2" />
+      <index name="fk_sk_promotion_detail_sk_trade1_idx" unique="false" columns="tid" />
+    </table>
+    <table name="sk_top_buyer_credit" schema="" catalog="db_top" type="TABLE">
+      <column name="user_id" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="good_num" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="level" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="score" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="total_num" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <primary-key name="PRIMARY" columns="user_id" />
+      <foreign-key name="fk_buyer_credit_top_user" columns="user_id" ref-table="sk_top_user" ref-schema="" ref-catalog="db_top" ref-columns="user_id" update-rule="0" delete-rule="0" deferrability="2" />
+    </table>
+    <table name="sk_top_item" schema="" catalog="db_top" type="TABLE">
+      <column name="num_iid" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="title" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="nick" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="type" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="cid" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="seller_cids" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12" />
+      <column name="props" sqlType="VARCHAR" length="200" precision="0" nullable="true" jdbcType="12" />
+      <column name="pic_url" sqlType="VARCHAR" length="200" precision="0" nullable="true" jdbcType="12" />
+      <column name="num" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="valid_thru" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="list_time" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="delist_time" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="price" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="has_discount" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="has_invoice" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="has_warranty" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="has_showcase" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="modified" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="approve_status" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="postage_id" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="outer_id" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="is_virtual" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="is_taobao" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="is_ex" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <primary-key name="PRIMARY" columns="num_iid" />
+      <foreign-key name="fk_sk_top_item_sk_item1" columns="num_iid" ref-table="sk_item" ref-schema="" ref-catalog="db_top" ref-columns="num_iid" update-rule="0" delete-rule="0" deferrability="2" />
+      <index name="fk_sk_top_item_sk_item1_idx" unique="false" columns="num_iid" />
+    </table>
+    <table name="sk_top_seller_credit" schema="" catalog="db_top" type="TABLE">
+      <column name="user_id" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="good_num" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="level" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="score" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="total_num" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <primary-key name="PRIMARY" columns="user_id" />
+      <foreign-key name="fk_seller_credit_top_user" columns="user_id" ref-table="sk_top_user" ref-schema="" ref-catalog="db_top" ref-columns="user_id" update-rule="0" delete-rule="0" deferrability="2" />
+    </table>
+    <table name="sk_top_service_order" schema="" catalog="db_top" type="TABLE">
+      <column name="oid" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="tid" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="item_oid" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="service_id" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="service_detail_url" sqlType="VARCHAR" length="1000" precision="0" nullable="true" jdbcType="12" />
+      <column name="num" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="price" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="payment" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="title" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="total_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="buyer_nick" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="refund_id" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="seller_nick" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="pic_path" sqlType="VARCHAR" length="1000" precision="0" nullable="true" jdbcType="12" />
+      <primary-key name="PRIMARY" columns="oid" />
+      <foreign-key name="fk_sk_service_order_sk_trade1" columns="tid" ref-table="sk_top_trade" ref-schema="" ref-catalog="db_top" ref-columns="tid" update-rule="0" delete-rule="0" deferrability="2" />
+      <index name="fk_sk_service_order_sk_trade1_idx" unique="false" columns="tid" />
+    </table>
+    <table name="sk_top_task" schema="" catalog="db_top" type="TABLE">
+      <column name="task_id" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="user_id" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="created" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="type" sqlType="VARCHAR" length="5" precision="0" nullable="true" jdbcType="12" remarks="YWxsLCBwYXJ0" />
+      <column name="status" sqlType="VARCHAR" length="15" precision="0" nullable="true" jdbcType="12" remarks="Y29tcGxldGVkIHVuY29tcGxldGVk" />
+      <primary-key name="PRIMARY" columns="task_id" />
+      <foreign-key name="fk_sk_top_task_sk_top_user1" columns="user_id" ref-table="sk_top_user" ref-schema="" ref-catalog="db_top" ref-columns="user_id" update-rule="0" delete-rule="0" deferrability="2" />
+      <index name="fk_sk_top_task_sk_top_user1_idx" unique="false" columns="user_id" />
+    </table>
+    <table name="sk_top_trade" schema="" catalog="db_top" type="TABLE">
+      <column name="tid" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="user_id" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="num" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="num_id" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="status" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="title" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12" />
+      <column name="type" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="price" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="seller_cod_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="discount_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="point_fee" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="has_post_fee" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="total_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="is_lgtype" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="is_brand_sale" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" remarks="CVxu" />
+      <column name="is_force_wlb" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="created" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="pay_time" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="modified" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="end_time" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="buyer_message" sqlType="VARCHAR" length="200" precision="0" nullable="true" jdbcType="12" />
+      <column name="alipay_id" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="alipay_no" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="buyer_memo" sqlType="VARCHAR" length="200" precision="0" nullable="true" jdbcType="12" />
+      <column name="buyer_flag" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="seller_memo" sqlType="VARCHAR" length="200" precision="0" nullable="true" jdbcType="12" />
+      <column name="seller_flag" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="invoice_name" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="buyer_nick" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="buyer_area" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12" />
+      <column name="buyer_email" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="credit_card_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="shipping_type" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="buyer_cod_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="express_agency_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="adjust_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="buyer_obtain_point_fee" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="cod_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="trade_from" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="cod_status" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="service_orders" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="commission_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="trade_memo" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12" />
+      <column name="seller_nick" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="pic_path" sqlType="VARCHAR" length="200" precision="0" nullable="true" jdbcType="12" />
+      <column name="payment" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="snapshoht_url" sqlType="VARCHAR" length="200" precision="0" nullable="true" jdbcType="12" />
+      <column name="seller_rate" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="buyer_rate" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="real_point_fee" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="post_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="buyer_alipay_no" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="receiver_name" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="receiver_state" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="receiver_city" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="receiver_district" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="receiver_address" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="receiver_zip" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="receiver_mobile" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="receiver_phone" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="consign_time" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="seller_alipay_no" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="seller_mobile" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="seller_phone" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="seller_name" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="seller_email" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="available_confirm_fee" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="received_payment" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="timeout_action_time" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="is_3D" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="promotion" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12" />
+      <primary-key name="PRIMARY" columns="tid" />
+      <foreign-key name="fk_sk_trade_sk_top_user1" columns="user_id" ref-table="sk_top_user" ref-schema="" ref-catalog="db_top" ref-columns="user_id" update-rule="0" delete-rule="0" deferrability="2" />
+      <index name="fk_sk_trade_sk_top_user1_idx" unique="false" columns="user_id" />
+    </table>
+    <table name="sk_top_user" schema="" catalog="db_top" type="TABLE">
+      <column name="user_id" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="uid" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="nick" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="sex" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="buyer_credit_id" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="seller_credit_id" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="location_id" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="created" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="last_visit" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="birthday" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="type" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="has_more_pic" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="item_img_num" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="item_img_size" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="prop_img_num" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="prop_img_size" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="auto_repost" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="promoted_type" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="status" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="alipay_bind" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="consumer_protection" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="avatar" sqlType="VARCHAR" length="4093" precision="0" nullable="true" jdbcType="12" />
+      <column name="liangpin" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="sign_food_seller_promise" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="has_shop" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="is_lightning_consignment" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="has_sub_stock" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="is_golden_seller" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="vip_info" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="email" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="magazine_subscribe" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="vertical_market" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="online_gaming" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <primary-key name="PRIMARY" columns="user_id" />
+      <foreign-key name="fk_top_user_user" columns="user_id" ref-table="sk_user" ref-schema="" ref-catalog="db_top" ref-columns="user_id" update-rule="0" delete-rule="0" deferrability="2" />
+      <index name="fk_top_user_user_idx" unique="false" columns="user_id" />
+    </table>
+    <table name="sk_top_user_location" schema="" catalog="db_top" type="TABLE">
+      <column name="user_id" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="zip" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="city" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="state" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="country" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="district" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <primary-key name="PRIMARY" columns="user_id" />
+      <foreign-key name="fk_user_location_top_user" columns="user_id" ref-table="sk_top_user" ref-schema="" ref-catalog="db_top" ref-columns="user_id" update-rule="0" delete-rule="0" deferrability="2" />
+    </table>
+    <table name="sk_user" schema="" catalog="db_top" type="TABLE">
+      <column name="user_id" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="nick" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="last_login" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="score" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" def="MA==" />
+      <column name="is_shared_weibo" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" def="MA==" />
+      <column name="is_shared_tweibo" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" def="MA==" />
+      <column name="is_shared_renren" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" def="MA==" />
+      <column name="is_start_mission" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="num_feedback" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" def="MA==" />
+      <column name="access_token" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12" />
+      <column name="refresh_token" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12" />
+      <column name="sub_user_id" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="sub_user_nick" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="expires_in" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="re_expires_in" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="r1_expires_in" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="r2_expires_in" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="w1_expires_in" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="w2_expires_in" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <primary-key name="PRIMARY" columns="user_id" />
+    </table>
+    <table name="sk_user_view" schema="" catalog="db_top" type="VIEW">
+      <column name="user_id" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="nick" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="last_login" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="score" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" def="MA==" />
+      <column name="is_shared_weibo" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" def="MA==" />
+      <column name="is_shared_tweibo" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" def="MA==" />
+      <column name="is_shared_renren" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" def="MA==" />
+      <column name="is_start_mission" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="num_feedback" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" def="MA==" />
+      <column name="access_token" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12" />
+      <column name="refresh_token" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12" />
+      <column name="sub_user_id" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="sub_user_nick" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="expires_in" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="re_expires_in" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="r1_expires_in" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="r2_expires_in" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="w1_expires_in" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="w2_expires_in" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="uid" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="sex" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="location_id" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="created" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="last_visit" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="birthday" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93" />
+      <column name="type" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="has_more_pic" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="item_img_num" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="item_img_size" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="prop_img_num" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="prop_img_size" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="auto_repost" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="promoted_type" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="status" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="alipay_bind" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="consumer_protection" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="avatar" sqlType="VARCHAR" length="4093" precision="0" nullable="true" jdbcType="12" />
+      <column name="liangpin" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="sign_food_seller_promise" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="has_shop" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="is_lightning_consignment" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="has_sub_stock" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="is_golden_seller" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="vip_info" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="email" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="magazine_subscribe" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="vertical_market" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="online_gaming" sqlType="BIT" length="0" precision="0" nullable="true" jdbcType="-7" />
+      <column name="zip" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="city" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="state" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="country" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="district" sqlType="VARCHAR" length="45" precision="0" nullable="true" jdbcType="12" />
+      <column name="buyer_good_num" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="buyer_level" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="buyer_score" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="buyer_total_num" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="seller_good_num" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="seller_level" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="seller_score" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="seller_total_num" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+    </table>
+  </data-source>
+</component>

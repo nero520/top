@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="top-shop-keeper:war">
+    <output-path>$PROJECT_DIR$/top-shop-keeper/target</output-path>
+    <root id="archive" name="top-shop-keeper.war">
+      <element id="artifact" artifact-name="top-shop-keeper:war exploded" />
+    </root>
+  </artifact>
+</component>
