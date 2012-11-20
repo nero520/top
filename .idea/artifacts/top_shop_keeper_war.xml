@@ -6,6 +6,7 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="lib">
           <element id="library" level="project" name="org.mongodb:mongo-java-driver:2.9.3" />
+          <element id="library" level="project" name="taobao-sdk-java-online_standard-20120928" />
         </element>
       </element>
     </root>
