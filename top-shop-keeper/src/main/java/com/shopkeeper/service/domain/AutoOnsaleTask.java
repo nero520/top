@@ -28,9 +28,11 @@ public class AutoOnsaleTask
     @XmlElement(name = "time_slot")
     private List<TimeSlot> timeSlot;
     @XmlElement(name = "is_launch")
-    private Boolean isLaunch;
+    private Boolean isLaunch = false;
     @XmlElement
     private Date created;
+    @XmlElement(name = "user_id")
+    private Long userId;
 
     public String getId() {
         return id;
@@ -78,5 +80,13 @@ public class AutoOnsaleTask
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

@@ -48,6 +48,7 @@
             <set>
                 <bean class="com.shopkeeper.service.request.converter.DateConverter"/>
                 <bean class="com.shopkeeper.service.request.converter.TimeSlotsConverter"/>
+                <bean class="com.shopkeeper.service.request.converter.ListConverter"/>
             </set>
         </property>
     </bean>

@@ -36,12 +36,13 @@ public class TimeSlotsConverter implements RopConverter<String, List<TimeSlot>>
 
     @Override
     public Class<String> getSourceClass() {
-        return String.class;  //To change body of implemented methods use File | Settings | File Templates.
+        return String.class;
     }
 
     @Override
     public Class<List<TimeSlot>> getTargetClass() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        List<TimeSlot> list = new LinkedList<TimeSlot>();
+        return (Class<List<TimeSlot>>) list.getClass();
     }
 
     @Override

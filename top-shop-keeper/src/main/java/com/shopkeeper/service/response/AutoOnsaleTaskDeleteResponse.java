@@ -1,5 +1,12 @@
 package com.shopkeeper.service.response;
 
+import com.shopkeeper.service.domain.AutoOnsaleTask;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created with IntelliJ IDEA.
  * User: zhanghaojie
@@ -7,5 +14,19 @@ package com.shopkeeper.service.response;
  * Time: 上午6:50
  * To change this template use File | Settings | File Templates.
  */
-public class AutoOnsaleTaskDeleteResponse {
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "autoonsale_task_delete_response")
+public class AutoOnsaleTaskDeleteResponse
+{
+    @XmlElement(name = "autoonsale_task")
+    private AutoOnsaleTask task;
+
+    public AutoOnsaleTask getTask() {
+        return task;
+    }
+
+    public void setTask(AutoOnsaleTask task) {
+        this.task = task;
+    }
 }

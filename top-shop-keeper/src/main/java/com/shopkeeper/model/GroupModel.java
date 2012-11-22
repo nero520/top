@@ -108,7 +108,12 @@ public class GroupModel extends AbstractModel
             }
             BasicDBObject query = new BasicDBObject();
             if (groupId != null) {
-                query.put("_id", new ObjectId(groupId));
+                if (isDocExist(groupId, "sk_autoonsale_task")) {
+                    query.put("_id", new ObjectId(groupId));
+                }
+                else {
+                    throw new ModelException(); //todo
+                }
             }
             if (name != null) {
                 query.put("name", name);
@@ -125,13 +130,12 @@ public class GroupModel extends AbstractModel
                 return group;
             }
             else {
-                // todo 无效id， name
+                throw new ModelException();// todo 无效id， name
             }
 
         } catch (IllegalArgumentException e) {
             throw new ModelException("103", "parameter error", "1", "bad group id"); // todo
         }
-        return null;
     }
 
     public List<Group> importGroup(String from, Long userId, String userNick, String accessToken) throws ModelException {

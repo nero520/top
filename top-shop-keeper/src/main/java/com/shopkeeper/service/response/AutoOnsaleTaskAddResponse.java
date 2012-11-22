@@ -16,11 +16,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Time: 上午6:50
  * To change this template use File | Settings | File Templates.
  */
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "autoonsale_task_add_response")
 public class AutoOnsaleTaskAddResponse
 {
-    @XmlElement
+    @XmlElement(name = "autoonsale_task")
     private AutoOnsaleTask task;
 
     public AutoOnsaleTask getTask() {
