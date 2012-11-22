@@ -8,9 +8,11 @@ import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
 import com.shopkeeper.TopAccessor;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.exception.SkException;
+import com.shopkeeper.exception.TopException;
 import com.shopkeeper.service.domain.TopUser;
 import com.shopkeeper.service.domain.User;
 import com.shopkeeper.utils.Utils;
+import com.taobao.api.ApiException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +24,7 @@ import java.util.Map;
  * Time: 上午2:20
  * To change this template use File | Settings | File Templates.
  */
-public class TopUserModel extends AbstractModel
+public class TopUserModel extends AbstractModel implements TopUpdate
 {
     private static String COLLECTION_NAME = "sk_top_user";
 
@@ -37,16 +39,12 @@ public class TopUserModel extends AbstractModel
     }
 
     @Override
-    public void updateFromTop() throws ModelException {
-        TopAccessor topAccessor = new TopAccessor(this.getAccessToken());
-        try {
-            Map<String, Object> userInfo = topAccessor.getUserInfo();
-            BasicDBObject query = new BasicDBObject("user_id", this.getUserId());
-            BasicDBObject update = new BasicDBObject(userInfo);
-            collection.update(query, update, true, false);
-        } catch (SkException e) {
-            throw new ModelException(e.getErrorCode(), e.getMsg(), e.getSubCode(), e.getSubMsg());
-        }
+    public void updateFromTop(String topAccessToken) throws TopException {
+        TopAccessor topAccessor = new TopAccessor(topAccessToken);
+        Map<String, Object> userInfo = topAccessor.getUserInfo();
+        BasicDBObject query = new BasicDBObject("user_id", this.getUserId());
+        BasicDBObject update = new BasicDBObject(userInfo);
+        collection.update(query, update, true, false);
     }
 
     public TopUser getTopUser(String fields, Long userId) throws ModelException{

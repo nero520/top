@@ -5,6 +5,7 @@ import com.mongodb.DBObject;
 import com.rop.client.RopUnmarshaller;
 import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
 import com.shopkeeper.exception.ModelException;
+import com.shopkeeper.exception.TopException;
 import com.shopkeeper.service.domain.User;
 import com.shopkeeper.utils.Utils;
 
@@ -38,10 +39,6 @@ public class UserModel extends AbstractModel
         return COLLECTION_NAME;
     }
 
-    @Override
-    public void updateFromTop() throws ModelException {
-    }
-
     public boolean login(Map<String, Object> data) throws ModelException {
         data.put("last_login", new Date().toString());
 
@@ -55,7 +52,11 @@ public class UserModel extends AbstractModel
 
         TopUserModel topUserModel = new TopUserModel();
         topUserModel.setAccessToken(accessToken);
-        topUserModel.updateFromTop();
+        try {
+            topUserModel.updateFromTop(accessToken);
+        } catch (TopException e) {
+
+        }
         return true;
     }
 

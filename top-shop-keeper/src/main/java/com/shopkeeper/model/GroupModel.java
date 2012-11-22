@@ -31,11 +31,6 @@ public class GroupModel extends AbstractModel
         return COLLECTION_NAME;
     }
 
-    @Override
-    public void updateFromTop() throws ModelException {
-
-    }
-
     public Group getGroup(String groupId, Long userId) throws ModelException{
         try {
             Map<String, Object> query = new HashMap<String, Object>();

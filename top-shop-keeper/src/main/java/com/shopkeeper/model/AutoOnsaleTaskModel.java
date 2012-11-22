@@ -22,11 +22,6 @@ public class AutoOnsaleTaskModel extends AbstractModel
     private static String COLLECTION_NAME = "sk_autoonsale_task";
 
     @Override
-    public void updateFromTop() throws ModelException {
-
-    }
-
-    @Override
     public String getCollectionName() {
         return COLLECTION_NAME;  //To change body of implemented methods use File | Settings | File Templates.
     }

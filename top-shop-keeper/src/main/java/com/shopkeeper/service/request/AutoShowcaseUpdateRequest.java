@@ -1,5 +1,6 @@
 package com.shopkeeper.service.request;
 
+import com.rop.AbstractRopRequest;
 import com.rop.annotation.AliasName;
 
 /**
@@ -9,39 +10,39 @@ import com.rop.annotation.AliasName;
  * Time: 上午8:36
  * To change this template use File | Settings | File Templates.
  */
-public class AutoShowcaseUpdateRequest
+public class AutoShowcaseUpdateRequest extends AbstractRopRequest
 {
-    @AliasName(name = "used_include_item")
-    private Boolean usedIncludeItem;
-    @AliasName(name = "used_exclude_item")
-    private Boolean usedExcludeItem;
-    @AliasName(name = "used_limitdiscount_item")
-    private Boolean usedLimitDiscountItem;
+    @AliasName(name = "used_include")
+    private Boolean usedInclude;
+    @AliasName(name = "used_exclude")
+    private Boolean usedExclude;
+    @AliasName(name = "used_limit_discount")
+    private Boolean usedLimitDiscount;
     @AliasName(name = "is_launch")
     private Boolean isLaunch;
 
-    public Boolean getUsedIncludeItem() {
-        return usedIncludeItem;
+    public Boolean getUsedInclude() {
+        return usedInclude;
     }
 
-    public void setUsedIncludeItem(Boolean usedIncludeItem) {
-        this.usedIncludeItem = usedIncludeItem;
+    public void setUsedInclude(Boolean usedInclude) {
+        this.usedInclude = usedInclude;
     }
 
-    public Boolean getUsedExcludeItem() {
-        return usedExcludeItem;
+    public Boolean getUsedExclude() {
+        return usedExclude;
     }
 
-    public void setUsedExcludeItem(Boolean usedExcludeItem) {
-        this.usedExcludeItem = usedExcludeItem;
+    public void setUsedExclude(Boolean usedExclude) {
+        this.usedExclude = usedExclude;
     }
 
-    public Boolean getUsedLimitDiscountItem() {
-        return usedLimitDiscountItem;
+    public Boolean getUsedLimitDiscount() {
+        return usedLimitDiscount;
     }
 
-    public void setUsedLimitDiscountItem(Boolean usedLimitDiscountItem) {
-        this.usedLimitDiscountItem = usedLimitDiscountItem;
+    public void setUsedLimitDiscount(Boolean usedLimitDiscount) {
+        this.usedLimitDiscount = usedLimitDiscount;
     }
 
     public Boolean getLaunch() {

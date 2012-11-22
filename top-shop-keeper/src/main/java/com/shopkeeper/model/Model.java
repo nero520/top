@@ -14,7 +14,5 @@ import java.util.Map;
  */
 public interface Model
 {
-    public void updateFromTop() throws ModelException;
-
     public String getCollectionName();
 }

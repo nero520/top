@@ -19,14 +19,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "autoshowcase_update_response")
 public class AutoShowcaseUpdateResponse
 {
-    @XmlElement(name = "showcase_setting")
-    private AutoShowcaseSetting showcaseSetting;
+    @XmlElement(name = "autoshowcase_setting")
+    private AutoShowcaseSetting autoShowcaseSetting;
 
-    public AutoShowcaseSetting getShowcaseSetting() {
-        return showcaseSetting;
+    public AutoShowcaseSetting getAutoShowcaseSetting() {
+        return autoShowcaseSetting;
     }
 
-    public void setShowcaseSetting(AutoShowcaseSetting showcaseSetting) {
-        this.showcaseSetting = showcaseSetting;
+    public void setAutoShowcaseSetting(AutoShowcaseSetting autoShowcaseSetting) {
+        this.autoShowcaseSetting = autoShowcaseSetting;
     }
 }

@@ -24,15 +24,15 @@ import java.util.Map;
  * Time: 上午2:39
  * To change this template use File | Settings | File Templates.
  */
-public class ItemModel extends AbstractModel
+public class ItemModel extends AbstractModel implements TopUpdate
 {
     private static String COLLECTION_NAME = "sk_item";
 
     private static String forbiddenFields = "_id";
 
     @Override
-    public void updateFromTop() throws ModelException {
-        TopAccessor topAccessor = new TopAccessor(this.getAccessToken());
+    public void updateFromTop(String topAccessToken) throws TopException {
+        TopAccessor topAccessor = new TopAccessor(topAccessToken);
         try {
             List<Map<String, Object>> itemList = topAccessor.getOnsaleItems();
             if (itemList.size() > 0) {
