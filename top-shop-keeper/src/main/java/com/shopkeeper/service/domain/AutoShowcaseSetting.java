@@ -7,7 +7,7 @@ package com.shopkeeper.service.domain;
  * Time: 上午7:38
  * To change this template use File | Settings | File Templates.
  */
-public class AutoShowcase
+public class AutoShowcaseSetting
 {
     private Boolean usedInclude;
 

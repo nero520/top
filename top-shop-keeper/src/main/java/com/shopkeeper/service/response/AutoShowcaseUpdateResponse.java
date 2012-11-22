@@ -11,13 +11,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Created with IntelliJ IDEA.
  * User: zhanghaojie
  * Date: 12-11-22
- * Time: 上午7:36
+ * Time: 上午8:37
  * To change this template use File | Settings | File Templates.
  */
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "autoshowcase_get_response")
-public class AutoShowcaseGetResponse
+@XmlRootElement(name = "autoshowcase_update_response")
+public class AutoShowcaseUpdateResponse
 {
     @XmlElement(name = "showcase_setting")
     private AutoShowcaseSetting showcaseSetting;
