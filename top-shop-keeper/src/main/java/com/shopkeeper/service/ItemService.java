@@ -38,9 +38,14 @@ public class ItemService
         ItemModel itemModel = new ItemModel();
         try {
             Item item = itemModel.getItem(request.getNumIid(), request.getFields(), userId);
-            ItemGetResponse response = new ItemGetResponse();
-            response.setItem(item);
-            return response;
+            if (item != null) {
+                ItemGetResponse response = new ItemGetResponse();
+                response.setItem(item);
+                return response;
+            }
+            else {
+                // todo
+            }
         } catch (ModelException e) {
             // todo
         }
@@ -54,10 +59,17 @@ public class ItemService
 
         ItemModel itemModel = new ItemModel();
         try {
-            Item item = itemModel.updateItem(request.getNumIid(), request.getGroupId(), request.getTaskId(), Utils.dateToString(request.getTimeOnsale()), userId);
-            ItemUpdateResponse response = new ItemUpdateResponse();
-            response.setItem(item);
-            return response;
+            Item item = itemModel.updateItem(request.getNumIid(), request.getGroupId(),
+                    request.getTaskId(), Utils.dateToString(request.getTimeOnsale()),
+                    request.getAutoShowcaseStatus(), userId);
+            if (item != null) {
+                ItemUpdateResponse response = new ItemUpdateResponse();
+                response.setItem(item);
+                return response;
+            }
+            else {
+                // todo
+            }
         } catch (ModelException e) {
             // todo
         }
@@ -75,10 +87,16 @@ public class ItemService
         String taskId = request.getTaskId();
         ItemModel itemModel = new ItemModel();
         try {
-            List<Item> itemList = itemModel.getItems(numIids, fields, groupId, taskId, userId);
-            ItemsGetResponse response = new ItemsGetResponse();
-            response.setItems(itemList);
-            return response;
+            List<Item> itemList = itemModel.getItems(numIids, fields, groupId, taskId,
+                    request.getAutoShowcaseStatus(), userId);
+            if (itemList != null) {
+                ItemsGetResponse response = new ItemsGetResponse();
+                response.setItems(itemList);
+                return response;
+            }
+            else {
+                // todo
+            }
         } catch (ModelException e) {
 
         }

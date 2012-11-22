@@ -66,19 +66,20 @@ public class ItemModel extends AbstractModel implements TopUpdate
         return null;
     }
 
-    public List<Item> getItems(String numIids, String fields, String groupId, String taskId, Long userId) throws ModelException {
+    public List<Item> getItems(String numIids, String fields, String groupId, String taskId, String autoShowcaseStatus, Long userId) throws ModelException {
         DBObject query = new BasicDBObject();
-
         // 解析numIids
-        String[] numIidList = StringUtils.split(numIids, ",");
-        if (numIidList.length > 0) {
-            BasicDBList numIidCondition = new BasicDBList();
-            for (String numIid : numIidList) {
-                numIid = numIid.trim();
-                Long numIidNo = Long.parseLong(numIid);
-                numIidCondition.add(numIidNo);
+        if (numIids != null) {
+            String[] numIidList = StringUtils.split(numIids, ",");
+            if (numIidList.length > 0) {
+                BasicDBList numIidCondition = new BasicDBList();
+                for (String numIid : numIidList) {
+                    numIid = numIid.trim();
+                    Long numIidNo = Long.parseLong(numIid);
+                    numIidCondition.add(numIidNo);
+                }
+                query.put("num_iid", new BasicDBObject("$in", numIidCondition));
             }
-            query.put("num_iid", new BasicDBObject("$in", numIidCondition));
         }
 
         if (groupId != null) {
@@ -97,12 +98,15 @@ public class ItemModel extends AbstractModel implements TopUpdate
                 throw new ModelException(); //todo task_id 不存在
             }
         }
+        if (autoShowcaseStatus != null) {
+            query.put("auto_showcase_status", autoShowcaseStatus);
+        }
         query.put("user_id", userId);
         List<Item> itemList = gets(query, fields, forbiddenFields, Item.class);
         return itemList;
     }
 
-    public Item updateItem(Long numIid, String groupId, String taskId, String timeOnsale, Long userId) throws ModelException {
+    public Item updateItem(Long numIid, String groupId, String taskId, String timeOnsale, String autoShowcaseStatus, Long userId) throws ModelException {
         DBObject query = new BasicDBObject("num_iid", numIid);
         DBObject updates = new BasicDBObject();
         if (groupId != null) {
@@ -120,6 +124,12 @@ public class ItemModel extends AbstractModel implements TopUpdate
             else {
                 throw new ModelException(); //todo task_id 不存在
             }
+        }
+        if (timeOnsale != null) {
+            updates.put("time_onsale", timeOnsale);
+        }
+        if (autoShowcaseStatus != null) {
+            updates.put("auto_showcase_status", autoShowcaseStatus);
         }
         query.put("user_id", userId);
         DBObject update = new BasicDBObject("$set", updates);

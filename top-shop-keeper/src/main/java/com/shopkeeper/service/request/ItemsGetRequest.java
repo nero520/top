@@ -30,6 +30,9 @@ public class ItemsGetRequest extends AbstractRopRequest
     @AliasName(name = "has_showcase")
     private boolean hasShowcase;
 
+    @AliasName(name = "auto_showcase_status")
+    private String autoShowcaseStatus;
+
     public String getNumIids() {
         return numIids;
     }
@@ -68,5 +71,13 @@ public class ItemsGetRequest extends AbstractRopRequest
 
     public void setFields(String fields) {
         this.fields = fields;
+    }
+
+    public String getAutoShowcaseStatus() {
+        return autoShowcaseStatus;
+    }
+
+    public void setAutoShowcaseStatus(String autoShowcaseStatus) {
+        this.autoShowcaseStatus = autoShowcaseStatus;
     }
 }

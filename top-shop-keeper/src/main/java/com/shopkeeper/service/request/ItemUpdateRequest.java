@@ -28,6 +28,9 @@ public class ItemUpdateRequest extends AbstractRopRequest
     @AliasName(name = "time_onsale")
     private Date timeOnsale;
 
+    @AliasName(name = "auto_showcase_status")
+    private String autoShowcaseStatus;
+
     public Long getNumIid() {
         return numIid;
     }
@@ -58,5 +61,13 @@ public class ItemUpdateRequest extends AbstractRopRequest
 
     public void setTimeOnsale(Date timeOnsale) {
         this.timeOnsale = timeOnsale;
+    }
+
+    public String getAutoShowcaseStatus() {
+        return autoShowcaseStatus;
+    }
+
+    public void setAutoShowcaseStatus(String autoShowcaseStatus) {
+        this.autoShowcaseStatus = autoShowcaseStatus;
     }
 }
