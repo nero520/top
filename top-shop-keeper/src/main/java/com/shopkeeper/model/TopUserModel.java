@@ -1,18 +1,10 @@
 package com.shopkeeper.model;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import com.rop.client.RopUnmarshaller;
-import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
 import com.shopkeeper.TopAccessor;
 import com.shopkeeper.exception.ModelException;
-import com.shopkeeper.exception.SkException;
 import com.shopkeeper.exception.TopException;
 import com.shopkeeper.service.domain.TopUser;
-import com.shopkeeper.service.domain.User;
-import com.shopkeeper.utils.Utils;
-import com.taobao.api.ApiException;
 
 import java.util.HashMap;
 import java.util.Map;

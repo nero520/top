@@ -11,7 +11,6 @@ import com.shopkeeper.model.GroupModel;
 import com.shopkeeper.service.domain.Group;
 import com.shopkeeper.service.request.*;
 import com.shopkeeper.service.response.*;
-import com.shopkeeper.utils.Utils;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.LinkedList;

@@ -2,8 +2,12 @@ package com.shopkeeper.utils;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.rop.Constants;
 import org.apache.commons.lang.StringUtils;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -115,5 +119,45 @@ public class Utils
 
         }
         return date;
+    }
+
+    public static byte[] getSHA1Digest(String data) throws IOException {
+        byte[] bytes = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            bytes = md.digest(data.getBytes(Constants.UTF8));
+        } catch (GeneralSecurityException gse) {
+            throw new IOException(gse);
+        }
+        return bytes;
+    }
+
+    public static byte[] getMD5Digest(String data) throws IOException {
+        byte[] bytes = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            bytes = md.digest(data.getBytes(Constants.UTF8));
+        } catch (GeneralSecurityException gse) {
+            throw new IOException(gse);
+        }
+        return bytes;
+    }
+
+    /**
+     * 二进制转十六进制字符串
+     *
+     * @param bytes
+     * @return
+     */
+    public static String byte2hex(byte[] bytes) {
+        StringBuilder sign = new StringBuilder();
+        for (int i = 0; i < bytes.length; i++) {
+            String hex = Integer.toHexString(bytes[i] & 0xFF);
+            if (hex.length() == 1) {
+                sign.append("0");
+            }
+            sign.append(hex.toUpperCase());
+        }
+        return sign.toString();
     }
 }

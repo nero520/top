@@ -5,7 +5,6 @@ import com.rop.annotation.AliasName;
 import com.shopkeeper.service.domain.TimeSlot;
 
 import javax.validation.constraints.NotNull;
-import java.util.LinkedList;
 import java.util.List;
 
 /**

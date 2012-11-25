@@ -2,18 +2,14 @@ package com.shopkeeper.model;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.shopkeeper.TopAccessor;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.exception.TopException;
 import com.shopkeeper.service.domain.Item;
 import org.apache.commons.lang.StringUtils;
-import org.bson.types.ObjectId;
-import org.omg.CORBA.PRIVATE_MEMBER;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 

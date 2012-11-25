@@ -1,10 +1,5 @@
 package com.shopkeeper.model;
 
-import com.mongodb.DBObject;
-import com.shopkeeper.exception.ModelException;
-
-import java.util.Map;
-
 /**
  * Created with IntelliJ IDEA.
  * User: zhanghaojie

@@ -6,9 +6,7 @@ import com.rop.annotation.ServiceMethod;
 import com.rop.annotation.ServiceMethodBean;
 import com.rop.response.ErrorResponse;
 import com.rop.session.SimpleSession;
-import com.shopkeeper.SkSession;
 import com.shopkeeper.exception.ModelException;
-import com.shopkeeper.model.ItemModel;
 import com.shopkeeper.model.TopUserModel;
 import com.shopkeeper.model.UserModel;
 import com.shopkeeper.service.domain.TopUser;
@@ -63,10 +61,6 @@ public class UserService
             session.setAttribute("user_id", request.getUserId());
             session.setAttribute("user_nick", request.getUserNick());
             request.getRopRequestContext().addSession(accessToken, session);
-
-            ItemModel itemModel = new ItemModel();
-            itemModel.setAccessToken(accessToken);
-            //itemModel.updateFromTop();
 
             return response;
         } catch (ModelException e) {

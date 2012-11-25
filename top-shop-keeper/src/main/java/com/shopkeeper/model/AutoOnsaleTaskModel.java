@@ -3,7 +3,6 @@ package com.shopkeeper.model;
 import com.mongodb.*;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.service.domain.AutoOnsaleTask;
-import com.shopkeeper.service.domain.Group;
 import com.shopkeeper.service.domain.TimeSlot;
 import com.shopkeeper.utils.Utils;
 import org.bson.types.ObjectId;

@@ -6,7 +6,6 @@ import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.exception.TopException;
 import com.shopkeeper.service.domain.Group;
 import com.shopkeeper.utils.Utils;
-import org.apache.commons.lang.StringUtils;
 import org.bson.types.ObjectId;
 
 import java.util.*;

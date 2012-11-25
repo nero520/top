@@ -15,10 +15,7 @@ import com.shopkeeper.service.response.ItemUpdateResponse;
 import com.shopkeeper.service.response.ItemsGetResponse;
 import com.shopkeeper.utils.Utils;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

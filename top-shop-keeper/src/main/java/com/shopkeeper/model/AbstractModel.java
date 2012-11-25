@@ -5,7 +5,6 @@ import com.rop.client.RopUnmarshaller;
 import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
 import com.shopkeeper.MongoManager;
 import com.shopkeeper.exception.ModelException;
-import com.shopkeeper.service.domain.User;
 import com.shopkeeper.utils.Utils;
 import org.apache.commons.lang.StringUtils;
 import org.bson.types.ObjectId;

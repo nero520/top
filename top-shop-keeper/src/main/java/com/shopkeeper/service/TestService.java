@@ -1,21 +1,9 @@
 package com.shopkeeper.service;
 
-import com.rop.RopRequest;
 import com.rop.annotation.NeedInSessionType;
-import com.rop.annotation.ServiceMethod;
 import com.rop.annotation.ServiceMethodBean;
-import com.shopkeeper.TopAccessor;
-import com.shopkeeper.service.request.TestRequest;
-import com.shopkeeper.service.response.TestResponse;
-import com.taobao.api.ApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

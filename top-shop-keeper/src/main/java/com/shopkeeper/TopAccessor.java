@@ -8,10 +8,13 @@ import com.taobao.api.internal.util.WebUtils;
 import com.taobao.api.request.*;
 import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -23,6 +26,8 @@ import java.util.*;
  */
 public class TopAccessor
 {
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
+
     private String accessToken = null;
 
     private String refreshToken = null;
@@ -302,6 +307,61 @@ public class TopAccessor
         }
         return null;
     }
+
+    public Map<String, Object> createTradeSoldGetTask(Date startTime, Date endTime) throws TopException {
+        TopatsTradesSoldGetRequest request = new TopatsTradesSoldGetRequest();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String strStartTime = dateFormat.format(startTime);
+        String strEndTime = dateFormat.format(endTime);
+
+        request.setStartTime(strStartTime);
+        request.setEndTime(strEndTime);
+        request.setFields("tid,num,num_iid,status,title,type,price,discount_fee,point_fee,total_fee,created,pay_time,modified,end_time,buyer_message,alipay_no,buyer_memo,seller_memo,shipping_type,adjust_fee,buyer_obtain_point_fee,cod_fee,cod_status,commission_fee,buyer_rate,seller_nick,pic_path,payment,seller_rate,real_point_fee,post_fee,consign_time,received_payment,orders");
+        Map<String, Object> rsp = null;
+        try {
+            rsp = topClient.doPost(request, accessToken);
+        } catch (ApiException e) {
+            throw new TopException("102", "top server error", "1", "topats.trades.sold.get error");
+        }
+        String jsonStr = (String)rsp.get("rsp");
+        RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
+        Map<String, Object> rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
+        Map<String, Object> response = (Map<String, Object>) rspObj.get("topats_trades_sold_get_response");
+        if (response != null) {
+            return response;
+        }
+        else {
+            //throwException(rspObj);
+        }
+        return null;
+    }
+
+    public boolean incrementCustomerPermit(String type, String topics, String status) throws TopException {
+        IncrementCustomerPermitRequest request = new IncrementCustomerPermitRequest();
+        request.setStatus(status);
+        request.setTopics(topics);
+        request.setType(type);
+
+        Map<String, Object> rsp = null;
+        try {
+            rsp = topClient.doPost(request, accessToken);
+        } catch (ApiException e) {
+            throw new TopException("102", "top server error", "1", "increment.customer.permit error");
+        }
+        String jsonStr = (String)rsp.get("rsp");
+        logger.info(jsonStr);
+        RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
+        Map<String, Object> rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
+        Map<String, Object> response = (Map<String, Object>) rspObj.get("increment_customer_permit_response");
+        if (response != null) {
+            return true;
+        }
+        else {
+            //throwException(rspObj);
+        }
+        return false;
+    }
+
 /*
     public Map<String, List<Long>> addRecommendItems(List<Long> itemIds) throws ApiException{
         for (int i = 0; i < itemIds.)

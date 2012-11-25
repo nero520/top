@@ -1,14 +1,15 @@
 package com.shopkeeper.model;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.rop.client.RopUnmarshaller;
-import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
+import com.shopkeeper.TopAccessor;
+import com.shopkeeper.admin.TopCometManager;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.exception.TopException;
 import com.shopkeeper.service.domain.User;
-import com.shopkeeper.utils.Utils;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,23 +40,67 @@ public class UserModel extends AbstractModel
         return COLLECTION_NAME;
     }
 
+    private void userInit(Long userId) {
+        try {
+            // 获取用户的全部宝贝信息
+            ItemModel itemModel = new ItemModel();
+            itemModel.setAccessToken(accessToken);
+            itemModel.updateFromTop(accessToken);
+
+
+            TopAccessor topAccessor = new TopAccessor(accessToken);
+            boolean permit = topAccessor.incrementCustomerPermit("notify", "trade", "all");
+            if (!permit) {
+                logger.error("创建用户主动通知失败 user_id:" + userId);
+            }
+            // 创建任务获取全部交易信息
+            Date now = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(now);
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+            Date endTime = calendar.getTime();
+            calendar.add(Calendar.MONTH, -1);
+            Date startTime = calendar.getTime();
+            Map<String, Object> objectMap = topAccessor.createTradeSoldGetTask(startTime, endTime);
+            if (objectMap != null) {
+                DBCollection collection1 = db.getCollection("sk_trade_topats_task");
+                objectMap = (Map<String, Object>)objectMap.get("task");
+                objectMap.put("user_id", userId);
+                DBObject query = new BasicDBObject("user_id", userId);
+                DBObject update = new BasicDBObject(objectMap);
+                collection1.update(query, update, true, false);
+            }
+            TopCometManager topCometManager = TopCometManager.getInstance();
+            topCometManager.addNewStream(userId);
+        } catch (TopException e) {
+
+        }
+    }
+
     public boolean login(Map<String, Object> data) throws ModelException {
         data.put("last_login", new Date().toString());
 
         userId = (Long)data.get("user_id");
         userNick = (String)data.get("nick");
         accessToken = (String)data.get("access_token");
+        BasicDBObject query = new BasicDBObject("user_id", data.get("user_id"));
+        if (collection.getCount(query) == 0) {
+            userInit(userId);
+        }
+
 
         BasicDBObject update = new BasicDBObject(data);
-        BasicDBObject query = new BasicDBObject("user_id", data.get("user_id"));
-        collection.update(query, new BasicDBObject("$set", update), true, false);
+
+        //collection.update(query, new BasicDBObject("$set", update), true, false);
 
         TopUserModel topUserModel = new TopUserModel();
         topUserModel.setAccessToken(accessToken);
+
         try {
             topUserModel.updateFromTop(accessToken);
-        } catch (TopException e) {
 
+        } catch (TopException e) {
+            // todo
         }
         return true;
     }

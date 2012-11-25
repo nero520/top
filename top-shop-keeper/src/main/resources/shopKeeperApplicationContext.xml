@@ -11,6 +11,7 @@
 
     <!--① 扫描Spring Bean-->
     <context:component-scan base-package="com.shopkeeper.service"/>
+    <context:component-scan base-package="com.shopkeeper.admin.service"/>
 
     <!-- 启动Rop框架 -->
     <rop:annotation-driven
@@ -66,6 +67,9 @@
         <bean class="com.rop.sample.SampleAfterDoServiceEventListener"/>
     </rop:listeners>
      -->
+    <rop:listeners>
+        <bean class="com.shopkeeper.SamplePostInitializeEventListener"/>
+    </rop:listeners>
     <!--自定义method,appKey等这些系统级参数的参数名-->
     <rop:sysparams format-param-name="format"/>
     <rop:sysparams sessionid-param-name="session"/>
