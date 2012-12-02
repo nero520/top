@@ -3,6 +3,8 @@ package com.shopkeeper;
 import com.rop.event.AfterStartedRopEvent;
 import com.rop.event.RopEventListener;
 
+import java.util.Properties;
+
 /**
  * Created with IntelliJ IDEA.
  * User: zhanghaojie
@@ -15,6 +17,9 @@ public class SamplePostInitializeEventListener implements RopEventListener<After
 
     @Override
     public void onRopEvent(AfterStartedRopEvent ropRopEvent) {
+        //ropRopEvent.
+        Properties pro = System.getProperties();
+
         System.out.println("execute SamplePostInitializeEventListener!");
     }
 

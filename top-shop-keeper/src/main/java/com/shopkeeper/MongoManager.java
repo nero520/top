@@ -5,6 +5,8 @@ import com.mongodb.Mongo;
 import com.mongodb.MongoOptions;
 
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +19,7 @@ public class MongoManager
 {
     private static Mongo mongo = null;
 
-    private static DB db;
+    private static Map<String, DB> dbMap = new HashMap<String, DB>();
 
     private MongoManager() {}
 
@@ -25,9 +27,11 @@ public class MongoManager
         if (mongo == null) {
             init();
         }
+        DB db = dbMap.get(name);
         if (db == null) {
             db = mongo.getDB(name);
             db.authenticate(user, password.toCharArray());
+            dbMap.put(name, db);
         }
         return db;
     }

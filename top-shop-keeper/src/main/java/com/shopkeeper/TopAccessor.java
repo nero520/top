@@ -4,15 +4,20 @@ import com.rop.client.RopUnmarshaller;
 import com.shopkeeper.exception.TopException;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
+import com.taobao.api.domain.Task;
+import com.taobao.api.internal.util.AtsUtils;
 import com.taobao.api.internal.util.WebUtils;
 import com.taobao.api.request.*;
 import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
+import com.taobao.api.response.TopatsResultGetResponse;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -324,6 +329,7 @@ public class TopAccessor
             throw new TopException("102", "top server error", "1", "topats.trades.sold.get error");
         }
         String jsonStr = (String)rsp.get("rsp");
+        logger.info(jsonStr);
         RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
         Map<String, Object> rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
         Map<String, Object> response = (Map<String, Object>) rspObj.get("topats_trades_sold_get_response");
@@ -360,6 +366,44 @@ public class TopAccessor
             //throwException(rspObj);
         }
         return false;
+    }
+
+    public Task getTaskResult(Long taskId, TaskFileParseListener listener) throws TopException {
+        TopatsResultGetRequest request = new TopatsResultGetRequest();
+        request.setTaskId(taskId);
+        Map<String, Object> rsp = null;
+        try {
+            topClient.setNeedEnableParser(true);
+            TopatsResultGetResponse response = topClient.execute(request, accessToken);
+            topClient.setNeedEnableParser(false);
+            Task task = response.getTask();
+            String taskUrl = task.getDownloadUrl();
+            String projectPath = System.getProperty("project_path");
+            String taskTempDir = projectPath + "temp\\" + taskId.toString();
+            File tempDir = new File(taskTempDir);
+            File taskFile = AtsUtils.download(taskUrl, tempDir);
+            File taskResultFile = new File(taskTempDir + "\\unzip");
+            List<File> fileList = AtsUtils.unzip(taskFile, taskResultFile);
+
+            JsonFactory jsonFactory = new JsonFactory();
+            ObjectMapper objectMapper = new ObjectMapper();
+            for (File file : fileList) {
+                JsonParser jp = jsonFactory.createJsonParser(file);
+                Map<String, Object> obj;
+                do {
+                    obj = objectMapper.readValue(jp, Map.class);
+                    listener.receivedData(obj);
+                }while (jp.nextToken() != null);
+            }
+            listener.taskFinished();
+
+        } catch (ApiException e) {
+            throw new TopException("102", "top server error", "1", "increment.customer.permit error");
+        } catch (IOException e) {
+
+        }
+
+        return null;
     }
 
 /*

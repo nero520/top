@@ -91,7 +91,7 @@ public class UserModel extends AbstractModel
 
         BasicDBObject update = new BasicDBObject(data);
 
-        //collection.update(query, new BasicDBObject("$set", update), true, false);
+        collection.update(query, new BasicDBObject("$set", update), true, false);
 
         TopUserModel topUserModel = new TopUserModel();
         topUserModel.setAccessToken(accessToken);

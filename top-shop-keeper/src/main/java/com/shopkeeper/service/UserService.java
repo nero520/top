@@ -6,6 +6,8 @@ import com.rop.annotation.ServiceMethod;
 import com.rop.annotation.ServiceMethodBean;
 import com.rop.response.ErrorResponse;
 import com.rop.session.SimpleSession;
+import com.shopkeeper.UserLogManager;
+import com.shopkeeper.UserLogger;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.model.TopUserModel;
 import com.shopkeeper.model.UserModel;
@@ -61,6 +63,9 @@ public class UserService
             session.setAttribute("user_id", request.getUserId());
             session.setAttribute("user_nick", request.getUserNick());
             request.getRopRequestContext().addSession(accessToken, session);
+
+            UserLogger logger = UserLogManager.getUserLogger(request.getUserNick());
+            logger.trace("user login");
 
             return response;
         } catch (ModelException e) {

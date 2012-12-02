@@ -1,6 +1,7 @@
 package com.shopkeeper.admin;
 
 import com.shopkeeper.Config;
+import com.shopkeeper.TaskPool;
 import com.taobao.api.internal.stream.Configuration;
 import com.taobao.api.internal.stream.TopCometStream;
 import com.taobao.api.internal.stream.TopCometStreamFactory;
@@ -81,7 +82,7 @@ public class TopCometManager
 
         @Override
         public void onReceiveMsg(String message) {
-            logger.info(message);
+            //TaskPool.getInstance().addTask(message);
             //To change body of implemented methods use File | Settings | File Templates.
         }
 

@@ -1,9 +1,6 @@
 package com.shopkeeper;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
+import com.mongodb.*;
 import com.shopkeeper.utils.Utils;
 
 /**
@@ -33,11 +30,20 @@ public class UserLogger
         DBObject error = new BasicDBObject();
         error.put("message", msg);
         error.put("created", Utils.getDate());
-        collection.update(null, new BasicDBObject("$push", new BasicDBObject(field, error)));
+        DBObject query = collection.findOne();
+        if (query != null) {
+            collection.update(new BasicDBObject("_id", query.get("_id")), new BasicDBObject("$push", new BasicDBObject(field, error)), true, false);
+        }
+        else {
+            BasicDBList list = new BasicDBList();
+            list.add(error);
+            collection.insert(new BasicDBObject(field, list));
+        }
     }
 
     public UserLogger(String userNick) {
         this.userNick = userNick;
+        init();
     }
 
     // 记录用户错误日志

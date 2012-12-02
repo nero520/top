@@ -88,7 +88,10 @@ public class RopServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig servletConfig) throws ServletException {
+        String path = servletConfig.getServletContext().getRealPath("/");
+        System.setProperty("project_path", path);
         ApplicationContext ctx = getApplicationContext(servletConfig);
+
         this.serviceRouter = ctx.getBean(ServiceRouter.class);
         if (this.serviceRouter == null) {
             logger.error("在Spring容器中未找到" + ServiceRouter.class.getName() +
