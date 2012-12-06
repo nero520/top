@@ -1,6 +1,7 @@
 package com.shopkeeper;
 
 import com.rop.client.RopUnmarshaller;
+import com.shopkeeper.common.TradeTaskListener;
 import com.shopkeeper.exception.TopException;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
@@ -368,7 +369,7 @@ public class TopAccessor
         return false;
     }
 
-    public Task getTaskResult(Long taskId, TaskFileParseListener listener) throws TopException {
+    public Task getTaskResult(Long taskId, TradeTaskListener listener) throws TopException {
         TopatsResultGetRequest request = new TopatsResultGetRequest();
         request.setTaskId(taskId);
         Map<String, Object> rsp = null;

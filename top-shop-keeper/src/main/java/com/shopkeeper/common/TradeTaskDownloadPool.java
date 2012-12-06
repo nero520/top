@@ -1,11 +1,8 @@
-package com.shopkeeper;
+package com.shopkeeper.common;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import com.rop.client.RopUnmarshaller;
 import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
+import com.shopkeeper.TopAccessor;
 import com.shopkeeper.exception.TopException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +16,11 @@ import java.util.*;
  * Time: 下午12:07
  * To change this template use File | Settings | File Templates.
  */
-public class TaskPool
+public class TradeTaskDownloadPool
 {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static TaskPool _instance = null;
+    private static TradeTaskDownloadPool _instance = null;
 
     private List<Map<String, Object>> taskList = Collections.synchronizedList(new LinkedList<Map<String, Object>>());
 
@@ -31,7 +28,7 @@ public class TaskPool
 
     private Thread thread;
 
-    private TaskPool() {
+    private TradeTaskDownloadPool() {
         init();
     }
 
@@ -40,9 +37,9 @@ public class TaskPool
         thread.start();
     }
 
-    public static TaskPool getInstance() {
+    public static TradeTaskDownloadPool getInstance() {
         if (_instance == null) {
-            _instance = new TaskPool();
+            _instance = new TradeTaskDownloadPool();
         }
         return _instance;
     }
@@ -65,7 +62,7 @@ public class TaskPool
         return task;
     }
 
-    class TaskParseListener implements TaskFileParseListener {
+    class TradeTaskParseListener implements TradeTaskListener {
 
         @Override
         public void receivedData(Object object) {
@@ -91,7 +88,7 @@ public class TaskPool
             String accessToken = (String)task.get("access_token");
             TopAccessor topAccessor = new TopAccessor(accessToken);
             try {
-                topAccessor.getTaskResult(taskId, new TaskParseListener());
+                topAccessor.getTaskResult(taskId, new TradeTaskParseListener());
             } catch (TopException e) {
 
             }

@@ -30,6 +30,9 @@ public class MongoManager
         DB db = dbMap.get(name);
         if (db == null) {
             db = mongo.getDB(name);
+            if (db == null) {
+                // todo 处理数据库连接失败
+            }
             db.authenticate(user, password.toCharArray());
             dbMap.put(name, db);
         }

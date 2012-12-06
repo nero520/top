@@ -4,7 +4,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.shopkeeper.TopAccessor;
-import com.shopkeeper.admin.TopCometManager;
+import com.shopkeeper.common.TopCometManager;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.exception.TopException;
 import com.shopkeeper.service.domain.User;
@@ -53,25 +53,28 @@ public class UserModel extends AbstractModel
             if (!permit) {
                 logger.error("创建用户主动通知失败 user_id:" + userId);
             }
-            // 创建任务获取全部交易信息
-            Date now = new Date();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(now);
-            calendar.add(Calendar.DAY_OF_MONTH, -1);
-            Date endTime = calendar.getTime();
-            calendar.add(Calendar.MONTH, -1);
-            Date startTime = calendar.getTime();
-            Map<String, Object> objectMap = topAccessor.createTradeSoldGetTask(startTime, endTime);
-            if (objectMap != null) {
-                DBCollection collection1 = db.getCollection("sk_trade_topats_task");
-                objectMap = (Map<String, Object>)objectMap.get("task");
-                objectMap.put("user_id", userId);
-                DBObject query = new BasicDBObject("user_id", userId);
-                DBObject update = new BasicDBObject(objectMap);
-                collection1.update(query, update, true, false);
+            else {
+                // 创建任务获取全部交易信息
+                Date now = new Date();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(now);
+                calendar.add(Calendar.DAY_OF_MONTH, -3);
+                Date endTime = calendar.getTime();
+                calendar.add(Calendar.MONTH, -1);
+                Date startTime = calendar.getTime();
+                Map<String, Object> objectMap = topAccessor.createTradeSoldGetTask(startTime, endTime);
+                if (objectMap != null) {
+                    DBCollection collection1 = db.getCollection("sk_trade_topats_task");
+                    objectMap = (Map<String, Object>)objectMap.get("task");
+                    objectMap.put("user_id", userId);
+                    DBObject query = new BasicDBObject("user_id", userId);
+                    DBObject update = new BasicDBObject(objectMap);
+                    collection1.update(query, update, true, false);
+                    TopCometManager topCometManager = TopCometManager.getInstance();
+                    topCometManager.addNewStream(userId, new TradeTaskListener());
+                }
             }
-            TopCometManager topCometManager = TopCometManager.getInstance();
-            topCometManager.addNewStream(userId);
+
         } catch (TopException e) {
 
         }
@@ -85,9 +88,9 @@ public class UserModel extends AbstractModel
         accessToken = (String)data.get("access_token");
         BasicDBObject query = new BasicDBObject("user_id", data.get("user_id"));
         if (collection.getCount(query) == 0) {
+            query.put("first_login", true);
             userInit(userId);
         }
-
 
         BasicDBObject update = new BasicDBObject(data);
 
@@ -135,5 +138,18 @@ public class UserModel extends AbstractModel
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    class TradeTaskListener implements TopCometManager.TopCometListener
+    {
+        @Override
+        public void onReceiveMsg(String message) {
+            logger.info(message);
+        }
+
+        @Override
+        public void onException(Exception e) {
+
+        }
     }
 }

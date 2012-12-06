@@ -1,4 +1,4 @@
-package com.shopkeeper;
+package com.shopkeeper.common;
 
 /**
  * Created with IntelliJ IDEA.
@@ -7,7 +7,7 @@ package com.shopkeeper;
  * Time: 下午12:10
  * To change this template use File | Settings | File Templates.
  */
-public interface TaskFileParseListener
+public interface TradeTaskListener
 {
     public void receivedData(Object object);
 
