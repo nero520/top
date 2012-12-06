@@ -135,9 +135,8 @@ public class TopCometManager
 
             @Override
             public void onReceiveMsg(String message) {
-
-                logger.info("received message: " + message);
-                //TradeTaskDownloadPool.getInstance().addTask(message);
+                TopCometListener listener = listenerMap.get(userId);
+                listener.onReceiveMsg(message);
             }
 
             @Override
@@ -172,21 +171,9 @@ public class TopCometManager
 
             @Override
             public void onException(Exception e) {
+                TopCometListener listener = listenerMap.get(userId);
+                listener.onException(e);
                 logger.info("top comet exception: " + e.getMessage());
             }
         }
-
-    /**
-     * Created with IntelliJ IDEA.
-     * User: zhanghaojie
-     * Date: 12-12-5
-     * Time: 下午3:37
-     * To change this template use File | Settings | File Templates.
-     */
-    public static interface TopCometListener
-    {
-        public void onReceiveMsg(String message);
-
-        public void onException(Exception e);
-    }
 }

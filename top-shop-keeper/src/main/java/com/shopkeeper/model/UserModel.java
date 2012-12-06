@@ -4,7 +4,9 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.shopkeeper.TopAccessor;
+import com.shopkeeper.common.TopCometListener;
 import com.shopkeeper.common.TopCometManager;
+import com.shopkeeper.common.TradeTaskListener;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.exception.TopException;
 import com.shopkeeper.service.domain.User;
@@ -71,7 +73,7 @@ public class UserModel extends AbstractModel
                     DBObject update = new BasicDBObject(objectMap);
                     collection1.update(query, update, true, false);
                     TopCometManager topCometManager = TopCometManager.getInstance();
-                    topCometManager.addNewStream(userId, new TradeTaskListener());
+                    topCometManager.addNewStream(userId, new TradeTaskCometListener());
                 }
             }
 
@@ -140,11 +142,12 @@ public class UserModel extends AbstractModel
         this.accessToken = accessToken;
     }
 
-    class TradeTaskListener implements TopCometManager.TopCometListener
+    class TradeTaskCometListener implements TopCometListener
     {
+
         @Override
         public void onReceiveMsg(String message) {
-            logger.info(message);
+
         }
 
         @Override
