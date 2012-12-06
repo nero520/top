@@ -3,6 +3,7 @@ package com.shopkeeper.model;
 import com.mongodb.*;
 import com.rop.client.RopUnmarshaller;
 import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
+import com.shopkeeper.Config;
 import com.shopkeeper.MongoManager;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.utils.Utils;
@@ -42,7 +43,7 @@ abstract public class AbstractModel implements Model
     }
 
     public void init() {
-  		db = MongoManager.getDB(dbName, "root", "edword");
+  		db = MongoManager.getDB(dbName, Config.MONGODB_USER, Config.MONGODB_PASSWORD);
         collection = db.getCollection(this.getCollectionName());
     }
 

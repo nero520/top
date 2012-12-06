@@ -1,5 +1,6 @@
 package com.shopkeeper.model;
 
+import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.exception.TopException;
 
 /**
@@ -11,5 +12,5 @@ import com.shopkeeper.exception.TopException;
  */
 public interface TopUpdate
 {
-    public void updateFromTop(String topAccessToken) throws TopException;
+    public void updateFromTop(String topAccessToken) throws ModelException;
 }

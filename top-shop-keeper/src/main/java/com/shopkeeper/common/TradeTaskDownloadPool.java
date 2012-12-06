@@ -4,9 +4,17 @@ import com.rop.client.RopUnmarshaller;
 import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
 import com.shopkeeper.TopAccessor;
 import com.shopkeeper.exception.TopException;
+import com.taobao.api.ApiException;
+import com.taobao.api.domain.Task;
+import com.taobao.api.internal.util.AtsUtils;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -62,34 +70,40 @@ public class TradeTaskDownloadPool
         return task;
     }
 
-    class TradeTaskParseListener implements TradeTaskListener {
-
-        @Override
-        public void receivedData(Object object) {
-            logger.info(object.toString());
-        }
-
-        @Override
-        public void taskFinished() {
-            //To change body of implemented methods use File | Settings | File Templates.
-        }
-
-        @Override
-        public void taskError(String msg) {
-
-        }
-    }
-
     class TaskRunnable implements Runnable
     {
-        private void downloadTask(Map<String, Object> task) {
+        private void downloadTask(Map<String, Object> taskMap) {
             RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
-            Long taskId = Long.parseLong((String)task.get("task_id"));
-            String accessToken = (String)task.get("access_token");
+            Long taskId = Long.parseLong((String)taskMap.get("task_id"));
+            String accessToken = (String)taskMap.get("access_token");
             TopAccessor topAccessor = new TopAccessor(accessToken);
             try {
-                topAccessor.getTaskResult(taskId, new TradeTaskParseListener());
+                Task task = topAccessor.getTaskResult(taskId);
+                String taskUrl = task.getDownloadUrl();
+                String projectPath = System.getProperty("project_path");
+                String taskTempDir = projectPath + "temp\\" + taskId.toString();
+                File tempDir = new File(taskTempDir);
+                File taskFile = AtsUtils.download(taskUrl, tempDir);
+                File taskResultFile = new File(taskTempDir + "\\unzip");
+                List<File> fileList = AtsUtils.unzip(taskFile, taskResultFile);
+
+                JsonFactory jsonFactory = new JsonFactory();
+                ObjectMapper objectMapper = new ObjectMapper();
+                for (File file : fileList) {
+                    JsonParser jp = jsonFactory.createJsonParser(file);
+                    Map<String, Object> obj;
+                    do {
+                        obj = objectMapper.readValue(jp, Map.class);
+
+                    }while (jp.nextToken() != null);
+                }
+                //listener.taskFinished();
+
             } catch (TopException e) {
+
+            } catch (IOException e) {
+
+            } catch (ApiException e) {
 
             }
         }
@@ -110,6 +124,24 @@ public class TradeTaskDownloadPool
             } catch (InterruptedException e) {
 
             }
+        }
+    }
+
+    class TradeTaskParseListener implements TradeTaskDownloadListener {
+
+        @Override
+        public void receivedData(Object object) {
+            logger.info(object.toString());
+        }
+
+        @Override
+        public void taskFinished() {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public void taskError(String msg) {
+
         }
     }
 }

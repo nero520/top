@@ -1,7 +1,7 @@
 package com.shopkeeper;
 
 import com.rop.client.RopUnmarshaller;
-import com.shopkeeper.common.TradeTaskListener;
+import com.shopkeeper.common.TradeTaskDownloadListener;
 import com.shopkeeper.exception.TopException;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
@@ -369,7 +369,7 @@ public class TopAccessor
         return false;
     }
 
-    public Task getTaskResult(Long taskId, TradeTaskListener listener) throws TopException {
+    public Task getTaskResult(Long taskId) throws TopException {
         TopatsResultGetRequest request = new TopatsResultGetRequest();
         request.setTaskId(taskId);
         Map<String, Object> rsp = null;
@@ -378,33 +378,10 @@ public class TopAccessor
             TopatsResultGetResponse response = topClient.execute(request, accessToken);
             topClient.setNeedEnableParser(false);
             Task task = response.getTask();
-            String taskUrl = task.getDownloadUrl();
-            String projectPath = System.getProperty("project_path");
-            String taskTempDir = projectPath + "temp\\" + taskId.toString();
-            File tempDir = new File(taskTempDir);
-            File taskFile = AtsUtils.download(taskUrl, tempDir);
-            File taskResultFile = new File(taskTempDir + "\\unzip");
-            List<File> fileList = AtsUtils.unzip(taskFile, taskResultFile);
-
-            JsonFactory jsonFactory = new JsonFactory();
-            ObjectMapper objectMapper = new ObjectMapper();
-            for (File file : fileList) {
-                JsonParser jp = jsonFactory.createJsonParser(file);
-                Map<String, Object> obj;
-                do {
-                    obj = objectMapper.readValue(jp, Map.class);
-                    listener.receivedData(obj);
-                }while (jp.nextToken() != null);
-            }
-            listener.taskFinished();
-
+            return task;
         } catch (ApiException e) {
             throw new TopException("102", "top server error", "1", "increment.customer.permit error");
-        } catch (IOException e) {
-
         }
-
-        return null;
     }
 
 /*

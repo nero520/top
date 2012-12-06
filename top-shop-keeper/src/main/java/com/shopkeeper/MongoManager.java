@@ -39,6 +39,10 @@ public class MongoManager
         return db;
     }
 
+    public static DB getDB(String name) {
+        return dbMap.get(name);
+    }
+
     private static void init() {
         try {
             mongo = new Mongo("localhost");

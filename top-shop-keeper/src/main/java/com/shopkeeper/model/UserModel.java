@@ -1,15 +1,15 @@
 package com.shopkeeper.model;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.shopkeeper.TopAccessor;
-import com.shopkeeper.common.TopCometListener;
 import com.shopkeeper.common.TopCometManager;
-import com.shopkeeper.common.TradeTaskListener;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.exception.TopException;
 import com.shopkeeper.service.domain.User;
+import com.shopkeeper.common.TradeTaskCometListener;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -48,36 +48,7 @@ public class UserModel extends AbstractModel
             ItemModel itemModel = new ItemModel();
             itemModel.setAccessToken(accessToken);
             itemModel.updateFromTop(accessToken);
-
-
-            TopAccessor topAccessor = new TopAccessor(accessToken);
-            boolean permit = topAccessor.incrementCustomerPermit("notify", "trade", "all");
-            if (!permit) {
-                logger.error("创建用户主动通知失败 user_id:" + userId);
-            }
-            else {
-                // 创建任务获取全部交易信息
-                Date now = new Date();
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(now);
-                calendar.add(Calendar.DAY_OF_MONTH, -3);
-                Date endTime = calendar.getTime();
-                calendar.add(Calendar.MONTH, -1);
-                Date startTime = calendar.getTime();
-                Map<String, Object> objectMap = topAccessor.createTradeSoldGetTask(startTime, endTime);
-                if (objectMap != null) {
-                    DBCollection collection1 = db.getCollection("sk_trade_topats_task");
-                    objectMap = (Map<String, Object>)objectMap.get("task");
-                    objectMap.put("user_id", userId);
-                    DBObject query = new BasicDBObject("user_id", userId);
-                    DBObject update = new BasicDBObject(objectMap);
-                    collection1.update(query, update, true, false);
-                    TopCometManager topCometManager = TopCometManager.getInstance();
-                    topCometManager.addNewStream(userId, new TradeTaskCometListener());
-                }
-            }
-
-        } catch (TopException e) {
+        } catch (ModelException e) {
 
         }
     }
@@ -104,7 +75,7 @@ public class UserModel extends AbstractModel
         try {
             topUserModel.updateFromTop(accessToken);
 
-        } catch (TopException e) {
+        } catch (ModelException e) {
             // todo
         }
         return true;
@@ -117,42 +88,19 @@ public class UserModel extends AbstractModel
         return user;
     }
 
-    public Long getUserId() {
-        return userId;
+    public void setSubscriptionPermit(Long userId, String topic, String status) {
+        DBObject query = new BasicDBObject("user_id", userId);
+        DBObject update = new BasicDBObject("$push", new BasicDBObject("subscriptions", new BasicDBObject(topic, status)));
+        collection.update(query, update);
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUserNick() {
-        return userNick;
-    }
-
-    public void setUserNick(String userNick) {
-        this.userNick = userNick;
-    }
-
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    class TradeTaskCometListener implements TopCometListener
-    {
-
-        @Override
-        public void onReceiveMsg(String message) {
-
+    public boolean getSubscriptionPermit(Long userId, String topic, String status) {
+        DBObject query = new BasicDBObject("user_id", userId);
+        query.put("subscriptions", new BasicDBObject("$elemMatch", new BasicDBObject(topic, status)));
+        DBObject subscriptions = collection.findOne(query);
+        if (subscriptions != null) {
+            return true;
         }
-
-        @Override
-        public void onException(Exception e) {
-
-        }
+        return false;
     }
 }

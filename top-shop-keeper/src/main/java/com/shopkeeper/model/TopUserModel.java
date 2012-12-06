@@ -31,9 +31,14 @@ public class TopUserModel extends AbstractModel implements TopUpdate
     }
 
     @Override
-    public void updateFromTop(String topAccessToken) throws TopException {
+    public void updateFromTop(String topAccessToken) throws ModelException {
         TopAccessor topAccessor = new TopAccessor(topAccessToken);
-        Map<String, Object> userInfo = topAccessor.getUserInfo();
+        Map<String, Object> userInfo = null;
+        try {
+            userInfo = topAccessor.getUserInfo();
+        } catch (TopException e) {
+
+        }
         BasicDBObject query = new BasicDBObject("user_id", this.getUserId());
         BasicDBObject update = new BasicDBObject(userInfo);
         collection.update(query, update, true, false);
