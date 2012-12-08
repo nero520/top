@@ -13,7 +13,6 @@ import java.util.Map;
  * User: zhanghaojie
  * Date: 12-11-17
  * Time: 下午6:10
- * To change this template use File | Settings | File Templates.
  */
 public class MongoManager
 {

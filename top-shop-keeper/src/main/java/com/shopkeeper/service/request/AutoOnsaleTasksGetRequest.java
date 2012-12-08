@@ -9,7 +9,6 @@ import java.util.List;
  * User: zhanghaojie
  * Date: 12-11-22
  * Time: 上午5:35
- * To change this template use File | Settings | File Templates.
  */
 public class AutoOnsaleTasksGetRequest extends AbstractRopRequest
 {

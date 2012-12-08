@@ -8,7 +8,6 @@ import com.rop.annotation.AliasName;
  * User: zhanghaojie
  * Date: 12-9-29
  * Time: 上午4:58
- * To change this template use File | Settings | File Templates.
  */
 public class TestRequest extends AbstractRopRequest {
 

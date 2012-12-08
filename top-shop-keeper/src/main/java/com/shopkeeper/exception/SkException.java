@@ -5,7 +5,6 @@ package com.shopkeeper.exception;
  * User: zhanghaojie
  * Date: 12-10-23
  * Time: 上午3:54
- * To change this template use File | Settings | File Templates.
  */
 public class SkException extends Throwable {
     public SkException() {

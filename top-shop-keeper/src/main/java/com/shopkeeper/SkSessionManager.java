@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * User: zhanghaojie
  * Date: 9/22/12
  * Time: 4:50 下午
- * To change this template use File | Settings | File Templates.
  */
 public class SkSessionManager implements SessionManager{
 

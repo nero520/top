@@ -12,7 +12,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * User: zhanghaojie
  * Date: 12-11-3
  * Time: 上午9:04
- * To change this template use File | Settings | File Templates.
  */
 
 @XmlAccessorType(XmlAccessType.FIELD)

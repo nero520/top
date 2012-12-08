@@ -16,7 +16,6 @@ import java.util.Map;
  * User: zhanghaojie
  * Date: 12-12-6
  * Time: 下午12:06
- * To change this template use File | Settings | File Templates.
  */
 public class TradeTaskCometListener implements TopCometListener
 {

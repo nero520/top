@@ -21,7 +21,6 @@ import java.util.Map;
  * User: zhanghaojie
  * Date: 12-11-17
  * Time: 下午4:16
- * To change this template use File | Settings | File Templates.
  */
 abstract public class AbstractModel implements Model
 {

@@ -28,7 +28,6 @@ import java.util.*;
  * User: zhanghaojie
  * Date: 12-10-19
  * Time: 下午7:05
- * To change this template use File | Settings | File Templates.
  */
 public class TopAccessor
 {

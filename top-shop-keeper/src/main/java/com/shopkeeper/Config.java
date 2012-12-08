@@ -5,7 +5,6 @@ package com.shopkeeper;
  * User: zhanghaojie
  * Date: 12-9-29
  * Time: 上午5:35
- * To change this template use File | Settings | File Templates.
  */
 public class Config {
     public static final String TOP_APP_KEY = "1012681999";

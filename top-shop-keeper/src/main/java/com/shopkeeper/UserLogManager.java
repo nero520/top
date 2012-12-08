@@ -10,7 +10,6 @@ import com.mongodb.DBObject;
  * User: zhanghaojie
  * Date: 12-11-25
  * Time: 上午7:35
- * To change this template use File | Settings | File Templates.
  */
 public class UserLogManager
 {

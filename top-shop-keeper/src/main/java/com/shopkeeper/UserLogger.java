@@ -8,7 +8,6 @@ import com.shopkeeper.utils.Utils;
  * User: zhanghaojie
  * Date: 12-11-25
  * Time: 上午7:36
- * To change this template use File | Settings | File Templates.
  */
 public class UserLogger
 {

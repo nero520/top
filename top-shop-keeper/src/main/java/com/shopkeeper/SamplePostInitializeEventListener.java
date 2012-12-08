@@ -10,7 +10,6 @@ import java.util.Properties;
  * User: zhanghaojie
  * Date: 12-11-24
  * Time: 上午8:16
- * To change this template use File | Settings | File Templates.
  */
 
 public class SamplePostInitializeEventListener implements RopEventListener<AfterStartedRopEvent> {

@@ -7,7 +7,6 @@ import com.rop.AbstractRopRequest;
  * User: zhanghaojie
  * Date: 12-11-18
  * Time: 下午8:59
- * To change this template use File | Settings | File Templates.
  */
 public class GroupsGetRequest extends AbstractRopRequest
 {

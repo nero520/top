@@ -21,7 +21,6 @@ import java.util.Map;
  * User: zhanghaojie
  * Date: 12-12-6
  * Time: 下午1:38
- * To change this template use File | Settings | File Templates.
  */
 public class TradeModel extends AbstractModel implements TopUpdate
 {
@@ -46,7 +45,7 @@ public class TradeModel extends AbstractModel implements TopUpdate
         this.setAccessToken(accessToken);
         TopAccessor topAccessor = new TopAccessor(accessToken);
         UserModel userModel = new UserModel();
-        userModel.getSubscriptionPermit(this.getUserId(), "trade");
+        //userModel.getSubscriptionPermit(this.getUserId(), "trade");
         boolean permit = false;
         try {
             permit = topAccessor.incrementCustomerPermit("notify", "trade", "all");

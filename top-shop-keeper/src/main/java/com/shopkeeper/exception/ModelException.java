@@ -5,7 +5,6 @@ package com.shopkeeper.exception;
  * User: zhanghaojie
  * Date: 12-10-18
  * Time: 上午9:42
- * To change this template use File | Settings | File Templates.
  */
 public class ModelException extends SkException
 {

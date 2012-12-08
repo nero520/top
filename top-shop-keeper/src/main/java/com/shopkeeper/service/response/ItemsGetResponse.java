@@ -10,7 +10,6 @@ import java.util.List;
  * User: zhanghaojie
  * Date: 12-11-19
  * Time: 上午7:03
- * To change this template use File | Settings | File Templates.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "items_get_response")

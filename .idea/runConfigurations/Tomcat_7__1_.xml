@@ -77,7 +77,6 @@
         <artifact name="rop-sample:war" />
         <artifact name="rop-sample:war exploded" />
       </option>
-      <option name="Maven.BeforeRunTask" enabled="false" file="$PROJECT_DIR$/top-shop-keeper/pom.xml" goal="install" />
     </method>
   </configuration>
 </component>

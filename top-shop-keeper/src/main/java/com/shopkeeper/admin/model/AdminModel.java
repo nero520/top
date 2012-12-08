@@ -13,7 +13,6 @@ import java.io.IOException;
  * User: zhanghaojie
  * Date: 12-11-24
  * Time: 上午3:33
- * To change this template use File | Settings | File Templates.
  */
 public class AdminModel extends AbstractModel
 {

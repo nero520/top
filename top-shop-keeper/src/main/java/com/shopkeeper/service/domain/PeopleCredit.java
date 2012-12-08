@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * User: zhanghaojie
  * Date: 12-11-18
  * Time: 上午5:48
- * To change this template use File | Settings | File Templates.
  */
 
 abstract public class PeopleCredit

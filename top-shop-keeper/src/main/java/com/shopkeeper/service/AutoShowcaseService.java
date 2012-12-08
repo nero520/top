@@ -17,7 +17,6 @@ import com.shopkeeper.service.response.AutoShowcaseUpdateResponse;
  * User: zhanghaojie
  * Date: 12-11-22
  * Time: 上午7:34
- * To change this template use File | Settings | File Templates.
  */
 
 @ServiceMethodBean(version = "1.0")

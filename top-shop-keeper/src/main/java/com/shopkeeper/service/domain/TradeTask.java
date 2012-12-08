@@ -11,7 +11,6 @@ import java.util.Date;
  * User: zhanghaojie
  * Date: 12-12-6
  * Time: 下午1:50
- * To change this template use File | Settings | File Templates.
  */
 
 @XmlAccessorType(XmlAccessType.FIELD)

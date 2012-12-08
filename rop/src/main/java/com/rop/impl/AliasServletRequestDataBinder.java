@@ -13,7 +13,6 @@ import java.lang.reflect.Field;
  * User: zhanghaojie
  * Date: 12-9-29
  * Time: 上午4:42
- * To change this template use File | Settings | File Templates.
  */
 public class AliasServletRequestDataBinder extends ServletRequestDataBinder {
 

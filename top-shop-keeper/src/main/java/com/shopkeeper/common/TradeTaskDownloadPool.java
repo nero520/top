@@ -22,7 +22,6 @@ import java.util.*;
  * User: zhanghaojie
  * Date: 12-11-25
  * Time: 下午12:07
- * To change this template use File | Settings | File Templates.
  */
 public class TradeTaskDownloadPool
 {

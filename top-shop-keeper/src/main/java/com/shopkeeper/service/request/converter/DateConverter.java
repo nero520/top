@@ -10,7 +10,6 @@ import java.util.Date;
  * User: zhanghaojie
  * Date: 12-11-20
  * Time: 上午2:15
- * To change this template use File | Settings | File Templates.
  */
 public class DateConverter implements RopConverter<String, Date> {
     @Override

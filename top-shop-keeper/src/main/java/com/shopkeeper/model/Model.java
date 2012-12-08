@@ -5,7 +5,6 @@ package com.shopkeeper.model;
  * User: zhanghaojie
  * Date: 12-11-17
  * Time: 上午12:56
- * To change this template use File | Settings | File Templates.
  */
 public interface Model
 {

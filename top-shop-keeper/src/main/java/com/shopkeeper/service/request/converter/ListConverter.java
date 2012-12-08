@@ -11,7 +11,6 @@ import java.util.List;
  * User: zhanghaojie
  * Date: 12-11-22
  * Time: 上午6:10
- * To change this template use File | Settings | File Templates.
  */
 public class ListConverter implements RopConverter<String, List<String>>
 {

@@ -21,7 +21,6 @@ import java.util.List;
  * User: zhanghaojie
  * Date: 12-11-18
  * Time: 上午6:28
- * To change this template use File | Settings | File Templates.
  */
 
 @ServiceMethodBean(version = "1.0")

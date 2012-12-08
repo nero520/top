@@ -10,7 +10,6 @@ import com.shopkeeper.service.domain.AutoShowcaseSetting;
  * User: zhanghaojie
  * Date: 12-11-23
  * Time: 上午12:05
- * To change this template use File | Settings | File Templates.
  */
 public class AutoShowcaseModel extends AbstractModel
 {

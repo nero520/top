@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
  * User: zhanghaojie
  * Date: 12-11-18
  * Time: 下午7:29
- * To change this template use File | Settings | File Templates.
  */
 public class GroupDeleteRequest extends AbstractRopRequest
 {

@@ -6,7 +6,6 @@ import com.rop.security.AppSecretManager;
  * User: zhanghaojie
  * Date: 9/22/12
  * Time: 5:13 下午
- * To change this template use File | Settings | File Templates.
  */
 public class SkAppSecretManager implements AppSecretManager {
     /**

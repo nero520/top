@@ -21,7 +21,6 @@ import java.util.Map;
  * User: zhanghaojie
  * Date: 12-11-17
  * Time: 下午4:15
- * To change this template use File | Settings | File Templates.
  */
 public class UserModel extends AbstractModel
 {
@@ -30,8 +29,6 @@ public class UserModel extends AbstractModel
     private static String forbiddenFields = "_id, access_token";
 
     private Long userId;
-
-    private String userNick;
 
     private String accessToken;
 
@@ -57,7 +54,6 @@ public class UserModel extends AbstractModel
         data.put("last_login", new Date().toString());
 
         userId = (Long)data.get("user_id");
-        userNick = (String)data.get("nick");
         accessToken = (String)data.get("access_token");
         BasicDBObject query = new BasicDBObject("user_id", data.get("user_id"));
         if (collection.getCount(query) == 0) {
@@ -84,8 +80,7 @@ public class UserModel extends AbstractModel
     public User getUser(String fields, Long userId) throws ModelException {
         Map<String, Object> query = new HashMap<String, Object>();
         query.put("user_id", userId);
-        User user = get(query, fields, forbiddenFields, User.class);
-        return user;
+        return get(query, fields, forbiddenFields, User.class);
     }
 
     public void setSubscriptionPermit(Long userId, String topic, String status) {
@@ -98,9 +93,6 @@ public class UserModel extends AbstractModel
         DBObject query = new BasicDBObject("user_id", userId);
         query.put("subscriptions", new BasicDBObject("$elemMatch", new BasicDBObject(topic, status)));
         DBObject subscriptions = collection.findOne(query);
-        if (subscriptions != null) {
-            return true;
-        }
-        return false;
+        return (subscriptions != null);
     }
 }

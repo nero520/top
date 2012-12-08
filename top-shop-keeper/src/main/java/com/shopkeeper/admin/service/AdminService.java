@@ -14,7 +14,6 @@ import com.shopkeeper.exception.ModelException;
  * User: zhanghaojie
  * Date: 12-11-23
  * Time: 上午5:13
- * To change this template use File | Settings | File Templates.
  */
 @ServiceMethodBean(version = "1.0")
 public class AdminService

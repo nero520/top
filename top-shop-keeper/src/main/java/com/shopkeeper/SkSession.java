@@ -7,7 +7,6 @@ import com.rop.session.Session;
  * User: zhanghaojie
  * Date: 12-11-11
  * Time: 下午9:09
- * To change this template use File | Settings | File Templates.
  */
 public class SkSession implements Session
 {

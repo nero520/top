@@ -15,7 +15,6 @@ import java.util.*;
  * User: zhanghaojie
  * Date: 12-11-18
  * Time: 上午3:50
- * To change this template use File | Settings | File Templates.
  */
 public class GroupModel extends AbstractModel
 {

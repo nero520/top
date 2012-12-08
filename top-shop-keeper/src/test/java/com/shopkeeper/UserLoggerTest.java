@@ -14,7 +14,6 @@ import java.util.Map;
  * User: zhanghaojie
  * Date: 12-11-25
  * Time: 下午3:05
- * To change this template use File | Settings | File Templates.
  */
 public class UserLoggerTest extends TestCase {
     public void testError() throws Exception {

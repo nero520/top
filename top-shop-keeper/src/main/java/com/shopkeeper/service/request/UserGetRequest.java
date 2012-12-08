@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
  * User: zhanghaojie
  * Date: 12-11-7
  * Time: 上午10:03
- * To change this template use File | Settings | File Templates.
  */
 public class UserGetRequest extends AbstractRopRequest
 {

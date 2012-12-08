@@ -7,7 +7,6 @@ import java.lang.annotation.*;
  * User: zhanghaojie
  * Date: 12-9-29
  * Time: 上午4:46
- * To change this template use File | Settings | File Templates.
  */
 
 @Target({ElementType.FIELD})

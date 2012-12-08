@@ -75,7 +75,6 @@
         <artifact name="top-shop-keeper:war" />
         <artifact name="top-shop-keeper:war exploded" />
       </option>
-      <option name="Maven.BeforeRunTask" enabled="false" file="$PROJECT_DIR$/top-shop-keeper/pom.xml" goal="install" />
     </method>
   </configuration>
 </component>

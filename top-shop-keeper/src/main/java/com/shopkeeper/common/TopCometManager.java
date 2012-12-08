@@ -18,7 +18,6 @@ import java.util.Map;
  * User: zhanghaojie
  * Date: 12-11-24
  * Time: 上午8:28
- * To change this template use File | Settings | File Templates.
  */
 
 /*

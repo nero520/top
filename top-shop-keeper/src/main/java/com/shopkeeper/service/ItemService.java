@@ -22,7 +22,6 @@ import java.util.List;
  * User: zhanghaojie
  * Date: 12-11-19
  * Time: 上午3:27
- * To change this template use File | Settings | File Templates.
  */
 @ServiceMethodBean(version = "1.0")
 public class ItemService

@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
  * User: zhanghaojie
  * Date: 9/22/12
  * Time: 11:44 下午
- * To change this template use File | Settings | File Templates.
  */
 
 @ServiceMethodBean(version = "1.0", needInSession = NeedInSessionType.NO)

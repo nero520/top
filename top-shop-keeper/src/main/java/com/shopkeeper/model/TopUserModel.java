@@ -14,7 +14,6 @@ import java.util.Map;
  * User: zhanghaojie
  * Date: 12-11-18
  * Time: 上午2:20
- * To change this template use File | Settings | File Templates.
  */
 public class TopUserModel extends AbstractModel implements TopUpdate
 {

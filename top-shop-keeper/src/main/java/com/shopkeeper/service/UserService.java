@@ -30,7 +30,6 @@ import java.util.Map;
  * User: zhanghaojie
  * Date: 9/22/12
  * Time: 6:07 下午
- * To change this template use File | Settings | File Templates.
  */
 @ServiceMethodBean(version = "1.0")
 public class UserService

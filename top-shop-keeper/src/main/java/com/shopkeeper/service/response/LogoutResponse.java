@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.*;
  * User: zhanghaojie
  * Date: 9/22/12
  * Time: 7:10 下午
- * To change this template use File | Settings | File Templates.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "logout_response")

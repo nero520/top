@@ -11,7 +11,6 @@ import java.util.Date;
  * User: zhanghaojie
  * Date: 12-11-19
  * Time: 上午7:05
- * To change this template use File | Settings | File Templates.
  */
 public class ItemUpdateRequest extends AbstractRopRequest
 {
