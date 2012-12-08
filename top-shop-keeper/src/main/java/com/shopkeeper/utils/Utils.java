@@ -52,7 +52,7 @@ public class Utils
         if (fieldsList.length == 0) {
             return null;
         }
-        T object = null;
+        T object;
         try {
             object = clazz.newInstance();
             Class[] interfaces = clazz.getInterfaces();
@@ -96,8 +96,7 @@ public class Utils
     public static String getDate() {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String s = dateFormat.format(date);
-        return s;
+	    return dateFormat.format(date);
     }
 
     public static String dateToString(Date date) {
@@ -105,8 +104,7 @@ public class Utils
             return null;
         }
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String s = dateFormat.format(date);
-        return s;
+	    return dateFormat.format(date);
     }
 
     public static Date stringToDate(String str) {
@@ -121,7 +119,7 @@ public class Utils
     }
 
     public static byte[] getSHA1Digest(String data) throws IOException {
-        byte[] bytes = null;
+        byte[] bytes;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             bytes = md.digest(data.getBytes(Constants.UTF8));
@@ -132,7 +130,7 @@ public class Utils
     }
 
     public static byte[] getMD5Digest(String data) throws IOException {
-        byte[] bytes = null;
+        byte[] bytes;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             bytes = md.digest(data.getBytes(Constants.UTF8));
@@ -150,13 +148,13 @@ public class Utils
      */
     public static String byte2hex(byte[] bytes) {
         StringBuilder sign = new StringBuilder();
-        for (int i = 0; i < bytes.length; i++) {
-            String hex = Integer.toHexString(bytes[i] & 0xFF);
-            if (hex.length() == 1) {
-                sign.append("0");
-            }
-            sign.append(hex.toUpperCase());
-        }
+	    for (byte b : bytes) {
+		    String hex = Integer.toHexString(b & 0xFF);
+		    if (hex.length() == 1) {
+			    sign.append("0");
+		    }
+		    sign.append(hex.toUpperCase());
+	    }
         return sign.toString();
     }
 }
