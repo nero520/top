@@ -2,6 +2,7 @@ package com.shopkeeper;
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
+import com.mongodb.MongoException;
 import com.mongodb.MongoOptions;
 
 import java.net.UnknownHostException;
@@ -32,7 +33,13 @@ public class MongoManager
             if (db == null) {
                 // todo 处理数据库连接失败
             }
-            db.authenticate(user, password.toCharArray());
+	        else {
+	            try {
+                    db.authenticate(user, password.toCharArray());
+	            } catch (MongoException e) {
+					throw e;
+	            }
+            }
             dbMap.put(name, db);
         }
         return db;

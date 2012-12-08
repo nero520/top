@@ -3,6 +3,12 @@
     <output-path>$PROJECT_DIR$/top-shop-keeper/target</output-path>
     <root id="archive" name="top-shop-keeper.war">
       <element id="artifact" artifact-name="top-shop-keeper:war exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="org.mongodb:mongo-java-driver:2.9.3" />
+          <element id="library" level="project" name="taobao-sdk-java-online_standard-20120928" />
+        </element>
+      </element>
     </root>
   </artifact>
 </component>
