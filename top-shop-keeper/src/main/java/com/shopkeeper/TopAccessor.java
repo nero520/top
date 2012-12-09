@@ -1,24 +1,20 @@
 package com.shopkeeper;
 
 import com.rop.client.RopUnmarshaller;
-import com.shopkeeper.common.TradeTaskDownloadListener;
+import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
 import com.shopkeeper.exception.TopException;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.domain.Task;
-import com.taobao.api.internal.util.AtsUtils;
 import com.taobao.api.internal.util.WebUtils;
 import com.taobao.api.request.*;
-import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
 import com.taobao.api.response.TopatsResultGetResponse;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -35,7 +31,7 @@ public class TopAccessor
 
     private String accessToken = null;
 
-    private String refreshToken = null;
+    //private String refreshToken = null;
 
     private DefaultTaobaoClient topClient = null;
 
@@ -49,7 +45,7 @@ public class TopAccessor
 
     public TopAccessor(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
+        //this.refreshToken = refreshToken;
         topClient = new DefaultTaobaoClient(Config.TOP_SERVER_URL, Config.TOP_APP_KEY, Config.TOP_APP_SECRET);
         topClient.setNeedEnableParser(false);
     }
@@ -103,35 +99,33 @@ public class TopAccessor
         }
     }
 
-    private Map<String, Object> parse(String json) {
+    private Map parse(String json) {
         RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
-        Map<String, Object> rspObj = unmarshaller.unmarshaller(json, Map.class);
-        return rspObj;
+	    return unmarshaller.unmarshaller(json, Map.class);
     }
 
-    public void throwException(Map<String, Object> exception) throws TopException {
-        Map<String, Object> error = (Map<String, Object>)exception.get("error_response");
-        TopException topException = new TopException(error.get("code").toString(),
-                (String)error.get("msg"),
-                error.get("sub_code").toString(),
-                (String)error.get("sub_msg"));
-        throw topException;
+    public void throwException(Map exception) throws TopException {
+        Map error = (Map)exception.get("error_response");
+	    throw new TopException(error.get("code").toString(),
+	            (String)error.get("msg"),
+	            error.get("sub_code").toString(),
+	            (String)error.get("sub_msg"));
     }
 
-    public Map<String, Object> getUserInfo() throws TopException {
+    public Map getUserInfo() throws TopException {
         UserGetRequest request = new UserGetRequest();
         request.setFields("user_id,uid,nick,sex,buyer_credit,seller_credit,location,created,last_visit,birthday,type,status,consumer_protection");
-        Map<String, Object> rsp = null;
+        Map<String, Object> rsp;
         try {
             rsp = topClient.doPost(request, this.accessToken);
         } catch (ApiException e) {
             throw new TopException("102", "top server error", "1", "user.get error");
         }
         String jsonStr = (String)rsp.get("rsp");
-        Map<String, Object>rspObj = parse(jsonStr);
-        Map<String, Map<String, Object>> response = (Map<String, Map<String, Object>>) rspObj.get("user_get_response");
+        Map rspObj = parse(jsonStr);
+        Map response = (Map) rspObj.get("user_get_response");
         if (response != null) {
-            return response.get("user");
+            return (Map)response.get("user");
         }
         else {
             throwException(rspObj);
@@ -147,7 +141,7 @@ public class TopAccessor
         request.setPageSize(pageSize);
         List<Map<String, Object>> totalItems = new LinkedList<Map<String, Object>>();
         while (true) {
-            Map<String, Object> rsp = null;
+            Map<String, Object> rsp;
             try {
                 request.setPageNo(pageNo);
                 rsp = topClient.doPost(request, accessToken);
@@ -156,15 +150,17 @@ public class TopAccessor
             }
             String jsonStr = (String)rsp.get("rsp");
             RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
-            Map<String, Object> rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
-            Map<String, Object> response = (Map<String, Object>) rspObj.get("items_onsale_get_response");
+            Map rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
+            Map response = (Map)rspObj.get("items_onsale_get_response");
 
             if (response != null) {
                 Integer totalResultsNo = (Integer)response.get("total_results");
 
-                response = (Map<String, Object>)response.get("items");
-                List<Map<String, Object>> totalResult = (List<Map<String, Object>>)response.get("item");
-                totalItems.addAll(totalResult);
+                response = (Map)response.get("items");
+                List totalResult = (List)response.get("item");
+	            if (totalResult != null) {
+		            totalItems.addAll(totalResult);
+	            }
 
                 if (pageSize * pageNo >= totalResultsNo) {
                     break;
@@ -181,10 +177,10 @@ public class TopAccessor
         return null;
     }
 
-    public Map<String, Object> getInventoryItems() throws TopException {
+    public Map getInventoryItems() throws TopException {
         ItemsInventoryGetRequest request = new ItemsInventoryGetRequest();
         request.setFields("approve_status,num_iid,title,nick,type,cid,pic_url,num,props,valid_thru,list_time,price,has_discount,has_invoice,has_warranty,has_showcase, modified,delist_time,postage_id,seller_cids,outer_id,is_virtual,is_taobao,is_ex");
-        Map<String, Object> rsp = null;
+        Map<String, Object> rsp;
         try {
             rsp = topClient.doPost(request, accessToken);
         } catch (ApiException e) {
@@ -192,10 +188,10 @@ public class TopAccessor
         }
         String jsonStr = (String)rsp.get("rsp");
         RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
-        Map<String, Object> rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
-        Map<String, Map<String, Object>> response = (Map<String, Map<String, Object>>) rspObj.get("items_inventory_get_response");
+        Map rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
+        Map response = (Map) rspObj.get("items_inventory_get_response");
         if (response != null) {
-            return response.get("items");
+            return (Map)response.get("items");
         }
         else {
             throwException(rspObj);
@@ -203,11 +199,11 @@ public class TopAccessor
         return null;
     }
 
-    public Map<String, Object> getOnShowcaseItems() throws TopException {
+    public Map getOnShowcaseItems() throws TopException {
         ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
         request.setHasShowcase(true);
         request.setFields("approve_status,num_iid,title,nick,type,cid,pic_url,num,props,valid_thru,list_time,price,has_discount,has_invoice,has_warranty,has_showcase, modified,delist_time,postage_id,seller_cids,outer_id");
-        Map<String, Object> rsp = null;
+        Map<String, Object> rsp;
         try {
             rsp = topClient.doPost(request, accessToken);
         } catch (ApiException e) {
@@ -215,10 +211,10 @@ public class TopAccessor
         }
         String jsonStr = (String)rsp.get("rsp");
         RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
-        Map<String, Object> rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
-        Map<String, Map<String, Object>> response = (Map<String, Map<String, Object>>) rspObj.get("items_onsale_get_response");
+        Map rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
+        Map response = (Map) rspObj.get("items_onsale_get_response");
         if (response != null) {
-            return response.get("items");
+            return (Map)response.get("items");
         }
         else {
             throwException(rspObj);
@@ -226,10 +222,10 @@ public class TopAccessor
         return null;
     }
 
-    public Map<String, Object> getSellerCatsList(String userNick) throws TopException {
+    public Map getSellerCatsList(String userNick) throws TopException {
         SellercatsListGetRequest request = new SellercatsListGetRequest();
         request.setNick(userNick);
-        Map<String, Object> rsp = null;
+        Map<String, Object> rsp;
         try {
             rsp = topClient.doPost(request, accessToken);
         } catch (ApiException e) {
@@ -237,10 +233,10 @@ public class TopAccessor
         }
         String jsonStr = (String)rsp.get("rsp");
         RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
-        Map<String, Object> rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
-        Map<String, Map<String, Object>> response = (Map<String, Map<String, Object>>) rspObj.get("sellercats_list_get_response");
+        Map rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
+        Map response = (Map) rspObj.get("sellercats_list_get_response");
         if (response != null) {
-            return response.get("seller_cats");
+            return (Map)response.get("seller_cats");
         }
         else {
             throwException(rspObj);
@@ -248,9 +244,9 @@ public class TopAccessor
         return null;
     }
 
-    public Map<String, Object> getShopRemainShowcase() throws TopException {
+    public Map getShopRemainShowcase() throws TopException {
         ShopRemainshowcaseGetRequest request = new ShopRemainshowcaseGetRequest();
-        Map<String, Object> rsp = null;
+        Map<String, Object> rsp;
         try {
             rsp = topClient.doPost(request, accessToken);
         } catch (ApiException e) {
@@ -258,10 +254,10 @@ public class TopAccessor
         }
         String jsonStr = (String)rsp.get("rsp");
         RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
-        Map<String, Object> rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
-        Map<String, Map<String, Object>> response = (Map<String, Map<String, Object>>) rspObj.get("shop_remainshowcase_get_response");
+        Map rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
+        Map response = (Map) rspObj.get("shop_remainshowcase_get_response");
         if (response != null) {
-            return response.get("shop");
+            return (Map)response.get("shop");
         }
         else {
             throwException(rspObj);
@@ -269,10 +265,10 @@ public class TopAccessor
         return null;
     }
 
-    public Map<String, Object> addRecommendItem(Long itemId) throws TopException {
+    public Map addRecommendItem(Long itemId) throws TopException {
         ItemRecommendAddRequest request = new ItemRecommendAddRequest();
         request.setNumIid(itemId);
-        Map<String, Object> rsp = null;
+        Map<String, Object> rsp;
         try {
             rsp = topClient.doPost(request, accessToken);
         } catch (ApiException e) {
@@ -280,8 +276,8 @@ public class TopAccessor
         }
         String jsonStr = (String)rsp.get("rsp");
         RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
-        Map<String, Object> rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
-        Map<String, Object> response = (Map<String, Object>) rspObj.get("item_recommend_add_response");
+        Map rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
+        Map response = (Map) rspObj.get("item_recommend_add_response");
         if (response != null) {
             return response;
         }
@@ -291,10 +287,10 @@ public class TopAccessor
         return null;
     }
 
-    public Map<String, Object> deleteRecommendItem(Long itemId) throws TopException {
+    public Map deleteRecommendItem(Long itemId) throws TopException {
         ItemRecommendDeleteRequest request = new ItemRecommendDeleteRequest();
         request.setNumIid(itemId);
-        Map<String, Object> rsp = null;
+        Map<String, Object> rsp;
         try {
             rsp = topClient.doPost(request, accessToken);
         } catch (ApiException e) {
@@ -302,8 +298,8 @@ public class TopAccessor
         }
         String jsonStr = (String)rsp.get("rsp");
         RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
-        Map<String, Object> rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
-        Map<String, Object> response = (Map<String, Object>) rspObj.get("item_recommend_delete_response");
+        Map rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
+        Map response = (Map) rspObj.get("item_recommend_delete_response");
         if (response != null) {
             return response;
         }
@@ -313,7 +309,7 @@ public class TopAccessor
         return null;
     }
 
-    public Map<String, Object> createTradeSoldGetTask(Date startTime, Date endTime) throws TopException {
+    public Map createTradeSoldGetTask(Date startTime, Date endTime) throws TopException {
         TopatsTradesSoldGetRequest request = new TopatsTradesSoldGetRequest();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String strStartTime = dateFormat.format(startTime);
@@ -322,7 +318,7 @@ public class TopAccessor
         request.setStartTime(strStartTime);
         request.setEndTime(strEndTime);
         request.setFields("tid,num,num_iid,status,title,type,price,discount_fee,point_fee,total_fee,created,pay_time,modified,end_time,buyer_message,alipay_no,buyer_memo,seller_memo,shipping_type,adjust_fee,buyer_obtain_point_fee,cod_fee,cod_status,commission_fee,buyer_rate,seller_nick,pic_path,payment,seller_rate,real_point_fee,post_fee,consign_time,received_payment,orders");
-        Map<String, Object> rsp = null;
+        Map<String, Object> rsp;
         try {
             rsp = topClient.doPost(request, accessToken);
         } catch (ApiException e) {
@@ -331,8 +327,8 @@ public class TopAccessor
         String jsonStr = (String)rsp.get("rsp");
         logger.info(jsonStr);
         RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
-        Map<String, Object> rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
-        Map<String, Object> response = (Map<String, Object>) rspObj.get("topats_trades_sold_get_response");
+        Map rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
+        Map response = (Map) rspObj.get("topats_trades_sold_get_response");
         if (response != null) {
             return response;
         }
@@ -348,7 +344,7 @@ public class TopAccessor
         request.setTopics(topics);
         request.setType(type);
 
-        Map<String, Object> rsp = null;
+        Map<String, Object> rsp;
         try {
             rsp = topClient.doPost(request, accessToken);
         } catch (ApiException e) {
@@ -357,8 +353,8 @@ public class TopAccessor
         String jsonStr = (String)rsp.get("rsp");
         logger.info(jsonStr);
         RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
-        Map<String, Object> rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
-        Map<String, Object> response = (Map<String, Object>) rspObj.get("increment_customer_permit_response");
+        Map rspObj = unmarshaller.unmarshaller(jsonStr, Map.class);
+        Map response = (Map) rspObj.get("increment_customer_permit_response");
         if (response != null) {
             return true;
         }
@@ -371,13 +367,11 @@ public class TopAccessor
     public Task getTaskResult(Long taskId) throws TopException {
         TopatsResultGetRequest request = new TopatsResultGetRequest();
         request.setTaskId(taskId);
-        Map<String, Object> rsp = null;
         try {
             topClient.setNeedEnableParser(true);
             TopatsResultGetResponse response = topClient.execute(request, accessToken);
             topClient.setNeedEnableParser(false);
-            Task task = response.getTask();
-            return task;
+	        return response.getTask();
         } catch (ApiException e) {
             throw new TopException("102", "top server error", "1", "increment.customer.permit error");
         }

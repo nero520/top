@@ -45,8 +45,13 @@ public class UserModel extends AbstractModel
             ItemModel itemModel = new ItemModel();
             itemModel.setAccessToken(accessToken);
             itemModel.updateFromTop(accessToken);
-        } catch (ModelException e) {
 
+	        // 获取用户订单信息
+	        TradeModel tradeModel = new TradeModel();
+	        tradeModel.setAccessToken(accessToken);
+	        tradeModel.updateFromTop(accessToken);
+        } catch (ModelException e) {
+			logger.info(e.getMsg());
         }
     }
 
@@ -56,12 +61,12 @@ public class UserModel extends AbstractModel
         userId = (Long)data.get("user_id");
         accessToken = (String)data.get("access_token");
         BasicDBObject query = new BasicDBObject("user_id", data.get("user_id"));
+	    BasicDBObject update = new BasicDBObject(data);
+
         if (collection.getCount(query) == 0) {
-            query.put("first_login", true);
+	        update.put("first_login", true);
             userInit(userId);
         }
-
-        BasicDBObject update = new BasicDBObject(data);
 
         collection.update(query, new BasicDBObject("$set", update), true, false);
 
@@ -70,7 +75,6 @@ public class UserModel extends AbstractModel
 
         try {
             topUserModel.updateFromTop(accessToken);
-
         } catch (ModelException e) {
             // todo
         }
@@ -89,7 +93,7 @@ public class UserModel extends AbstractModel
         collection.update(query, update);
     }
 
-    public boolean getSubscriptionPermit(Long userId, String topic, String status) {
+    public boolean isSubscriptionPermit(Long userId, String topic, String status) {
         DBObject query = new BasicDBObject("user_id", userId);
         query.put("subscriptions", new BasicDBObject("$elemMatch", new BasicDBObject(topic, status)));
         DBObject subscriptions = collection.findOne(query);

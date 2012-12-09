@@ -29,11 +29,12 @@ public class TradeTaskCometListener implements TopCometListener
         }
         return accessToken;
     }
+
     @Override
     public void onReceiveMsg(String message) {
         RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
-        Map<String, Object> rspObj = unmarshaller.unmarshaller(message, Map.class);
-        Map<String, Object> notifyTopats = (Map<String, Object>)rspObj.get("notify_topats");
+        Map rspObj = unmarshaller.unmarshaller(message, Map.class);
+        Map notifyTopats = (Map)rspObj.get("notify_topats");
         if (notifyTopats != null) {
             String topic = (String)notifyTopats.get("topic");
             String apiName = (String)notifyTopats.get("api_name");
@@ -47,7 +48,7 @@ public class TradeTaskCometListener implements TopCometListener
                     status != null && status.equalsIgnoreCase("TaskComplete") &&
                     taskStatus != null && taskStatus.equalsIgnoreCase("done")) {
                 TradeTaskDownloadPool pool = TradeTaskDownloadPool.getInstance();
-                pool.addTask(taskId.toString(), this.getAccessToken(userId));
+                pool.addTask(taskId.toString(), taskId, this.getAccessToken(userId));
             }
         }
     }

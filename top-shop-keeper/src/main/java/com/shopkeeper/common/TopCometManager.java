@@ -30,8 +30,6 @@ public class TopCometManager
     private static TopCometManager _instance = null;
     private TopCometStream topCometStream = null;
 
-    //private List<TopCometListener> listeners;
-
     private Map<Long, TopCometListener> listenerMap;
 
     private TopCometManager() {

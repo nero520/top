@@ -51,9 +51,10 @@ public class TradeTaskDownloadPool
         return _instance;
     }
 
-    public void addTask(String taskId, String accessToken) {
+    public void addTask(String taskId, Long userId, String accessToken) {
         Map<String, Object> taskMap = new HashMap<String, Object>();
         taskMap.put("task_id", taskId);
+	    taskMap.put("user_id", userId);
         taskMap.put("access_token", accessToken);
         taskList.add(taskMap);
         if (thread.getState() == Thread.State.WAITING) {
@@ -72,7 +73,6 @@ public class TradeTaskDownloadPool
     class TaskRunnable implements Runnable
     {
         private void downloadTask(Map<String, Object> taskMap) {
-            RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
             Long taskId = Long.parseLong((String)taskMap.get("task_id"));
             String accessToken = (String)taskMap.get("access_token");
             TopAccessor topAccessor = new TopAccessor(accessToken);
@@ -88,45 +88,50 @@ public class TradeTaskDownloadPool
 
                 JsonFactory jsonFactory = new JsonFactory();
                 ObjectMapper objectMapper = new ObjectMapper();
+	            TradeTaskDownloadListener listener = new TradeTaskDownloadHandler((Long)taskMap.get("user_id"));
                 for (File file : fileList) {
                     JsonParser jp = jsonFactory.createJsonParser(file);
-                    Map<String, Object> obj;
+                    Map obj;
                     do {
                         obj = objectMapper.readValue(jp, Map.class);
-
+	                    listener.receivedData(obj);
                     }while (jp.nextToken() != null);
                 }
-                //listener.taskFinished();
+                listener.taskFinished();
 
             } catch (TopException e) {
-
+	            logger.info(e.getMsg());
             } catch (IOException e) {
-
+	            logger.info(e.getMessage());
             } catch (ApiException e) {
-
+	            logger.info(e.getMessage());
             }
         }
 
         @Override
         public void run() {
-            try {
-                while (true) {
-                    Map<String, Object> task = popTask();
-                    if (task != null) {
-                        downloadTask(task);
-                        //logger.info(taskResult);
-                    }
-                    else {
-                        waitObj.wait();
-                    }
-                }
-            } catch (InterruptedException e) {
-
-            }
+	        while (true) {
+		        Map<String, Object> task = popTask();
+		        if (task != null) {
+			        downloadTask(task);
+		        }
+		        else {
+			        try {
+				        waitObj.wait();
+			        } catch (InterruptedException e) {
+						break;
+			        }
+		        }
+	        }
         }
     }
 
-    class TradeTaskParseListener implements TradeTaskDownloadListener {
+    class TradeTaskDownloadHandler implements TradeTaskDownloadListener
+    {
+	    private Long userId;
+	    public TradeTaskDownloadHandler(Long userId) {
+			this.userId = userId;
+	    }
 
         @Override
         public void receivedData(Object object) {
@@ -135,7 +140,7 @@ public class TradeTaskDownloadPool
 
         @Override
         public void taskFinished() {
-            //To change body of implemented methods use File | Settings | File Templates.
+
         }
 
         @Override
