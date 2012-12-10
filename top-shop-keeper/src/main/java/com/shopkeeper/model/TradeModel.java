@@ -4,10 +4,11 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.rop.client.RopUnmarshaller;
+import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
 import com.shopkeeper.MongoManager;
 import com.shopkeeper.TopAccessor;
-import com.shopkeeper.common.TopCometManager;
-import com.shopkeeper.common.TradeTaskCometListener;
+import com.shopkeeper.common.*;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.exception.TopException;
 import com.shopkeeper.service.domain.TradeTask;
@@ -22,7 +23,7 @@ import java.util.Map;
  * Date: 12-12-6
  * Time: 下午1:38
  */
-public class TradeModel extends AbstractModel implements TopUpdate
+public class TradeModel extends AbstractModel implements TopUpdate, TopCometListener, TradeTaskDownloadListener
 {
 
 	@Override
@@ -96,14 +97,15 @@ public class TradeModel extends AbstractModel implements TopUpdate
 		    if (tradeTask == null) {
 				// 第一次为用户创建获取订单任务
 			    calendar.setTime(now);
-			    calendar.add(Calendar.DAY_OF_MONTH, -3);
+			    calendar.add(Calendar.MONTH, -3);
 			    Date endTime = calendar.getTime();
-			    calendar.add(Calendar.MONTH, -1);
+			    calendar.add(Calendar.MONTH, 3);
+			    calendar.add(Calendar.DAY_OF_MONTH, -1);
 			    Date startTime = calendar.getTime();
 			    Map task = this.createTradeTask(startTime, endTime);
 			    if (task != null) {
 			        TopCometManager topCometManager = TopCometManager.getInstance();
-			        topCometManager.addNewStream(userId, new TradeTaskCometListener());
+			        topCometManager.addNewStream(userId, this);
 			    }
 		    }
 		    else {
@@ -146,4 +148,49 @@ public class TradeModel extends AbstractModel implements TopUpdate
         }
         */
     }
+
+	// TopCometListener
+	@Override
+	public void onReceiveMsg(String message) {
+		RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
+		Map rspObj = unmarshaller.unmarshaller(message, Map.class);
+		Map notifyTopats = (Map)rspObj.get("notify_topats");
+		if (notifyTopats != null) {
+			String topic = (String)notifyTopats.get("topic");
+			String apiName = (String)notifyTopats.get("api_name");
+			String status = (String)notifyTopats.get("status");
+			Long taskId = (Long)notifyTopats.get("task_id");
+			String taskStatus = (String)notifyTopats.get("task_status");
+			String strUserId = (String)notifyTopats.get("user_id");
+			Long userId = Long.parseLong(strUserId);
+			if (topic != null && topic.equalsIgnoreCase("topats") &&
+					apiName != null && apiName.equalsIgnoreCase("taobao.topats.trades.sold.get") &&
+					status != null && status.equalsIgnoreCase("TaskComplete") &&
+					taskStatus != null && taskStatus.equalsIgnoreCase("done")) {
+				TradeTaskDownloadPool pool = TradeTaskDownloadPool.getInstance();
+				pool.addTask(taskId.toString(), userId, this.getAccessToken());
+			}
+		}
+	}
+
+	@Override
+	public void onException(Exception e) {
+
+	}
+
+	// TradeTaskDownloadListener
+	@Override
+	public void receivedData(Object object) {
+
+	}
+
+	@Override
+	public void taskFinished() {
+
+	}
+
+	@Override
+	public void taskError(String msg) {
+
+	}
 }

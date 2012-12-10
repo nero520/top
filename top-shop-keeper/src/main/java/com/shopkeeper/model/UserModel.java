@@ -63,15 +63,19 @@ public class UserModel extends AbstractModel
         BasicDBObject query = new BasicDBObject("user_id", data.get("user_id"));
 	    BasicDBObject update = new BasicDBObject(data);
 
+		boolean isFistLogin = false;
         if (collection.getCount(query) == 0) {
 	        update.put("first_login", true);
-            userInit(userId);
+	        isFistLogin = true;
         }
-
-        collection.update(query, new BasicDBObject("$set", update), true, false);
+	    collection.update(query, new BasicDBObject("$set", update), true, false);
 
         TopUserModel topUserModel = new TopUserModel();
         topUserModel.setAccessToken(accessToken);
+
+	    if (isFistLogin) {
+		    userInit(userId);
+	    }
 
         try {
             topUserModel.updateFromTop(accessToken);
