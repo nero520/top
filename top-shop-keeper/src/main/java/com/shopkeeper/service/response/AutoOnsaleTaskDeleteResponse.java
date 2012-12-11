@@ -1,6 +1,6 @@
 package com.shopkeeper.service.response;
 
-import com.shopkeeper.service.domain.AutoOnsaleTask;
+import com.shopkeeper.service.domain.OnsaleTask;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -19,13 +19,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class AutoOnsaleTaskDeleteResponse
 {
     @XmlElement(name = "autoonsale_task")
-    private AutoOnsaleTask task;
+    private OnsaleTask task;
 
-    public AutoOnsaleTask getTask() {
+    public OnsaleTask getTask() {
         return task;
     }
 
-    public void setTask(AutoOnsaleTask task) {
+    public void setTask(OnsaleTask task) {
         this.task = task;
     }
 }

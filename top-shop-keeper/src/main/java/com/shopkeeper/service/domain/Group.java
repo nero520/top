@@ -17,7 +17,7 @@ import java.util.Date;
 @XmlRootElement(name = "group")
 public class Group
 {
-    @XmlElement
+    @XmlElement(name = "_id")
     private String id;
 
     @XmlElement(name = "user_id")

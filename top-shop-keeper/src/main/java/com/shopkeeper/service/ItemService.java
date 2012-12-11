@@ -3,8 +3,8 @@ package com.shopkeeper.service;
 import com.rop.annotation.NeedInSessionType;
 import com.rop.annotation.ServiceMethod;
 import com.rop.annotation.ServiceMethodBean;
+import com.rop.response.NotExistErrorResponse;
 import com.rop.session.SimpleSession;
-import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.model.ItemModel;
 import com.shopkeeper.service.domain.Item;
 import com.shopkeeper.service.request.ItemGetRequest;
@@ -12,10 +12,13 @@ import com.shopkeeper.service.request.ItemUpdateRequest;
 import com.shopkeeper.service.request.ItemsGetRequest;
 import com.shopkeeper.service.response.ItemGetResponse;
 import com.shopkeeper.service.response.ItemUpdateResponse;
-import com.shopkeeper.service.response.ItemsGetResponse;
-import com.shopkeeper.utils.Utils;
+import org.apache.commons.lang.StringUtils;
+import org.bson.types.ObjectId;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,20 +35,19 @@ public class ItemService
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
         ItemModel itemModel = new ItemModel();
-        try {
-            Item item = itemModel.getItem(request.getNumIid(), request.getFields(), userId);
-            if (item != null) {
-                ItemGetResponse response = new ItemGetResponse();
-                response.setItem(item);
-                return response;
-            }
-            else {
-                // todo
-            }
-        } catch (ModelException e) {
-            // todo
-        }
-        return null;
+
+	    Map<String, Object> query = new HashMap<String, Object>();
+	    query.put("num_iid", request.getNumIid());
+	    query.put("user_id", userId);
+	    List<Item> itemList = itemModel.query(query);
+	    if (itemList != null && itemList.size() > 0) {
+		    ItemGetResponse response = new ItemGetResponse();
+		    response.setItem(itemList.get(0));
+		    return response;
+	    }
+	    else {
+		    return new NotExistErrorResponse();
+	    }
     }
 
     @ServiceMethod(method = "item.update", version = "1.0", needInSession = NeedInSessionType.YES)
@@ -54,48 +56,78 @@ public class ItemService
         Long userId = (Long)session.getAttribute("user_id");
 
         ItemModel itemModel = new ItemModel();
-        try {
-            Item item = itemModel.updateItem(request.getNumIid(), request.getGroupId(),
-                    request.getTaskId(), Utils.dateToString(request.getTimeOnsale()),
-                    request.getAutoShowcaseStatus(), userId);
-            if (item != null) {
-                ItemUpdateResponse response = new ItemUpdateResponse();
-                response.setItem(item);
-                return response;
-            }
-            else {
-                // todo
-            }
-        } catch (ModelException e) {
-            // todo
-        }
+	    Map<String, Object> query = new HashMap<String, Object>();
+	    query.put("user_id", userId);
+	    query.put("num_iid", request.getNumIid());
 
-        return null;
+	    Map<String, Object> update = new HashMap<String, Object>();
+	    Object value = request.getGroupId();
+	    if (value != null) {
+	        update.put("group_id", value);
+	    }
+	    value = request.getTaskId();
+	    if (value != null) {
+		    update.put("task_id", value);
+	    }
+		value = request.getTimeOnsale();
+	    if (value != null) {
+		    update.put("time_onsale", value);
+	    }
+	    value = request.getShowcaseStatus();
+	    if (value != null) {
+		    update.put("showcase_status", value);
+	    }
+	    List<Item> itemList = itemModel.update(query, update);
+	    if (itemList != null && itemList.size() > 0) {
+		    ItemUpdateResponse response = new ItemUpdateResponse();
+		    response.setItem(itemList.get(0));
+		    return response;
+	    }
+	    else {
+		    return new NotExistErrorResponse();
+	    }
     }
 
     @ServiceMethod(method = "items.get", version = "1.0", needInSession = NeedInSessionType.YES)
     public Object getItems(ItemsGetRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
-        String numIids = request.getNumIids();
-        String fields = request.getFields();
-        String groupId = request.getGroupId();
-        String taskId = request.getTaskId();
         ItemModel itemModel = new ItemModel();
-        try {
-            List<Item> itemList = itemModel.getItems(numIids, fields, groupId, taskId,
-                    request.getAutoShowcaseStatus(), userId);
-            if (itemList != null) {
-                ItemsGetResponse response = new ItemsGetResponse();
-                response.setItems(itemList);
-                return response;
-            }
-            else {
-                // todo
-            }
-        } catch (ModelException e) {
 
-        }
-        return null;
+	    Map<String, Object> query = new HashMap<String, Object>();
+	    query.put("user_id", userId);
+	    Object value = request.getGroupId();
+	    if (value != null) {
+		    query.put("group_id", value);
+	    }
+	    value = request.getTaskId();
+	    if (value != null) {
+		    query.put("task_id", value);
+	    }
+	    value = request.getShowcaseStatus();
+	    if (value != null) {
+		    query.put("showcase_status", value);
+	    }
+	    String strNumIids = request.getNumIids();
+	    if (strNumIids != null) {
+		    Map<String, Object> _in = new HashMap<String, Object>();
+	        String[] numIids = StringUtils.split(strNumIids, ",");
+	        List<ObjectId> itemObjectIdList = new LinkedList<ObjectId>();
+		    for (String groupId : numIids) {
+			    itemObjectIdList.add(new ObjectId(groupId));
+		    }
+		    _in.put("$in", itemObjectIdList);
+		    query.put("_id", _in);
+	    }
+
+	    List<Item> itemList = itemModel.query(query);
+	    if (itemList != null && itemList.size() > 0) {
+		    ItemGetResponse response = new ItemGetResponse();
+		    response.setItem(itemList.get(0));
+		    return response;
+	    }
+	    else {
+		    return new NotExistErrorResponse();
+	    }
     }
 }

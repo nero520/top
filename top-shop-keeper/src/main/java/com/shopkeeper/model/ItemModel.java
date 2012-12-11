@@ -2,6 +2,7 @@ package com.shopkeeper.model;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.shopkeeper.TopAccessor;
 import com.shopkeeper.exception.ModelException;
@@ -19,38 +20,55 @@ import java.util.Map;
  * Date: 12-11-19
  * Time: 上午2:39
  */
-public class ItemModel extends AbstractModel implements TopUpdate
-{
-    private static String COLLECTION_NAME = "sk_item";
 
-    private static String forbiddenFields = "_id";
+/*
+ * Item struct
+ * top data:    num_iid, ...
+ * Long         user_id
+ * Date         time_onsale
+ */
+public class ItemModel extends AbstractModel<Item> implements TopUpdate
+{
 
     @Override
     public void updateFromTop(String topAccessToken) throws ModelException {
         TopAccessor topAccessor = new TopAccessor(topAccessToken);
+	    Long userId = this.getUserId(topAccessToken);
         try {
             List<Map<String, Object>> itemList = topAccessor.getOnsaleItems();
             if (itemList.size() > 0) {
                 DBObject query = new BasicDBObject();
                 for (Map<String, Object> item : itemList) {
                     DBObject object = new BasicDBObject(item);
-                    object.put("user_id", this.getUserId());
+                    object.put("user_id", userId);
                     query.put("num_iid", item.get("num_iid"));
-                    query.put("user_id", this.getUserId());
+                    query.put("user_id", userId);
                     collection.update(query, new BasicDBObject("$set", object), true, false);
                 }
             }
         } catch (TopException e) {
-
+	        // todo
         }
     }
 
     @Override
     public String getCollectionName() {
-        return COLLECTION_NAME;
+        return "sk_item";
     }
 
-    public Item getItem(Long numIid, String fields, Long userId) throws ModelException {
+	@Override
+	public List<Item> create(Map<String, Object> data) {
+		if (_create(data) > 0) {
+			Map<String, Object> _query = new HashMap<String, Object>();
+			_query.put("user_id", data.get("user_id"));
+			_query.put("num_iid", data.get("num_iid"));
+			return query(_query);
+		}
+		return null;
+	}
+
+	/*
+	public Item getItem(Long numIid, String fields, Long userId) throws ModelException {
         if (numIid != null && userId != null) {
             Map<String, Object> query = new HashMap<String, Object>();
             query.put("user_id", userId);
@@ -133,6 +151,20 @@ public class ItemModel extends AbstractModel implements TopUpdate
         return item;
     }
 
+	public void deleteItems(Long userId, List<Long> itemsId) {
+		if (userId != null) {
+			DBObject query = new BasicDBObject("user_id", userId);
+			if (itemsId != null && itemsId.size() > 0) {
+				BasicDBList itemList = new BasicDBList();
+				for (Long itemId : itemsId) {
+					itemList.add(itemId);
+				}
+				query.put("num_iid", new BasicDBObject("$in", itemList));
+			}
+			collection.remove(query);
+		}
+	}
+*/
 /*
     public Item updateItem(Long numIid, Map<String, Object> updates, Long userId) throws ModelException {
         DBObject query = new BasicDBObject("num_iid", numIid);

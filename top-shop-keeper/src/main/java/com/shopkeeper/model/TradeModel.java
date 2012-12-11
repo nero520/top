@@ -12,6 +12,7 @@ import com.shopkeeper.common.*;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.exception.TopException;
 import com.shopkeeper.service.domain.TradeTask;
+import com.taobao.api.domain.Trade;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -23,14 +24,14 @@ import java.util.Map;
  * Date: 12-12-6
  * Time: 下午1:38
  */
-public class TradeModel extends AbstractModel implements TopUpdate, TopCometListener, TradeTaskDownloadListener
+public class TradeModel extends AbstractModel<Trade> implements TopUpdate, TopCometListener, TradeTaskDownloadListener
 {
 
 	@Override
     public String getCollectionName() {
-		return "sk_autoonsale_task";
+		return "sk_trade";
     }
-
+/*
     private TradeTask getLastTradeTask(Long userId) {
         DB db = MongoManager.getDB("db_top");
         DBCollection collection1 = db.getCollection("sk_trade_task");
@@ -116,6 +117,7 @@ public class TradeModel extends AbstractModel implements TopUpdate, TopCometList
 	    else {
 		    logger.info("开通用户通知失败， 参数：notify, trade, all");
 	    }
+	    */
 
 /*
         else {
@@ -146,9 +148,9 @@ public class TradeModel extends AbstractModel implements TopUpdate, TopCometList
         else {
 
         }
-        */
-    }
 
+    }
+*/
 	// TopCometListener
 	@Override
 	public void onReceiveMsg(String message) {
@@ -168,7 +170,7 @@ public class TradeModel extends AbstractModel implements TopUpdate, TopCometList
 					status != null && status.equalsIgnoreCase("TaskComplete") &&
 					taskStatus != null && taskStatus.equalsIgnoreCase("done")) {
 				TradeTaskDownloadPool pool = TradeTaskDownloadPool.getInstance();
-				pool.addTask(taskId.toString(), userId, this.getAccessToken());
+				pool.addTask(taskId.toString(), userId, this.getAccessToken(userId));
 			}
 		}
 	}
@@ -191,6 +193,11 @@ public class TradeModel extends AbstractModel implements TopUpdate, TopCometList
 
 	@Override
 	public void taskError(String msg) {
+
+	}
+
+	@Override
+	public void updateFromTop(String topAccessToken) throws ModelException {
 
 	}
 }

@@ -27,8 +27,8 @@ public class ItemUpdateRequest extends AbstractRopRequest
     @AliasName(name = "time_onsale")
     private Date timeOnsale;
 
-    @AliasName(name = "auto_showcase_status")
-    private String autoShowcaseStatus;
+    @AliasName(name = "showcase_status")
+    private String showcaseStatus;
 
     public Long getNumIid() {
         return numIid;
@@ -62,11 +62,11 @@ public class ItemUpdateRequest extends AbstractRopRequest
         this.timeOnsale = timeOnsale;
     }
 
-    public String getAutoShowcaseStatus() {
-        return autoShowcaseStatus;
-    }
+	public String getShowcaseStatus() {
+		return showcaseStatus;
+	}
 
-    public void setAutoShowcaseStatus(String autoShowcaseStatus) {
-        this.autoShowcaseStatus = autoShowcaseStatus;
-    }
+	public void setShowcaseStatus(String showcaseStatus) {
+		this.showcaseStatus = showcaseStatus;
+	}
 }

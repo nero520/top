@@ -24,6 +24,9 @@ public class User
     @XmlElement(name = "score")
     private Integer score;
 
+	@XmlElement(name = "is_init")
+	private Boolean isInit;
+
     @XmlElement(name = "is_shared_weibo")
     private Boolean isSharedWeibo;
 
@@ -110,4 +113,12 @@ public class User
     public void setNumFeedback(Boolean numFeedback) {
         this.numFeedback = numFeedback;
     }
+
+	public Boolean setInit() {
+		return isInit;
+	}
+
+	public void setInit(Boolean init) {
+		isInit = init;
+	}
 }

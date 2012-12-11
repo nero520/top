@@ -12,6 +12,8 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,46 +24,76 @@ import java.util.Map;
  * Date: 12-11-17
  * Time: 下午4:16
  */
-abstract public class AbstractModel implements Model
+abstract public class AbstractModel<T> implements Model<T>
 {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private String dbName = "db_top";
+    protected String dbName = "db_top";
 
-    protected DBCollection collection;
+    protected DBCollection collection = null;
 
-    private String accessToken;
+	protected String pk = "user_id";
 
-    protected Long userId = null;
+    protected DB db = null;
 
-    protected DB db;
+	protected Long userId = null;
+
+	protected String accessToken = null;
+
+	private Class<T> templeteClazz0;
+
+	@SuppressWarnings(value = "unchecked")
+	public AbstractModel() {
+		templeteClazz0 = (Class<T>)((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getClass();
+		init();
+	}
+
+	private void init() {
+		db = MongoManager.getDB(dbName, Config.MONGODB_USER, Config.MONGODB_PASSWORD);
+		collection = db.getCollection(this.getCollectionName());
+		collection.setWriteConcern(WriteConcern.SAFE);
+	}
 
 
-    public AbstractModel() {
-        init();
-    }
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
-    public void init() {
-  		db = MongoManager.getDB(dbName, Config.MONGODB_USER, Config.MONGODB_PASSWORD);
-        collection = db.getCollection(this.getCollectionName());
-    }
+	public long count(Map<String, Object> query) {
+		DBObject _query = new BasicDBObject(query);
+		return collection.count(_query);
+	}
 
-    public DBCollection getCollection() {
-        return collection;
-    }
+	protected DBCollection getCollection(String collectionName, WriteConcern concern) {
+		DBCollection collection1 = db.getCollection(collectionName);
+		collection1.setWriteConcern(concern);
+		return collection1;
+	}
 
-    public String getAccessToken() {
-        return accessToken;
-    }
+	protected DBCollection getCollection(String collectionName) {
+		return this.getCollection(collectionName, WriteConcern.SAFE);
+	}
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
+	protected DBCollection getCollection() {
+		return collection;
+	}
 
-    public Long getUserId() {
+	protected String getAccessToken(Long userId) {
+		if (accessToken == null) {
+			DBCollection userCollection = this.getCollection("sk_user");
+			DBObject query = new BasicDBObject("user_id", userId);
+			DBObject fields = new BasicDBObject("access_token", true);
+			DBObject rsp = userCollection.findOne(query, fields);
+			if (rsp != null)
+				accessToken = (String)rsp.get("access_token");
+		}
+		return accessToken;
+	}
+
+	protected Long getUserId(String accessToken) {
         if (userId == null) {
             DBCollection collection = db.getCollection("sk_user");
-            BasicDBObject query = new BasicDBObject("access_token", this.getAccessToken());
+            BasicDBObject query = new BasicDBObject("access_token", accessToken);
             BasicDBObject fields = new BasicDBObject("user_id", 1);
             DBObject object = collection.findOne(query, fields);
             if (object != null) {
@@ -69,10 +101,6 @@ abstract public class AbstractModel implements Model
             }
         }
         return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     protected DBObject filterFields(DBObject fields, String forbiddenFields) {
@@ -106,9 +134,18 @@ abstract public class AbstractModel implements Model
         }
         String json = object.toString();
         RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
-        T t = unmarshaller.unmarshaller(json, clazz);
-        return t;
+        return unmarshaller.unmarshaller(json, clazz);
     }
+
+	protected <T> List<T> parse(DBCursor cursor, Class<T> clazz) {
+		List<T> objList = new LinkedList<T>();
+		while (cursor.hasNext()) {
+			DBObject object = cursor.next();
+			T t = parse(object, clazz);
+			objList.add(t);
+		}
+		return objList.size() > 0 ? objList : null;
+	}
 
     protected <T> T get(DBObject query, String fields, String forbiddenFields, Class<T> clazz) throws ModelException{
         DBObject field = Utils.splitFilds(fields);
@@ -119,16 +156,12 @@ abstract public class AbstractModel implements Model
         if (object == null) {
             return null;
         }
-        T t = parse(object, clazz);
-        return t;
-
+        return parse(object, clazz);
     }
 
     protected <T> T get(Map<String, Object> query, String fields, String forbiddenFields, Class<T> clazz) throws ModelException{
         DBObject queryObj = new BasicDBObject(query);
-        T t = get(queryObj, fields, forbiddenFields, clazz);
-        return t;
-
+        return get(queryObj, fields, forbiddenFields, clazz);
     }
 
     protected <T> List<T> gets(DBObject query, String fields, String forbiddenFields, Class<T> clazz) throws ModelException {
@@ -148,16 +181,90 @@ abstract public class AbstractModel implements Model
 
     protected <T> List<T> gets(Map<String, Object> query, String fields, String forbiddenFields, Class<T> clazz) throws ModelException {
         DBObject queryObj = new BasicDBObject(query);
-        List<T> t = gets(queryObj, fields, forbiddenFields, clazz);
-        return t;
+        return gets(queryObj, fields, forbiddenFields, clazz);
     }
 
+	protected int _create(Map<String, Object> data) {
+		Map<String, Object> localData = new HashMap<String, Object>(data);
+		DBObject objData = new BasicDBObject(localData);
+		WriteResult result = collection.insert(objData);
+		return result.getN();
+	}
+
+	protected int _update(Map<String, Object> query, Map<String, Object> update) {
+		return _update(query, update, false);
+	}
+
+	protected int _update(Map<String, Object> query, Map<String, Object> update, boolean insert) {
+		DBObject _query = new BasicDBObject(query);
+		DBObject _update = new BasicDBObject(update);
+		WriteResult result = collection.update(_query, _update, insert, true);
+		return result.getN();
+	}
+
+	protected DBCursor _query(Map<String, Object> query) {
+		if (query != null) {
+			DBObject _query = new BasicDBObject(query);
+			return collection.find(_query);
+		}
+		return null;
+	}
+
+	protected int _delete(Map<String, Object> query) {
+		if (query != null) {
+			DBObject _query = new BasicDBObject(query);
+			WriteResult result = collection.remove(_query);
+			return result.getN();
+		}
+		return 0;
+	}
+
+	@Override
+	public List<T> create(Map<String, Object> data) {
+		if (data != null && data.size() > 0 && _create(data) > 0) {
+			Map<String, Object> query = new HashMap<String, Object>();
+			query.put(pk, data.get(pk));
+			return query(query);
+		}
+		return null;
+	}
+
+	@Override
+	public List<T> query(Map<String, Object> query) {
+		DBCursor rsp = _query(query);
+		return parse(rsp, templeteClazz0);
+	}
+
+	@Override
+	public List<T> update(Map<String, Object> query, Map<String, Object> data) {
+		return update(query, data, false);
+	}
+
+	@Override
+	public List<T> update(Map<String, Object> query, Map<String, Object> data, boolean insert) {
+		if ( _update(query, data, insert) > 0 ) {
+			return query(query);
+		}
+		return null;
+	}
+
+	@Override
+	public List<T> delete(Map<String, Object> query) {
+		DBCursor rsp = _query(query);
+		if (rsp.hasNext()) {
+			_delete(query);
+		}
+		return parse(rsp, templeteClazz0);
+	}
+
+
+	/*
     protected boolean isDocExist(String id, String docName) {
-        DBCollection collection1 = db.getCollection(docName);
+	    DBCollection collection1 = this.getCollection(docName);
         if (collection1 == null) {
             return false;
         }
-        ObjectId objectId = null;
+        ObjectId objectId;
         try {
             objectId = new ObjectId(id);
         }catch (IllegalArgumentException e) {
@@ -169,4 +276,5 @@ abstract public class AbstractModel implements Model
         }
         return true;
     }
+    */
 }

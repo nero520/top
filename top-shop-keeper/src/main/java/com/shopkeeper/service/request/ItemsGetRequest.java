@@ -17,9 +17,6 @@ public class ItemsGetRequest extends AbstractRopRequest
     @AliasName(name = "num_iids")
     private String numIids;
 
-    @NotNull
-    private String fields;
-
     @AliasName(name = "group_id")
     private String groupId;
 
@@ -29,8 +26,8 @@ public class ItemsGetRequest extends AbstractRopRequest
     @AliasName(name = "has_showcase")
     private boolean hasShowcase;
 
-    @AliasName(name = "auto_showcase_status")
-    private String autoShowcaseStatus;
+    @AliasName(name = "showcase_status")
+    private String showcaseStatus;
 
     public String getNumIids() {
         return numIids;
@@ -64,19 +61,11 @@ public class ItemsGetRequest extends AbstractRopRequest
         this.hasShowcase = hasShowcase;
     }
 
-    public String getFields() {
-        return fields;
-    }
+	public String getShowcaseStatus() {
+		return showcaseStatus;
+	}
 
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-
-    public String getAutoShowcaseStatus() {
-        return autoShowcaseStatus;
-    }
-
-    public void setAutoShowcaseStatus(String autoShowcaseStatus) {
-        this.autoShowcaseStatus = autoShowcaseStatus;
-    }
+	public void setShowcaseStatus(String showcaseStatus) {
+		this.showcaseStatus = showcaseStatus;
+	}
 }

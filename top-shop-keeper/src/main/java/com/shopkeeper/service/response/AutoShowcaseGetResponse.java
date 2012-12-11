@@ -1,6 +1,6 @@
 package com.shopkeeper.service.response;
 
-import com.shopkeeper.service.domain.AutoShowcaseSetting;
+import com.shopkeeper.service.domain.ShowcaseSetting;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -19,13 +19,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class AutoShowcaseGetResponse
 {
     @XmlElement(name = "autoshowcase_setting")
-    private AutoShowcaseSetting autoShowcaseSetting;
+    private ShowcaseSetting autoShowcaseSetting;
 
-    public AutoShowcaseSetting getAutoShowcaseSetting() {
+    public ShowcaseSetting getAutoShowcaseSetting() {
         return autoShowcaseSetting;
     }
 
-    public void setAutoShowcaseSetting(AutoShowcaseSetting autoShowcaseSetting) {
+    public void setAutoShowcaseSetting(ShowcaseSetting autoShowcaseSetting) {
         this.autoShowcaseSetting = autoShowcaseSetting;
     }
 }

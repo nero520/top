@@ -18,7 +18,7 @@ public class SamplePostInitializeEventListener implements RopEventListener<After
     public void onRopEvent(AfterStartedRopEvent ropRopEvent) {
         //ropRopEvent.
         //Properties pro = System.getProperties();
-
+		//Config.init();
         //System.out.println("execute SamplePostInitializeEventListener!");
     }
 

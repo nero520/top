@@ -4,11 +4,8 @@ import com.rop.RopRequest;
 import com.rop.annotation.NeedInSessionType;
 import com.rop.annotation.ServiceMethod;
 import com.rop.annotation.ServiceMethodBean;
-import com.rop.response.ErrorResponse;
+import com.rop.response.NotExistErrorResponse;
 import com.rop.session.SimpleSession;
-import com.shopkeeper.UserLogManager;
-import com.shopkeeper.UserLogger;
-import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.model.TopUserModel;
 import com.shopkeeper.model.UserModel;
 import com.shopkeeper.service.domain.TopUser;
@@ -19,10 +16,10 @@ import com.shopkeeper.service.response.LoginResponse;
 import com.shopkeeper.service.response.LogoutResponse;
 import com.shopkeeper.service.response.TopUserGetResponse;
 import com.shopkeeper.service.response.UserGetResponse;
-import com.taobao.api.ApiException;
 
-import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,7 +32,7 @@ import java.util.Map;
 public class UserService
 {
     @ServiceMethod(method = "user.login", version = "1.0", needInSession = NeedInSessionType.NO)
-    public Object login(LoginRequest request) throws SQLException, ApiException {
+    public Object login(LoginRequest request) {
         Map<String, Object> datas = new HashMap<String, Object>();
         datas.put("access_token", request.getAccessToken());
         datas.put("expires_in", request.getExpiresIn());
@@ -50,29 +47,32 @@ public class UserService
         datas.put("w1_expires_in", request.getW1ExpiresIn());
         datas.put("w2_expires_in", request.getW2ExpiresIn());
 
-        try {
-            UserModel userModel = new UserModel();
-            userModel.login(datas);
-            String accessToken = request.getAccessToken();
+	    datas.put("lash_login", new Date());
 
-            LoginResponse response = new LoginResponse();
-            response.setSession(accessToken);
+	    Long userId = (Long)datas.get("user_id");
 
-            SimpleSession session = new SimpleSession();
-            session.setAttribute("user_id", request.getUserId());
-            session.setAttribute("user_nick", request.getUserNick());
-            request.getRopRequestContext().addSession(accessToken, session);
+	    UserModel userModel = new UserModel();
 
-            UserLogger logger = UserLogManager.getUserLogger(request.getUserNick());
-            logger.trace("user login");
+	    Map<String, Object> query = new HashMap<String, Object>();
+	    query.put("user_id", userId);
 
-            return response;
-        } catch (ModelException e) {
-            ErrorResponse response = new ErrorResponse();
-            response.setCode("100");
-            response.setMessage(e.getMessage());
-            return response;
-        }
+	    if (userModel.count(query) > 0) {
+		    userModel.update(query, datas);
+	    }
+	    else {
+		    userModel.create(datas);
+	    }
+
+	    String accessToken = request.getAccessToken();
+
+	    LoginResponse response = new LoginResponse();
+	    response.setSession(accessToken);
+
+	    SimpleSession session = new SimpleSession();
+	    session.setAttribute("user_id", request.getUserId());
+	    request.getRopRequestContext().addSession(accessToken, session);
+
+	    return response;
     }
 
     @ServiceMethod(method = "user.logout", version = "1.0", needInSession = NeedInSessionType.NO)
@@ -85,33 +85,40 @@ public class UserService
 
     @ServiceMethod(method = "user.get", version = "1.0", needInSession = NeedInSessionType.YES)
     public Object getUser(UserGetRequest request) {
-        String fields = request.getFields();
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
-        try {
-            UserModel userModel = new UserModel();
-            User user = userModel.getUser(fields, (Long)session.getAttribute("user_id"));
-            UserGetResponse response = new UserGetResponse();
-            response.setUser(user);
-            return response;
-        } catch (ModelException e) {
-            // TODO
-        }
-        return null;
+        Long userId = (Long)session.getAttribute("user_id");
+
+	    UserModel userModel = new UserModel();
+	    Map<String, Object> query = new HashMap<String, Object>();
+	    query.put("user_id", userId);
+	    List<User> userList = userModel.query(query);
+	    if (userList != null && userList.size() > 0) {
+		    User user = userList.get(0);
+		    UserGetResponse response = new UserGetResponse();
+		    response.setUser(user);
+		    return response;
+	    }
+	    else {
+		    return new NotExistErrorResponse();
+	    }
     }
 
     @ServiceMethod(method = "top.user.get", version = "1.0", needInSession = NeedInSessionType.YES)
     public Object getTopUser(UserGetRequest request) {
-        String fields = request.getFields();
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
-        try {
-            TopUserModel topUserModel = new TopUserModel();
-            TopUser topUser = topUserModel.getTopUser(fields, (Long)session.getAttribute("user_id"));
-            TopUserGetResponse response = new TopUserGetResponse();
-            response.setTopUser(topUser);
-            return response;
-        } catch (ModelException e) {
-            // TODO
-        }
-        return null;
+        Long userId = (Long)session.getAttribute("user_id");
+	    TopUserModel topUserModel = new TopUserModel();
+	    Map<String, Object> query = new HashMap<String, Object>();
+	    query.put("user_id", userId);
+	    List<TopUser> topUserList = topUserModel.query(query);
+	    if (topUserList != null && topUserList.size() > 0) {
+		    TopUser user = topUserList.get(0);
+		    TopUserGetResponse response = new TopUserGetResponse();
+		    response.setTopUser(user);
+		    return response;
+	    }
+	    else {
+		    return new NotExistErrorResponse();
+	    }
     }
 }
