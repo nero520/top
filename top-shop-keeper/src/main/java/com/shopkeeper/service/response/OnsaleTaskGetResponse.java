@@ -15,10 +15,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "autoonsale_task_get_response")
+@XmlRootElement(name = "onsale_task_get_response")
 public class OnsaleTaskGetResponse
 {
-    @XmlElement(name = "autoonsale_task")
+    @XmlElement(name = "onsale_task")
     private OnsaleTask task;
 
     public OnsaleTask getTask() {

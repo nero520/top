@@ -10,7 +10,10 @@ import com.rop.RopMarshaller;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -48,5 +51,19 @@ public class JaxbXmlRopMarshaller implements RopMarshaller {
         marshaller.setProperty(Marshaller.JAXB_ENCODING, "utf-8");
         return marshaller;
     }
+
+	public static class DateFormatterAdapter extends XmlAdapter<String, Date> {
+		private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+		@Override
+		public Date unmarshal(final String v) throws Exception {
+			return dateFormat.parse(v);
+		}
+
+		@Override
+		public String marshal(final Date v) throws Exception {
+			return dateFormat.format(v);
+		}
+	}
 }
 

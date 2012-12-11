@@ -1,9 +1,12 @@
 package com.shopkeeper.service.domain;
 
+import com.rop.marshaller.JaxbXmlRopMarshaller;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
 /**
@@ -26,12 +29,15 @@ public class TradeTask
     @XmlElement(name = "task_id")
     private Long taskId;
 
+	@XmlJavaTypeAdapter(JaxbXmlRopMarshaller.DateFormatterAdapter.class)
     @XmlElement
-    private Date create;
+    private Date created;
 
+	@XmlJavaTypeAdapter(JaxbXmlRopMarshaller.DateFormatterAdapter.class)
     @XmlElement(name = "start_time")
     private Date startTime;
 
+	@XmlJavaTypeAdapter(JaxbXmlRopMarshaller.DateFormatterAdapter.class)
     @XmlElement(name = "end_time")
     private Date endTime;
 
@@ -55,12 +61,12 @@ public class TradeTask
         this.taskId = taskId;
     }
 
-    public Date getCreate() {
-        return create;
+    public Date getCreated() {
+        return created;
     }
 
-    public void setCreate(Date create) {
-        this.create = create;
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
     public Date getStartTime() {

@@ -5,6 +5,7 @@ import com.shopkeeper.TopAccessor;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.exception.TopException;
 import com.shopkeeper.service.domain.Group;
+import com.shopkeeper.utils.Utils;
 import org.bson.types.ObjectId;
 
 import java.util.*;
@@ -42,12 +43,11 @@ public class GroupModel extends AbstractModel<Group>
 		Long userId = (Long)data.get("user_id");
 		if (userId != null) {
 			Map<String, Object> localData = new HashMap<String, Object>(data);
-			localData.put("created", new Date());
+			localData.put("created", Utils.getDate());
 			localData.put("item_count", 0);
-			//localData.put("category", GROUP_CATEGORY_CUSTOM);
 			ObjectId objectId = new ObjectId();
 			localData.put("_id", objectId);
-			if ( _create(localData) > 0) {
+			if ( _create(localData)) {
 				Map<String, Object> query = new HashMap<String, Object>();
 				query.put("_id", objectId);
 				return query(query);

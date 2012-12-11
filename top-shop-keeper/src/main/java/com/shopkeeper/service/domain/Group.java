@@ -1,9 +1,12 @@
 package com.shopkeeper.service.domain;
 
+import com.rop.marshaller.JaxbXmlRopMarshaller;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
 /**
@@ -17,7 +20,7 @@ import java.util.Date;
 @XmlRootElement(name = "group")
 public class Group
 {
-    @XmlElement(name = "_id")
+    @XmlElement
     private String id;
 
     @XmlElement(name = "user_id")
@@ -35,6 +38,7 @@ public class Group
     @XmlElement
     private String category;
 
+	@XmlJavaTypeAdapter(JaxbXmlRopMarshaller.DateFormatterAdapter.class)
     @XmlElement
     private Date created;
 

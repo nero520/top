@@ -1,9 +1,12 @@
 package com.shopkeeper.service.domain;
 
+import com.rop.marshaller.JaxbXmlRopMarshaller;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
 /**
@@ -24,10 +27,16 @@ public class TopUser
     private String nick;
     @XmlElement
     private String sex;
+
+	@XmlJavaTypeAdapter(JaxbXmlRopMarshaller.DateFormatterAdapter.class)
     @XmlElement
     private Date created;
+
+	@XmlJavaTypeAdapter(JaxbXmlRopMarshaller.DateFormatterAdapter.class)
     @XmlElement(name = "last_visit")
     private Date lastVisit;
+
+	@XmlJavaTypeAdapter(JaxbXmlRopMarshaller.DateFormatterAdapter.class)
     @XmlElement
     private Date birthday;
     @XmlElement

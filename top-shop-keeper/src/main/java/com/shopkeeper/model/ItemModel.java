@@ -55,7 +55,7 @@ public class ItemModel extends AbstractModel<Item> implements TopUpdate
 
 	@Override
 	public List<Item> create(Map<String, Object> data) {
-		if (_create(data) > 0) {
+		if (_create(data)) {
 			Map<String, Object> _query = new HashMap<String, Object>();
 			_query.put("user_id", data.get("user_id"));
 			_query.put("num_iid", data.get("num_iid"));

@@ -40,11 +40,12 @@ public class JacksonJsonRopUnmarshaller implements RopUnmarshaller {
         if (this.objectMapper == null) {
             ObjectMapper objectMapper = new ObjectMapper();
             AnnotationIntrospector introspector = new JaxbAnnotationIntrospector();
-            DeserializationConfig serializationConfig = objectMapper.getDeserializationConfig();
-            serializationConfig = serializationConfig.without(DeserializationConfig.Feature.UNWRAP_ROOT_VALUE)
+            DeserializationConfig deserializationConfig = objectMapper.getDeserializationConfig();
+	        deserializationConfig = deserializationConfig.without(DeserializationConfig.Feature.UNWRAP_ROOT_VALUE)
                                                      .withAnnotationIntrospector(introspector)
-                                                     .withDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
-            objectMapper.setDeserializationConfig(serializationConfig);
+                                                     .withDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"))
+	                                                 .without(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES);
+            objectMapper.setDeserializationConfig(deserializationConfig);
             this.objectMapper = objectMapper;
         }
         return this.objectMapper;

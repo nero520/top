@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,7 +45,10 @@ abstract public class AbstractModel<T> implements Model<T>
 
 	@SuppressWarnings(value = "unchecked")
 	public AbstractModel() {
-		templeteClazz0 = (Class<T>)((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getClass();
+		Class clazz = this.getClass();
+		ParameterizedType genericSuperClass = (ParameterizedType)clazz.getGenericSuperclass();
+		Type type = genericSuperClass.getActualTypeArguments()[0];
+		templeteClazz0 = (Class)type;
 		init();
 	}
 
@@ -126,12 +130,12 @@ abstract public class AbstractModel<T> implements Model<T>
             return null;
         }
         ObjectId oid = (ObjectId)object.get("_id");
-        String id;
         if (oid != null) {
-            id = oid.toString();
+	        String id = oid.toString();
             object.put("id", id);
             object.removeField("_id");
         }
+
         String json = object.toString();
         RopUnmarshaller unmarshaller = new JacksonJsonRopUnmarshaller();
         return unmarshaller.unmarshaller(json, clazz);
@@ -184,11 +188,11 @@ abstract public class AbstractModel<T> implements Model<T>
         return gets(queryObj, fields, forbiddenFields, clazz);
     }
 
-	protected int _create(Map<String, Object> data) {
+	protected boolean _create(Map<String, Object> data) {
 		Map<String, Object> localData = new HashMap<String, Object>(data);
 		DBObject objData = new BasicDBObject(localData);
 		WriteResult result = collection.insert(objData);
-		return result.getN();
+		return result.getLastError().ok();
 	}
 
 	protected int _update(Map<String, Object> query, Map<String, Object> update) {
@@ -198,7 +202,8 @@ abstract public class AbstractModel<T> implements Model<T>
 	protected int _update(Map<String, Object> query, Map<String, Object> update, boolean insert) {
 		DBObject _query = new BasicDBObject(query);
 		DBObject _update = new BasicDBObject(update);
-		WriteResult result = collection.update(_query, _update, insert, true);
+		DBObject _set = new BasicDBObject("$set", _update);
+		WriteResult result = collection.update(_query, _set, insert, true);
 		return result.getN();
 	}
 
@@ -221,7 +226,7 @@ abstract public class AbstractModel<T> implements Model<T>
 
 	@Override
 	public List<T> create(Map<String, Object> data) {
-		if (data != null && data.size() > 0 && _create(data) > 0) {
+		if (data != null && data.size() > 0 && _create(data)) {
 			Map<String, Object> query = new HashMap<String, Object>();
 			query.put(pk, data.get(pk));
 			return query(query);

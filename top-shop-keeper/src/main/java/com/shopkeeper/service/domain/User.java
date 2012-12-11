@@ -1,9 +1,13 @@
 package com.shopkeeper.service.domain;
 
+import com.rop.marshaller.JaxbXmlRopMarshaller;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,8 +25,9 @@ public class User
     @XmlElement(name = "nick")
     private String nick;
 
+	@XmlJavaTypeAdapter(JaxbXmlRopMarshaller.DateFormatterAdapter.class)
     @XmlElement(name = "last_login")
-    private String lastLogin;
+    private Date lastLogin;
 
     @XmlElement(name = "score")
     private Integer score;
@@ -61,11 +66,11 @@ public class User
         this.nick = nick;
     }
 
-    public String getLastLogin() {
+    public Date getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(String lastLogin) {
+    public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
     }
 

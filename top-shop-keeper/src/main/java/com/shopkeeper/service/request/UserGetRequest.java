@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
  */
 public class UserGetRequest extends AbstractRopRequest
 {
-    @NotNull()
     @AliasName(name = "fields")
     private String fields;
 

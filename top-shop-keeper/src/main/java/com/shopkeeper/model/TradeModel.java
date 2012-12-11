@@ -134,7 +134,7 @@ public class TradeModel extends AbstractModel<Trade> implements TopUpdate, TopCo
             }
         }
         if (tradeTask != null) {
-            //Date createdTime = tradeTask.getCreate();
+            //Date createdTime = tradeTask.getCreated();
 
         }
         else {

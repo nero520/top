@@ -16,6 +16,7 @@ import com.shopkeeper.service.response.LoginResponse;
 import com.shopkeeper.service.response.LogoutResponse;
 import com.shopkeeper.service.response.TopUserGetResponse;
 import com.shopkeeper.service.response.UserGetResponse;
+import com.shopkeeper.utils.Utils;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -47,7 +48,7 @@ public class UserService
         datas.put("w1_expires_in", request.getW1ExpiresIn());
         datas.put("w2_expires_in", request.getW2ExpiresIn());
 
-	    datas.put("lash_login", new Date());
+	    datas.put("last_login", Utils.getDate());
 
 	    Long userId = (Long)datas.get("user_id");
 

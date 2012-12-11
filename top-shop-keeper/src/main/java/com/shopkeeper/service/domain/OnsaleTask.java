@@ -1,9 +1,12 @@
 package com.shopkeeper.service.domain;
 
+import com.rop.marshaller.JaxbXmlRopMarshaller;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +31,8 @@ public class OnsaleTask
     private List<TimeSlot> timeSlot;
     @XmlElement(name = "is_launch")
     private Boolean isLaunch = false;
+
+	@XmlJavaTypeAdapter(JaxbXmlRopMarshaller.DateFormatterAdapter.class)
     @XmlElement
     private Date created;
     @XmlElement(name = "user_id")

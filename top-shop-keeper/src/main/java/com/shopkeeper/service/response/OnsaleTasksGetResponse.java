@@ -13,11 +13,11 @@ import java.util.List;
  */
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "autoonsale_tasks_get_response")
+@XmlRootElement(name = "onsale_tasks_get_response")
 public class OnsaleTasksGetResponse
 {
-    @XmlElementWrapper(name = "autoonsale_tasks")
-    @XmlElement(name = "autoonsale_task")
+    @XmlElementWrapper(name = "onsale_tasks")
+    @XmlElement(name = "onsale_task")
     private List<OnsaleTask> tasks;
 
     public List<OnsaleTask> getTasks() {
