@@ -5,7 +5,7 @@
   <artifactId>top-shop-keeper</artifactId>
   <packaging>war</packaging>
   <version>1.0</version>
-  <name>top-shop-keeper Maven Webapp</name>
+  <name>top-shop-keeper</name>
   <url>http://maven.apache.org</url>
 
     <properties>
