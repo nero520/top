@@ -8,6 +8,12 @@ package com.shopkeeper.model;
  */
 
 import com.shopkeeper.service.domain.OnsaleTask;
+import org.bson.types.ObjectId;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * sk_onsale_task struck:
@@ -27,6 +33,31 @@ public class OnsaleTaskModel extends AbstractModel<OnsaleTask>
     public String getCollectionName() {
         return "sk_onsale_task";
     }
+
+	@Override
+	public List<OnsaleTask> delete(Map<String, Object> query) {
+		List<OnsaleTask> onsaleTaskList = super.delete(query);
+		if (onsaleTaskList != null && onsaleTaskList.size() > 0) {
+			Map<String, Object> _query = new HashMap<String, Object>();
+			List<Object> taskIdList = new LinkedList<Object>();
+			for (OnsaleTask onsaleTask : onsaleTaskList) {
+				taskIdList.add(new ObjectId(onsaleTask.getId()));
+				_query.put("user_id", onsaleTask.getUserId());
+			}
+			Map<String, Object> _in = new HashMap<String, Object>();
+			_in.put("$in", taskIdList);
+			_query.put("_id", _in);
+			ItemModel itemModel = new ItemModel();
+
+			Map<String, Object> _update = new HashMap<String, Object>();
+			Map<String, Object> _value = new HashMap<String, Object>();
+			_value.put("onsale_task_id", null);
+			_update.put("$set", _value);
+
+			itemModel.update(_query, _update);
+		}
+		return onsaleTaskList;
+	}
 
 
 	/*

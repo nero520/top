@@ -8,7 +8,6 @@ import com.rop.annotation.ServiceMethod;
 import com.rop.annotation.ServiceMethodBean;
 import com.rop.response.NotExistErrorResponse;
 import com.rop.session.SimpleSession;
-import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.model.OnsaleTaskModel;
 import com.shopkeeper.service.domain.OnsaleTask;
 import com.shopkeeper.service.domain.TimeSlot;
@@ -94,7 +93,7 @@ public class OnsaleTaskService
     }
 
     @ServiceMethod(method = "onsale.task.add", version = "1.0", needInSession = NeedInSessionType.YES)
-    public Object addTask(AutoOnsaleTaskAddRequest request) {
+    public Object addTask(OnsaleTaskAddRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
         OnsaleTaskModel taskModel = new OnsaleTaskModel();
@@ -117,7 +116,7 @@ public class OnsaleTaskService
 
 	    List<OnsaleTask> onsaleTaskList = taskModel.create(data);
 	    if (onsaleTaskList != null && onsaleTaskList.size() > 0) {
-		    AutoOnsaleTaskAddResponse response = new AutoOnsaleTaskAddResponse();
+		    OnsaleTaskAddResponse response = new OnsaleTaskAddResponse();
 		    response.setTask(onsaleTaskList.get(0));
 		    return response;
 	    }
@@ -174,7 +173,7 @@ public class OnsaleTaskService
     }
 
     @ServiceMethod(method = "autoonsale.task.delete", version = "1.0", needInSession = NeedInSessionType.YES)
-    public Object deleteTask(AutoOnsaleTaskDeleteRequest request) {
+    public Object deleteTask(OnsaleTaskDeleteRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
         OnsaleTaskModel taskModel = new OnsaleTaskModel();
@@ -191,7 +190,7 @@ public class OnsaleTaskService
 	    }
 		List<OnsaleTask> onsaleTaskList = taskModel.delete(query);
 		if (onsaleTaskList != null && onsaleTaskList.size() > 0) {
-			AutoOnsaleTaskDeleteResponse response = new AutoOnsaleTaskDeleteResponse();
+			OnsaleTaskDeleteResponse response = new OnsaleTaskDeleteResponse();
 			response.setTask(onsaleTaskList.get(0));
 			return response;
 		}

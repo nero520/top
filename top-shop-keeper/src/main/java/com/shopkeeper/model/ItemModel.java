@@ -1,14 +1,11 @@
 package com.shopkeeper.model;
 
-import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.shopkeeper.TopAccessor;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.exception.TopException;
 import com.shopkeeper.service.domain.Item;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;

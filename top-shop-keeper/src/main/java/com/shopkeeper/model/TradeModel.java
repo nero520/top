@@ -1,21 +1,13 @@
 package com.shopkeeper.model;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import com.rop.client.RopUnmarshaller;
 import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
-import com.shopkeeper.MongoManager;
-import com.shopkeeper.TopAccessor;
-import com.shopkeeper.common.*;
+import com.shopkeeper.common.TopCometListener;
+import com.shopkeeper.common.TradeTaskDownloadListener;
+import com.shopkeeper.common.TradeTaskDownloadPool;
 import com.shopkeeper.exception.ModelException;
-import com.shopkeeper.exception.TopException;
-import com.shopkeeper.service.domain.TradeTask;
 import com.taobao.api.domain.Trade;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 
 /**

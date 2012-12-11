@@ -1,18 +1,20 @@
 package com.shopkeeper.model;
 
+import com.shopkeeper.service.domain.ShowcaseSetting;
+
 /**
  * Created with IntelliJ IDEA.
  * User: zhanghaojie
  * Date: 12-11-23
  * Time: 上午12:05
  */
-public class ShowcaseSettingModel extends AbstractModel
+public class ShowcaseSettingModel extends AbstractModel<ShowcaseSetting>
 {
-    private static Boolean DEFAULT_USED_INCLUDE_SETTING = true;
+    public static Boolean DEFAULT_USED_INCLUDE_SETTING = true;
 
-    private static Boolean DEFAULT_USED_EXCLUDE_SETTING = true;
+	public static Boolean DEFAULT_USED_EXCLUDE_SETTING = true;
 
-    private static Boolean DEFAULT_USED_LIMIT_DISCOUNT = true;
+	public static Boolean DEFAULT_USED_LIMIT_DISCOUNT = true;
 
     @Override
     public String getCollectionName() {
@@ -20,7 +22,7 @@ public class ShowcaseSettingModel extends AbstractModel
     }
 
 	/*
-    public ShowcaseSetting getAutoShowcaseSetting(Long userId) throws ModelException {
+    public ShowcaseSetting getShowcaseSetting(Long userId) throws ModelException {
         DBObject query = new BasicDBObject("user_id", userId);
         DBObject object = collection.findOne(query, new BasicDBObject("_id", false));
         ShowcaseSetting setting = parse(object, ShowcaseSetting.class);

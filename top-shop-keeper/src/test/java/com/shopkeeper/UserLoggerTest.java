@@ -3,7 +3,6 @@ package com.shopkeeper;
 import junit.framework.TestCase;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.File;

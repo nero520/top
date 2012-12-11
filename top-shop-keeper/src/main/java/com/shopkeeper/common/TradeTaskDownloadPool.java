@@ -1,7 +1,5 @@
 package com.shopkeeper.common;
 
-import com.rop.client.RopUnmarshaller;
-import com.rop.client.unmarshaller.JacksonJsonRopUnmarshaller;
 import com.shopkeeper.TopAccessor;
 import com.shopkeeper.exception.TopException;
 import com.taobao.api.ApiException;

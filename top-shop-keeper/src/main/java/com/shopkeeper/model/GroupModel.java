@@ -1,6 +1,6 @@
 package com.shopkeeper.model;
 
-import com.mongodb.*;
+import com.mongodb.DBCursor;
 import com.shopkeeper.TopAccessor;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.exception.TopException;

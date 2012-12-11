@@ -2,8 +2,6 @@ package com.shopkeeper.service.request;
 
 import com.rop.AbstractRopRequest;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * Created with IntelliJ IDEA.
  * User: zhanghaojie

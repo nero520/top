@@ -1,7 +1,6 @@
 package com.shopkeeper.model;
 
 import com.shopkeeper.exception.ModelException;
-import com.shopkeeper.exception.TopException;
 
 /**
  * Created with IntelliJ IDEA.

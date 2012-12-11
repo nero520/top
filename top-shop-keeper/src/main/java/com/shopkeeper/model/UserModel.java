@@ -1,10 +1,10 @@
 package com.shopkeeper.model;
 
-import com.mongodb.DBCursor;
 import com.shopkeeper.exception.ModelException;
 import com.shopkeeper.service.domain.User;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -72,6 +72,41 @@ public class UserModel extends AbstractModel<User>
 			return userList;
 		}
 		return null;
+	}
+
+	@Override
+	public List<User> delete(Map<String, Object> query) {
+		List<User> userList = super.delete(query);
+		if (userList != null && userList.size() > 0) {
+			List<Long> userIdList = new LinkedList<Long>();
+			for (User user : userList) {
+				Long userId = user.getUserId();
+				userIdList.add(userId);
+			}
+			Map<String, Object> _query = new HashMap<String, Object>();
+			Map<String, Object> _in = new HashMap<String, Object>();
+			_in.put("$in", userIdList);
+			_query.put("_id", _in);
+
+			TopUserModel topUserModel = new TopUserModel();
+			topUserModel.delete(_query);
+
+			ItemModel itemModel = new ItemModel();
+			itemModel.delete(_query);
+
+			GroupModel groupModel = new GroupModel();
+			groupModel.delete(_query);
+
+			OnsaleTaskModel onsaleTaskModel = new OnsaleTaskModel();
+			onsaleTaskModel.delete(_query);
+
+			ShowcaseSettingModel showcaseSettingModel = new ShowcaseSettingModel();
+			showcaseSettingModel.delete(_query);
+
+			TradeModel tradeModel = new TradeModel();
+			tradeModel.delete(_query);
+		}
+		return userList;
 	}
 
 /*
