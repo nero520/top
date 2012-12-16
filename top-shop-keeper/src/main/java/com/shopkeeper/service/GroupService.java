@@ -28,20 +28,11 @@ import java.util.Map;
 @ServiceMethodBean(version = "1.0")
 public class GroupService
 {
-    private GroupModel _groupModel = null;
-
-    private GroupModel getGroupModel() {
-        if (_groupModel == null) {
-            _groupModel = new GroupModel();
-        }
-        return _groupModel;
-    }
-
     @ServiceMethod(method = "group.get", version = "1.0", needInSession = NeedInSessionType.YES)
     public Object getGroup(GroupGetRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
 	    Long userId = (Long)session.getAttribute("user_id");
-        GroupModel groupModel = getGroupModel();
+        GroupModel groupModel = new GroupModel();
 
 	    Map<String, Object> query = new HashMap<String, Object>();
 	    query.put("user_id", userId);
@@ -149,7 +140,7 @@ public class GroupService
         if (from == null) {
             from = GroupModel.GROUP_CATEGORY_SHOPCATS;
         }
-        GroupModel groupModel = getGroupModel();
+        GroupModel groupModel = new GroupModel();
         try {
             List<Group> groups = groupModel.importGroup(from, userId, userNick, accessToken);
             GroupsImportResponse response = new GroupsImportResponse();

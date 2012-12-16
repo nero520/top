@@ -15,13 +15,7 @@
             classpath*:shopKeeperApplicationContext.xml
         </param-value>
     </context-param>
-<!--
-    <resource-ref>
-        <res-ref-name>jdbc/MySQL</res-ref-name>
-        <res-type>javax.sql.DataSource</res-type>
-        <res-auth>Container</res-auth>
-    </resource-ref>
--->
+
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
         <filter-class>
@@ -56,10 +50,22 @@
         </servlet-class>
         <load-on-startup>2</load-on-startup>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>rop</servlet-name>
         <url-pattern>/router</url-pattern>
+    </servlet-mapping>
+
+    <!--Api Tool-->
+    <servlet>
+        <servlet-name>apiTool</servlet-name>
+        <servlet-class>
+            com.shopkeeper.ApiTool
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>apiTool</servlet-name>
+        <url-pattern>/apiTool</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

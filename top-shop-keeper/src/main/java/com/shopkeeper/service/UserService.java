@@ -18,7 +18,6 @@ import com.shopkeeper.service.response.TopUserGetResponse;
 import com.shopkeeper.service.response.UserGetResponse;
 import com.shopkeeper.utils.Utils;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

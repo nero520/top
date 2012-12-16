@@ -17,22 +17,11 @@ public class ItemGetRequest extends AbstractRopRequest
     @AliasName(name = "num_iid")
     private Long numIid;
 
-    @NotNull
-    private String fields;
-
     public Long getNumIid() {
         return numIid;
     }
 
     public void setNumIid(Long numIid) {
         this.numIid = numIid;
-    }
-
-    public String getFields() {
-        return fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
     }
 }

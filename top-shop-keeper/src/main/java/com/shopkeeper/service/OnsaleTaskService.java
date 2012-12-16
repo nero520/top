@@ -172,7 +172,7 @@ public class OnsaleTaskService
 		}
     }
 
-    @ServiceMethod(method = "autoonsale.task.delete", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "onsale.task.delete", version = "1.0", needInSession = NeedInSessionType.YES)
     public Object deleteTask(OnsaleTaskDeleteRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");

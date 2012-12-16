@@ -46,10 +46,7 @@ public class JaxbXmlRopUnmarshaller implements RopUnmarshaller {
             jaxbContextHashMap.put(objectType, context);
         }
         JAXBContext context = jaxbContextHashMap.get(objectType);
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-//        unmarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//        unmarshaller.setProperty(Marshaller.JAXB_ENCODING, "utf-8");
-        return unmarshaller;
+	    return context.createUnmarshaller();
     }
 }
 

@@ -26,8 +26,8 @@ import java.util.Map;
 @ServiceMethodBean(version = "1.0")
 public class ShowcaseService
 {
-    @ServiceMethod(method = "showcase.get", version = "1.0", needInSession = NeedInSessionType.YES)
-    public Object getAutoShowcase(ShowcaseGetRequest request) {
+    @ServiceMethod(method = "showcase.setting.get", version = "1.0", needInSession = NeedInSessionType.YES)
+    public Object getShowcaseSetting(ShowcaseGetRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
         ShowcaseSettingModel showcaseModel = new ShowcaseSettingModel();
@@ -46,8 +46,8 @@ public class ShowcaseService
 	    }
     }
 
-    @ServiceMethod(method = "showcase.update", version = "1.0", needInSession = NeedInSessionType.YES)
-    public Object updateAutoShowcase(ShowcaseUpdateRequest request) {
+    @ServiceMethod(method = "showcase.setting.update", version = "1.0", needInSession = NeedInSessionType.YES)
+    public Object updateShowcaseSetting(ShowcaseUpdateRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
         ShowcaseSettingModel showcaseModel = new ShowcaseSettingModel();

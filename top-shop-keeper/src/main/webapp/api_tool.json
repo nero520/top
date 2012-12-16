@@ -1,0 +1,34 @@
+{
+	"user_service":
+	{
+		"user.get":[],
+		"top.user.get":[]
+	},
+	"group_service":
+	{
+		"group.get":["id"],
+		"groups.get":["ids"],
+		"group.add":["name","description","category"],
+		"group.delete":["id","name"],
+		"groups.import":["from"]
+	},
+	"item_service":
+	{
+		"item.get":["num_iid"],
+		"item.update":["num_iid","group_id","task_id","time_onsale","showcase_status"],
+		"items.get":["num_iids","group_id","task_id","has_showcase","showcase_status"]
+	},
+	"onsale_task_service":
+	{
+		"onsale.task.get":["id","name"],
+		"onsale.tasks.get":["ids"],
+		"onsale.task.add":["name","description","time_slot"],
+		"onsale.task.update":["id","name","description"],
+		"onsale.task.delete":["id","name"]
+	},
+	"showcase_service":
+	{
+		"showcase.setting.get":["user_id"],
+		"showcase.setting.update":["user_id","is_used_include","is_used_exclude","is_used_limit_discount","is_launch"]
+	}
+}
