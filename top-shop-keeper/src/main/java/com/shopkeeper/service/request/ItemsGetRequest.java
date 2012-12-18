@@ -22,7 +22,7 @@ public class ItemsGetRequest extends AbstractRopRequest
     private String taskId;
 
     @AliasName(name = "has_showcase")
-    private boolean hasShowcase;
+    private Boolean hasShowcase = false;
 
     @AliasName(name = "showcase_status")
     private String showcaseStatus;
@@ -51,11 +51,11 @@ public class ItemsGetRequest extends AbstractRopRequest
         this.taskId = taskId;
     }
 
-    public boolean isHasShowcase() {
+    public Boolean isHasShowcase() {
         return hasShowcase;
     }
 
-    public void setHasShowcase(boolean hasShowcase) {
+    public void setHasShowcase(Boolean hasShowcase) {
         this.hasShowcase = hasShowcase;
     }
 

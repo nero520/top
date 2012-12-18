@@ -28,7 +28,7 @@ public class ItemModel extends AbstractModel<Item> implements TopUpdate
 {
 
     @Override
-    public void updateFromTop(String topAccessToken) throws ModelException {
+    public Object updateFromTop(String topAccessToken) throws ModelException {
         TopAccessor topAccessor = new TopAccessor(topAccessToken);
 	    Long userId = this.getUserId(topAccessToken);
         try {
@@ -46,6 +46,7 @@ public class ItemModel extends AbstractModel<Item> implements TopUpdate
         } catch (TopException e) {
 	        // todo
         }
+	    return null;
     }
 
     @Override

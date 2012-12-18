@@ -10,5 +10,5 @@ import com.shopkeeper.exception.ModelException;
  */
 public interface TopUpdate
 {
-    public void updateFromTop(String topAccessToken) throws ModelException;
+    public Object updateFromTop(String topAccessToken) throws ModelException;
 }

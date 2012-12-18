@@ -34,25 +34,28 @@ public class TopUserModel extends AbstractModel<TopUser> implements TopUpdate
 
 	@Override
 	public List<TopUser> create(Map<String, Object> data) {
-		Long userId = (Long)data.get("user_id");
+		Long userId = (Long)data.get(this.pk);
 		if (userId != null) {
 			return super.create(data);
 		}
 		return null;
 	}
 
+	@SuppressWarnings(value = "unchecked")
 	@Override
-    public void updateFromTop(String topAccessToken) throws ModelException {
+    public Object updateFromTop(String topAccessToken) throws ModelException {
         TopAccessor topAccessor = new TopAccessor(topAccessToken);
+		topAccessor.setAccessToken(topAccessToken);
         Map userInfo;
         try {
             userInfo = topAccessor.getUserInfo();
 	        Map<String, Object> query = new HashMap<String, Object>();
 	        query.put("user_id", this.getUserId(topAccessToken));
-	        update(query, (Map<String, Object>)userInfo, true);
+	        return update(query, (Map<String, Object>)userInfo, true);
         } catch (TopException e) {
 			e.printStackTrace();
 	        // todo
         }
+		return null;
     }
 }

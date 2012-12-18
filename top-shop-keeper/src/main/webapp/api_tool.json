@@ -9,7 +9,7 @@
 		"group.get":["id"],
 		"groups.get":["ids"],
 		"group.add":["name","description","category"],
-		"group.delete":["id","name"],
+		"group.delete":["id"],
 		"groups.import":["from"]
 	},
 	"item_service":
@@ -24,7 +24,7 @@
 		"onsale.tasks.get":["ids"],
 		"onsale.task.add":["name","description","time_slot"],
 		"onsale.task.update":["id","name","description"],
-		"onsale.task.delete":["id","name"]
+		"onsale.task.delete":["id"]
 	},
 	"showcase_service":
 	{

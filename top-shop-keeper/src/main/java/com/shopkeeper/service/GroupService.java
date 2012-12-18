@@ -28,7 +28,7 @@ import java.util.Map;
 @ServiceMethodBean(version = "1.0")
 public class GroupService
 {
-    @ServiceMethod(method = "group.get", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "group.get", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object getGroup(GroupGetRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
 	    Long userId = (Long)session.getAttribute("user_id");
@@ -36,31 +36,40 @@ public class GroupService
 
 	    Map<String, Object> query = new HashMap<String, Object>();
 	    query.put("user_id", userId);
-	    query.put("_id", new ObjectId(request.geId()));
-	    List<Group> groupList = groupModel.query(query);
-	    if (groupList != null && groupList.size() > 0) {
-		    GroupGetResponse response = new GroupGetResponse();
-		    response.setGroup(groupList.get(0));
-		    return response;
-	    }
-	    else {
-		    return new NotExistErrorResponse();
+	    try {
+		    query.put("_id", new ObjectId(request.geId()));
+		    List<Group> groupList = groupModel.query(query);
+		    if (groupList != null && groupList.size() > 0) {
+			    GroupGetResponse response = new GroupGetResponse();
+			    response.setGroup(groupList.get(0));
+			    return response;
+		    }
+		    else {
+			    return new NotExistErrorResponse();
+		    }
+	    } catch (IllegalArgumentException e) {
+		    return  new NotExistErrorResponse();
 	    }
     }
 
-    @ServiceMethod(method = "groups.get", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "groups.get", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object getGroups(GroupsGetRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
 	    Long userId = (Long)session.getAttribute("user_id");
         GroupModel groupModel = new GroupModel();
 
 	    Map<String, Object> query = new HashMap<String, Object>();
-	    if (request.getIds() != null) {
+	    String ids = request.getIds();
+	    if (ids != null && ids.length() > 0) {
 		    Map<String, Object> _in = new HashMap<String, Object>();
-		    String[] groupIds = StringUtils.split(request.getIds(), ",");
+		    String[] groupIds = StringUtils.split(ids, ",");
 		    List<ObjectId> groupObjectIdList = new LinkedList<ObjectId>();
 		    for (String groupId : groupIds) {
-			    groupObjectIdList.add(new ObjectId(groupId));
+			    try {
+			        groupObjectIdList.add(new ObjectId(groupId));
+			    } catch (IllegalArgumentException e) {
+
+			    }
 		    }
 		    _in.put("$in", groupObjectIdList);
 		    query.put("_id", _in);
@@ -77,7 +86,7 @@ public class GroupService
 	    }
     }
 
-    @ServiceMethod(method = "group.add", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "group.add", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object createGroup(GroupAddRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
 	    Long userId = (Long)session.getAttribute("user_id");
@@ -99,25 +108,22 @@ public class GroupService
 	    }
     }
 
-    @ServiceMethod(method = "group.delete", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "group.delete", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object deleteGroup(GroupDeleteRequest request) {
 	    SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
 	    Long userId = (Long)session.getAttribute("user_id");
 
         String id = request.getId();
-        String name = request.getName();
-        if (id == null && name == null) {
-            // todo 返回错误代码
-        }
         GroupModel groupModel = new GroupModel();
 
 	    Map<String, Object> query = new HashMap<String, Object>();
 	    query.put("user_id", userId);
 	    if (id != null) {
-		    query.put("_id", new ObjectId(request.getId()));
-	    }
-	    if (name != null) {
-		    query.put("name", request.getName());
+		    try {
+			    query.put("_id", new ObjectId(request.getId()));
+		    } catch (IllegalArgumentException e) {
+
+		    }
 	    }
 	    List<Group> groupList = groupModel.delete(query);
 	    if (groupList != null && groupList.size() > 0) {
@@ -130,19 +136,14 @@ public class GroupService
 	    }
     }
 
-    @ServiceMethod(method = "groups.import", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "groups.import", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object importGroups(GroupsImportRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
-        String accessToken = (String)session.getAttribute("access_token");
-        String userNick = (String)session.getAttribute("user_nick");
         Long userId = (Long)session.getAttribute("user_id");
         String from = request.getFrom();
-        if (from == null) {
-            from = GroupModel.GROUP_CATEGORY_SHOPCATS;
-        }
         GroupModel groupModel = new GroupModel();
         try {
-            List<Group> groups = groupModel.importGroup(from, userId, userNick, accessToken);
+            List<Group> groups = groupModel.importGroup(from, userId);
             GroupsImportResponse response = new GroupsImportResponse();
             response.setGroups(groups);
             return response;

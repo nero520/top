@@ -30,7 +30,7 @@ import java.util.Map;
 public class ItemService
 {
 
-    @ServiceMethod(method = "item.get", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "item.get", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object getItem(ItemGetRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
@@ -50,7 +50,7 @@ public class ItemService
 	    }
     }
 
-    @ServiceMethod(method = "item.update", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "item.update", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object update(ItemUpdateRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
@@ -88,7 +88,7 @@ public class ItemService
 	    }
     }
 
-    @ServiceMethod(method = "items.get", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "items.get", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object getItems(ItemsGetRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
@@ -114,7 +114,11 @@ public class ItemService
 	        String[] numIids = StringUtils.split(strNumIids, ",");
 	        List<ObjectId> itemObjectIdList = new LinkedList<ObjectId>();
 		    for (String groupId : numIids) {
-			    itemObjectIdList.add(new ObjectId(groupId));
+			    try {
+				    itemObjectIdList.add(new ObjectId(groupId));
+			    } catch (IllegalArgumentException e) {
+
+			    }
 		    }
 		    _in.put("$in", itemObjectIdList);
 		    query.put("_id", _in);

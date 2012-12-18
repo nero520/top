@@ -30,7 +30,7 @@ import java.util.Map;
 @ServiceMethodBean(version = "1.0")
 public class OnsaleTaskService
 {
-    @ServiceMethod(method = "onsale.task.get", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "onsale.task.get", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object getTask(OnsaleTaskGetRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
@@ -63,7 +63,7 @@ public class OnsaleTaskService
 	    }
     }
 
-    @ServiceMethod(method = "onsale.tasks.get", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "onsale.tasks.get", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object getTasks(OnsaleTasksGetRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
@@ -92,7 +92,7 @@ public class OnsaleTaskService
 	    }
     }
 
-    @ServiceMethod(method = "onsale.task.add", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "onsale.task.add", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object addTask(OnsaleTaskAddRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
@@ -125,7 +125,7 @@ public class OnsaleTaskService
 	    }
     }
 
-    @ServiceMethod(method = "onsale.task.update", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "onsale.task.update", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object updateTask(OnsaleTaskUpdateRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
@@ -172,7 +172,7 @@ public class OnsaleTaskService
 		}
     }
 
-    @ServiceMethod(method = "onsale.task.delete", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "onsale.task.delete", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object deleteTask(OnsaleTaskDeleteRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
@@ -182,11 +182,11 @@ public class OnsaleTaskService
 	    query.put("user_id", userId);
 	    Object value = request.getId();
 	    if (value != null) {
-		    query.put("_id", new ObjectId((String)value));
-	    }
-	    value = request.getName();
-	    if (value != null) {
-		    query.put("name", value);
+		    try {
+			    query.put("_id", new ObjectId((String)value));
+		    } catch (IllegalArgumentException e) {
+
+		    }
 	    }
 		List<OnsaleTask> onsaleTaskList = taskModel.delete(query);
 		if (onsaleTaskList != null && onsaleTaskList.size() > 0) {

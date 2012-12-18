@@ -83,7 +83,7 @@ public class UserService
         return response;
     }
 
-    @ServiceMethod(method = "user.get", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "user.get", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object getUser(UserGetRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
@@ -103,7 +103,7 @@ public class UserService
 	    }
     }
 
-    @ServiceMethod(method = "top.user.get", version = "1.0", needInSession = NeedInSessionType.YES)
+    @ServiceMethod(method = "top.user.get", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
     public Object getTopUser(UserGetRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");

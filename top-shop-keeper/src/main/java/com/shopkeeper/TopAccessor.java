@@ -106,10 +106,14 @@ public class TopAccessor
 
     public void throwException(Map exception) throws TopException {
         Map error = (Map)exception.get("error_response");
-	    throw new TopException(error.get("code").toString(),
-	            (String)error.get("msg"),
-	            error.get("sub_code").toString(),
-	            (String)error.get("sub_msg"));
+	    Object subCode = error.get("sub_code");
+	    Object subMsg = error.get("sub_msg");
+	    Object code = error.get("code");
+	    Object msg = error.get("msg");
+	    throw new TopException(code != null ? code.toString() : null,
+			    msg != null ? msg.toString() : null,
+	            subCode != null ? subCode.toString() : null,
+			    subMsg != null ? subMsg.toString() : null);
     }
 
     public Map getUserInfo() throws TopException {

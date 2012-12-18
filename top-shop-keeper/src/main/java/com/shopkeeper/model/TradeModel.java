@@ -189,7 +189,8 @@ public class TradeModel extends AbstractModel<Trade> implements TopUpdate, TopCo
 	}
 
 	@Override
-	public void updateFromTop(String topAccessToken) throws ModelException {
+	public Object updateFromTop(String topAccessToken) throws ModelException {
 
+		return null;
 	}
 }

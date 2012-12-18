@@ -42,7 +42,6 @@
 				op.innerHTML = serviceName;
 				sel.appendChild(op);
 			}
-
 			serviceCategoryDiv.innerHTML = "";
 			serviceCategoryDiv.appendChild(sel);
 			sel.onchange = function() {displayApiListByCategory(this.value);};
@@ -51,7 +50,6 @@
 
 		function displayApiListByCategory(category) {
 			var apiArr = serviceMap[category];
-			//document.getElementById("response_div").innerHTML = dumpObject(apiList);
 
 			var sel = document.createElement("select");
 			sel.setAttribute('name','sip_apiname');
@@ -90,9 +88,14 @@
 				var tdLabel = document.createElement("td");
 				tdLabel.setAttribute("width", 160);
 				tdLabel.setAttribute("align", "right");
-				tdLabel.id = "paramName" + param;
 				tdLabel.innerHTML = params[param] + "：";
 				tr.appendChild(tdLabel);
+
+				var paramNameHidden = document.createElement("input");
+				paramNameHidden.type = "hidden";
+				paramNameHidden.id = "paramName" + param;
+				paramNameHidden.value = params[param];
+				tr.appendChild(paramNameHidden);
 
 				var tdValue = document.createElement("td");
 				tdValue.setAttribute("width", 340);
@@ -128,14 +131,18 @@
 			var url = "http://localhost:8090/router?";
 
 			for (var i = 0; i < 50; i ++) {
-				var paramName = document.getElementById("paramName" + i);
-				var paramValue = document.getElementById("paramValue" + i);
-				if (paramName != null) {
-					url = url + paramName + "=" + paramValue + "&";
+				var obj = document.getElementById("paramName" + i);
+				if (obj != null) {
+					var paramName = obj.value;
+					var paramValue = document.getElementById("paramValue" + i).value;
+					if (paramName != null && paramValue != null && paramValue.length > 0) {
+						url = url + paramName + "=" + paramValue + "&";
+					}
 				}
 				else {
 					break;
 				}
+
 			}
 
 			url = url + "appKey=" + appKey + "&";
@@ -143,6 +150,7 @@
 			url = url + "v=" + version + "&";
 			url = url + "session=" + session + "&";
 			url = url + "method=" + method;
+			document.getElementById("request_url").innerHTML = url;
 			var rsp = send(url);
 			document.getElementById("response_div").innerHTML = rsp;
 		}
@@ -150,15 +158,15 @@
 	</script>
 </head>
 <body onload="getServiceApi(); displayServiceCategory();">
-<table>
+<table style="border-collapse:collapse; border-spacing:0;width:1000px;">
 	<tbody>
 	<tr>
-		<td>
-			<table>
+		<td valign="top">
+			<table >
 				<tbody>
 				<tr>
-					<td width="160" align="right">返回结果：</td>
-					<td width="340">
+					<td width="160px" align="right">返回结果：</td>
+					<td width="340px">
 						<select id="format" style="width:195px;" name="format">
 							<option value="xml">XML</option>
 							<option value="json">JSON</option>
@@ -166,36 +174,36 @@
 					</td>
 				</tr>
 				<tr>
-					<td width="160" align="right">API类目：</td>
-					<td width="340">
+					<td width="160px" align="right">API类目：</td>
+					<td width="340px">
 						<span id="serviceCategoryDiv">
 
 						</span>
 					</td>
 				</tr>
 				<tr>
-					<td width="160" align="right">API：</td>
-					<td width="340">
+					<td width="160px" align="right">API：</td>
+					<td width="340px">
 						<span id="sipApinameDiv">
 
 						</span>
 					</td>
 				</tr>
 				<tr>
-					<td width="160" align="right">版本：</td>
-					<td width="340">
+					<td width="160px" align="right">版本：</td>
+					<td width="340px">
 						<input id="version" width="340" value="1.0">
 					</td>
 				</tr>
 				<tr>
-					<td width="160" align="right">Session：</td>
-					<td width="340">
+					<td width="160px" align="right">Session：</td>
+					<td width="340px">
 						<input id="session" width="340" value="">
 					</td>
 				</tr>
 				<tr>
-					<td width="160" align="right">Appkey：</td>
-					<td width="340">
+					<td width="160px" align="right">Appkey：</td>
+					<td width="340px">
 						<input id="appKey" width="340" value="sk_app_key">
 					</td>
 				</tr>
@@ -212,7 +220,10 @@
 				</tbody>
 			</table>
 		</td>
-		<td>
+		<td width=>
+			<xmp id="request_url">
+
+			</xmp>
 			<xmp id="response_div">
 				dfasdaaa
 			</xmp>

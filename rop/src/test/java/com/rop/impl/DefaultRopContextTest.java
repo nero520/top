@@ -182,7 +182,7 @@ public class DefaultRopContextTest {
 
         @ServiceMethod(method = "service.method2", title = "测试方法2", group = "GROUP2", groupTitle = "分组2",
                 tags = {"TAG11", "TAG21"}, ignoreSign = IgnoreSignType.NO,
-                needInSession = NeedInSessionType.YES, timeout = 200, version = "2.0")
+                needInSession = NeedInSessionType.DEFAULT, timeout = 200, version = "2.0")
         public Object service2() {
             return null;
         }

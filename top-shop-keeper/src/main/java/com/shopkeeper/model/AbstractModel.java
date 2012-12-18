@@ -94,6 +94,17 @@ abstract public class AbstractModel<T> implements Model<T>
 		return accessToken;
 	}
 
+	protected String getUserNick(Long userId) {
+		DBCollection userCollection = this.getCollection("sk_user");
+		DBObject query = new BasicDBObject("user_id", userId);
+		DBObject fields = new BasicDBObject("nick", true);
+		DBObject rsp = userCollection.findOne(query, fields);
+		if (rsp != null) {
+			return (String)rsp.get("nick");
+		}
+		return null;
+	}
+
 	protected Long getUserId(String accessToken) {
         if (userId == null) {
             DBCollection collection = db.getCollection("sk_user");
@@ -199,11 +210,11 @@ abstract public class AbstractModel<T> implements Model<T>
 		return _update(query, update, false);
 	}
 
-	protected int _update(Map<String, Object> query, Map<String, Object> update, boolean insert) {
+	protected int _update(Map<String, Object> query, Map<String, Object> update, boolean upsert) {
 		DBObject _query = new BasicDBObject(query);
 		DBObject _update = new BasicDBObject(update);
 		DBObject _set = new BasicDBObject("$set", _update);
-		WriteResult result = collection.update(_query, _set, insert, true);
+		WriteResult result = collection.update(_query, _set, upsert, true);
 		return result.getN();
 	}
 
@@ -246,8 +257,8 @@ abstract public class AbstractModel<T> implements Model<T>
 	}
 
 	@Override
-	public List<T> update(Map<String, Object> query, Map<String, Object> data, boolean insert) {
-		if ( _update(query, data, insert) > 0 ) {
+	public List<T> update(Map<String, Object> query, Map<String, Object> data, boolean upsert) {
+		if ( _update(query, data, upsert) > 0 ) {
 			return query(query);
 		}
 		return null;
@@ -261,25 +272,4 @@ abstract public class AbstractModel<T> implements Model<T>
 		}
 		return parse(rsp, templeteClazz0);
 	}
-
-
-	/*
-    protected boolean isDocExist(String id, String docName) {
-	    DBCollection collection1 = this.getCollection(docName);
-        if (collection1 == null) {
-            return false;
-        }
-        ObjectId objectId;
-        try {
-            objectId = new ObjectId(id);
-        }catch (IllegalArgumentException e) {
-            return false;
-        }
-        DBObject group = collection1.findOne(new BasicDBObject("_id", objectId));
-        if (group == null) {
-            return false;
-        }
-        return true;
-    }
-    */
 }

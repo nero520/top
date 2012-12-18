@@ -38,7 +38,6 @@ public class Group
     @XmlElement
     private String category;
 
-	@XmlJavaTypeAdapter(JaxbXmlRopMarshaller.DateFormatterAdapter.class)
     @XmlElement
     private Date created;
 

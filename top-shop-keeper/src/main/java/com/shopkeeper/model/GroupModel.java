@@ -63,10 +63,10 @@ public class GroupModel extends AbstractModel<Group>
 	public List<Group> delete(Map<String, Object> query) {
 		DBCursor rsp = _query(query);
 		List<Group> groupList = parse(rsp, Group.class);
-		if (groupList.size() == 0) {
+		if (groupList == null) {
 			return null;
 		}
-		if (rsp.hasNext()) {
+		else {
 			_delete(query);
 		}
 
@@ -80,9 +80,7 @@ public class GroupModel extends AbstractModel<Group>
 		_query.put("group_id", _in);
 		_query.put("user_id", groupList.get(0).getUserId());
 		Map<String, Object> _update = new HashMap<String, Object>();
-		Map<String, Object> _itemGroupIdValue = new HashMap<String, Object>();
-		_itemGroupIdValue.put("group_id", null);
-		_update.put("$set", _itemGroupIdValue);
+		_update.put("group_id", null);
 
 		ItemModel itemModel = new ItemModel();
 		itemModel.update(_query, _update);
@@ -211,19 +209,22 @@ public class GroupModel extends AbstractModel<Group>
 
 	// TODO 判断from参数
 	@SuppressWarnings(value = "unchecked")
-    public List<Group> importGroup(String from, Long userId, String userNick, String accessToken) throws ModelException {
+    public List<Group> importGroup(String from, Long userId) throws ModelException {
         TopAccessor topAccessor = new TopAccessor(accessToken);
         try {
-            Map groups = topAccessor.getSellerCatsList(userNick);
+            Map groups = topAccessor.getSellerCatsList(this.getUserNick(userId));
+	        logger.info(groups.toString());
             List<Map<String, Object>> groupList = (List<Map<String, Object>>)groups.get("seller_cat");
             List<Group> rsp = new LinkedList<Group>();
             if (groupList != null && groupList.size() > 0) {
                 for (Map<String, Object> group : groupList) {
-                    Map<String, Object> data = new HashMap<String, Object>();
+                    Map<String, Object> data = new HashMap<String, Object>(group);
 	                data.put("user_id", userId);
-	                data.put("name", group.get("name"));
-	                data.put("category", GROUP_CATEGORY_SHOPCATS);
-	                List<Group> tGroups = create(data);
+	                data.put("category", from);
+	                Map<String, Object> update = new HashMap<String, Object>();
+	                update.put("user_id", userId);
+	                update.put("cid", group.get("cid"));
+	                List<Group> tGroups = update(update, data, true);
 	                if (tGroups != null && tGroups.size() > 0) {
 		                Group objGroup = tGroups.get(0);
 		                rsp.add(objGroup);

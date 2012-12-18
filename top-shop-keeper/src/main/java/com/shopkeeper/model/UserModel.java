@@ -45,14 +45,16 @@ public class UserModel extends AbstractModel<User>
 
 	private void userInit(Long userId) {
 		try {
+			String accessToken = this.getAccessToken(userId);
+			TopUserModel topUserModel = new TopUserModel();
+			topUserModel.updateFromTop(accessToken);
+
 			// 获取用户的全部宝贝信息
 			ItemModel itemModel = new ItemModel();
-			itemModel.setUserId(userId);
 			itemModel.updateFromTop(accessToken);
 
 			// 获取用户订单信息
 			TradeModel tradeModel = new TradeModel();
-			tradeModel.setUserId(userId);
 			tradeModel.updateFromTop(accessToken);
 		} catch (ModelException e) {
 			logger.info(e.getMsg());
@@ -61,14 +63,11 @@ public class UserModel extends AbstractModel<User>
 
 	@Override
 	public List<User> create(Map<String, Object> data) {
-		Long userId = (Long)data.get("user_id");
-		if (userId != null) {
-			Map<String, Object> localData = new HashMap<String, Object>(data);
-			localData.put("is_init", false);
-			List<User> userList = super.create(localData);
-			if (userList != null) {
-				userInit(userId);
-			}
+		Map<String, Object> localData = new HashMap<String, Object>(data);
+		localData.put("is_init", false);
+		List<User> userList = super.create(localData);
+		if (userList != null) {
+			userInit(userList.get(0).getUserId());
 			return userList;
 		}
 		return null;

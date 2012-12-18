@@ -2,6 +2,8 @@ package com.shopkeeper.service.request;
 
 import com.rop.AbstractRopRequest;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created with IntelliJ IDEA.
  * User: zhanghaojie
@@ -10,9 +12,8 @@ import com.rop.AbstractRopRequest;
  */
 public class GroupDeleteRequest extends AbstractRopRequest
 {
+	@NotNull
     private String id;
-
-    private String name;
 
     public String getId() {
         return id;
@@ -20,13 +21,5 @@ public class GroupDeleteRequest extends AbstractRopRequest
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

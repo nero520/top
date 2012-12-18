@@ -16,10 +16,13 @@ public enum NeedInSessionType {
     YES, NO, DEFAULT;
 
     public static boolean isNeedInSession(NeedInSessionType type) {
-        if (YES == type || DEFAULT == type) {
+        if (YES == type) {
             return true;
-        } else {
-            return false;
+        } else if (DEFAULT == type){
+            return true;
+        }
+	    else {
+	        return false;
         }
     }
 }
