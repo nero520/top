@@ -2,6 +2,8 @@ package com.shopkeeper.service.request;
 
 import com.rop.AbstractRopRequest;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created with IntelliJ IDEA.
  * User: zhanghaojie
@@ -10,6 +12,7 @@ import com.rop.AbstractRopRequest;
  */
 public class OnsaleTaskDeleteRequest extends AbstractRopRequest
 {
+	@NotNull
     private String id;
 
     public String getId() {

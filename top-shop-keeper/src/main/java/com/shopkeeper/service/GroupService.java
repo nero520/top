@@ -59,10 +59,9 @@ public class GroupService
         GroupModel groupModel = new GroupModel();
 
 	    Map<String, Object> query = new HashMap<String, Object>();
-	    String ids = request.getIds();
-	    if (ids != null && ids.length() > 0) {
+	    List<String> groupIds = request.getIds();
+	    if (groupIds != null && groupIds.size() > 0) {
 		    Map<String, Object> _in = new HashMap<String, Object>();
-		    String[] groupIds = StringUtils.split(ids, ",");
 		    List<ObjectId> groupObjectIdList = new LinkedList<ObjectId>();
 		    for (String groupId : groupIds) {
 			    try {

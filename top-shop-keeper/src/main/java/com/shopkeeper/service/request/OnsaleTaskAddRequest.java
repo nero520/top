@@ -5,6 +5,7 @@ import com.rop.annotation.AliasName;
 import com.shopkeeper.service.domain.TimeSlot;
 
 import javax.validation.constraints.NotNull;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class OnsaleTaskAddRequest extends AbstractRopRequest
     private String description;
 
     @AliasName(name = "time_slot")
-    private List<TimeSlot> timeSlot;
+    private LinkedList<TimeSlot> timeSlot;
 
     public String getName() {
         return name;
@@ -39,11 +40,11 @@ public class OnsaleTaskAddRequest extends AbstractRopRequest
         this.description = description;
     }
 
-    public List<TimeSlot> getTimeSlot() {
+    public LinkedList<TimeSlot> getTimeSlot() {
         return timeSlot;
     }
 
-    public void setTimeSlot(List<TimeSlot> timeSlot) {
+    public void setTimeSlot(LinkedList<TimeSlot> timeSlot) {
         this.timeSlot = timeSlot;
     }
 }

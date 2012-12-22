@@ -59,6 +59,8 @@ public class GroupModel extends AbstractModel<Group>
 		return null;
 	}
 
+
+
 	@Override
 	public List<Group> delete(Map<String, Object> query) {
 		DBCursor rsp = _query(query);
@@ -87,125 +89,6 @@ public class GroupModel extends AbstractModel<Group>
 
 		return groupList;
 	}
-
-	/*
-
-	public Group getGroup(String groupId, Long userId) throws ModelException{
-        try {
-            Map<String, Object> query = new HashMap<String, Object>();
-            query.put("_id", new ObjectId(groupId));
-            query.put("user_id", userId);
-            Group group = get(query, null, null, Group.class);
-            return group;
-        } catch (IllegalArgumentException e) {
-            throw new ModelException("103", "parameter error", "1", "bad group id"); //todo
-        }
-    }
-
-    public List<Group> getGroups(String[] groupIds, Long userId) throws ModelException{
-        try {
-            DBObject query = new BasicDBObject();
-            query.put("user_id", userId);
-
-            if (groupIds != null && groupIds.length > 0) {
-                BasicDBList dbList = new BasicDBList();
-                for (String id : groupIds) {
-                    id.trim();
-                    dbList.add(new ObjectId(id));
-                }
-                DBObject idsObj = new BasicDBObject("$in", dbList);
-                query.put("_id", idsObj);
-            }
-            List<Group> list = gets(query, null, null, Group.class);
-            return list;
-        } catch (IllegalArgumentException e) {
-            throw new ModelException("103", "parameter error", "1", "bad group id"); //todo
-        }
-    }
-
-    public Group createGroup(Long userId, String groupName, String description, String category) throws ModelException {
-        return createGroup(userId, groupName, description, category, false);
-    }
-
-    private Group createGroup(Long userId, String groupName, String description, String category, boolean skipDumplicated) throws ModelException {
-        BasicDBObject query = new BasicDBObject("name", groupName);
-        DBObject o = collection.findOne(query);
-        if (o == null) {
-            BasicDBObject object = new BasicDBObject();
-            ObjectId objectId = new ObjectId();
-            object.put("user_id", userId);
-            object.put("name", groupName);
-            object.put("description", description);
-            object.put("category", category == null ? GROUP_CATEGORY_CUSTOM : category);
-            object.put("_id", objectId);
-            object.put("created", Utils.getDate());
-
-            WriteResult result = collection.insert(object, WriteConcern.SAFE);
-            if (result.getLastError().ok()) {
-                return getGroup(objectId.toString(), userId);
-            }
-            else {
-                String msg = result.getLastError().getErrorMessage();
-                throw new ModelException("104", "create group failed", "1", msg); // todo
-            }
-        }
-        else if (!skipDumplicated) {
-            throw new ModelException("103", "parameter error", "1", "group name duplicated"); //todo
-        }
-        return null;
-    }
-
-    public Group deleteGroup(String groupId, String name) throws ModelException {
-        try {
-            if (groupId == null && name == null) {
-                return null;
-            }
-            BasicDBObject query = new BasicDBObject();
-            if (groupId != null) {
-                if (isDocExist(groupId, "sk_autoonsale_task")) {
-                    query.put("_id", new ObjectId(groupId));
-                }
-                else {
-                    throw new ModelException(); //todo
-                }
-            }
-            if (name != null) {
-                query.put("name", name);
-            }
-            DBObject object = collection.findAndRemove(query);
-            if (object != null) {
-                Group group = parse(object, Group.class);
-                // 设置item的group_id字段为null
-                DBCollection collection1 =  db.getCollection("sk_item");
-                collection1.update(new BasicDBObject("group_id", group.getId()),
-                        new BasicDBObject("$set", new BasicDBObject("group_id", null)),
-                        false, true);
-
-                return group;
-            }
-            else {
-                throw new ModelException();// todo 无效id， name
-            }
-
-        } catch (IllegalArgumentException e) {
-            throw new ModelException("103", "parameter error", "1", "bad group id"); // todo
-        }
-    }
-
-	public void deleteGroups(Long userId, List<String> groupIds) {
-		if (userId != null) {
-			DBObject query = new BasicDBObject("user_id", userId);
-			if (groupIds != null) {
-				BasicDBList groupList = new BasicDBList();
-				for (String groupId : groupIds) {
-					groupList.add(groupId);
-				}
-				query.put("_id", new BasicDBObject("$in", groupList));
-			}
-			collection.remove(query);
-		}
-	}
-*/
 
 	// TODO 判断from参数
 	@SuppressWarnings(value = "unchecked")

@@ -11,14 +11,5 @@ import com.rop.annotation.AliasName;
  */
 public class UserGetRequest extends AbstractRopRequest
 {
-    @AliasName(name = "fields")
-    private String fields;
 
-    public String getFields() {
-        return fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
 }

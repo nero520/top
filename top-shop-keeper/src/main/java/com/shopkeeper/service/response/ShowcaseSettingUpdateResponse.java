@@ -15,8 +15,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "showcase_update_response")
-public class ShowcaseUpdateResponse
+@XmlRootElement(name = "showcase_setting_update_response")
+public class ShowcaseSettingUpdateResponse
 {
     @XmlElement(name = "showcase_setting")
     private ShowcaseSetting showcaseSetting;

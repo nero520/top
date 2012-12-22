@@ -35,11 +35,7 @@ public class OnsaleTaskService
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
 
-	    String taskName = request.getName();
 	    String taskId = request.getId();
-	    if (taskId == null && taskName == null) {
-		    return new NotExistErrorResponse();
-	    }
 
         OnsaleTaskModel taskModel = new OnsaleTaskModel();
 
@@ -47,9 +43,6 @@ public class OnsaleTaskService
 	    query.put("user_id", userId);
 	    if (taskId != null) {
 		    query.put("_id", new ObjectId(taskId));
-	    }
-	    if (taskName != null) {
-		    query.put("name", taskName);
 	    }
 
 	    List<OnsaleTask> onsaleTaskList = taskModel.query(query);
@@ -70,11 +63,16 @@ public class OnsaleTaskService
         OnsaleTaskModel taskModel = new OnsaleTaskModel();
 
 	    Map<String, Object> query = new HashMap<String, Object>();
-	    if (request.getIds() != null) {
+	    List<String> taskIdList = request.getIds();
+	    if (taskIdList != null) {
 		    Map<String, Object> _in = new HashMap<String, Object>();
 		    List<ObjectId> groupObjectIdList = new LinkedList<ObjectId>();
-		    for (String groupId : request.getIds()) {
-			    groupObjectIdList.add(new ObjectId(groupId));
+		    for (String groupId : taskIdList) {
+			    try {
+				    groupObjectIdList.add(new ObjectId(groupId));
+			    } catch (IllegalArgumentException e) {
+
+			    }
 		    }
 		    _in.put("$in", groupObjectIdList);
 		    query.put("_id", _in);
@@ -185,7 +183,7 @@ public class OnsaleTaskService
 		    try {
 			    query.put("_id", new ObjectId((String)value));
 		    } catch (IllegalArgumentException e) {
-
+			    return new NotExistErrorResponse();
 		    }
 	    }
 		List<OnsaleTask> onsaleTaskList = taskModel.delete(query);

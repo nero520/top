@@ -3,6 +3,9 @@ package com.shopkeeper.service.request;
 import com.rop.AbstractRopRequest;
 import com.rop.annotation.AliasName;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: zhanghaojie
@@ -13,7 +16,7 @@ import com.rop.annotation.AliasName;
 public class ItemsGetRequest extends AbstractRopRequest
 {
     @AliasName(name = "num_iids")
-    private String numIids;
+    private List<String> numIids;
 
     @AliasName(name = "group_id")
     private String groupId;
@@ -22,16 +25,16 @@ public class ItemsGetRequest extends AbstractRopRequest
     private String taskId;
 
     @AliasName(name = "has_showcase")
-    private Boolean hasShowcase = false;
+    private Boolean hasShowcase;
 
     @AliasName(name = "showcase_status")
     private String showcaseStatus;
 
-    public String getNumIids() {
+    public List<String> getNumIids() {
         return numIids;
     }
 
-    public void setNumIids(String numIids) {
+    public void setNumIids(List<String> numIids) {
         this.numIids = numIids;
     }
 

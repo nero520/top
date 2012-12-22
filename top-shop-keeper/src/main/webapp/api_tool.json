@@ -2,7 +2,8 @@
 	"user_service":
 	{
 		"user.get":[],
-		"top.user.get":[]
+		"top.user.get":[],
+		"user.delete":[]
 	},
 	"group_service":
 	{
@@ -20,7 +21,7 @@
 	},
 	"onsale_task_service":
 	{
-		"onsale.task.get":["id","name"],
+		"onsale.task.get":["id"],
 		"onsale.tasks.get":["ids"],
 		"onsale.task.add":["name","description","time_slot"],
 		"onsale.task.update":["id","name","description"],
@@ -28,7 +29,7 @@
 	},
 	"showcase_service":
 	{
-		"showcase.setting.get":["user_id"],
-		"showcase.setting.update":["user_id","is_used_include","is_used_exclude","is_used_limit_discount","is_launch"]
+		"showcase.setting.get":[],
+		"showcase.setting.update":["is_used_include","is_used_exclude","is_used_limit_discount","is_launch"]
 	}
 }

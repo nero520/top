@@ -2,6 +2,9 @@ package com.shopkeeper.service.request;
 
 import com.rop.AbstractRopRequest;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: zhanghaojie
@@ -10,13 +13,13 @@ import com.rop.AbstractRopRequest;
  */
 public class GroupsGetRequest extends AbstractRopRequest
 {
-    private String ids;
+    private List<String> ids;
 
-    public String getIds() {
+    public List<String> getIds() {
         return ids;
     }
 
-    public void setIds(String ids) {
+    public void setIds(List<String> ids) {
         this.ids = ids;
     }
 }

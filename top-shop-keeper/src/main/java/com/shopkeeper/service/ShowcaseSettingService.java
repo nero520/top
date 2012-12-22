@@ -7,10 +7,10 @@ import com.rop.response.NotExistErrorResponse;
 import com.rop.session.SimpleSession;
 import com.shopkeeper.model.ShowcaseSettingModel;
 import com.shopkeeper.service.domain.ShowcaseSetting;
-import com.shopkeeper.service.request.ShowcaseGetRequest;
-import com.shopkeeper.service.request.ShowcaseUpdateRequest;
-import com.shopkeeper.service.response.ShowcaseGetResponse;
-import com.shopkeeper.service.response.ShowcaseUpdateResponse;
+import com.shopkeeper.service.request.ShowcaseSettingGetRequest;
+import com.shopkeeper.service.request.ShowcaseSettingUpdateRequest;
+import com.shopkeeper.service.response.ShowcaseSettingGetResponse;
+import com.shopkeeper.service.response.ShowcaseSettingUpdateResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,10 +24,10 @@ import java.util.Map;
  */
 
 @ServiceMethodBean(version = "1.0")
-public class ShowcaseService
+public class ShowcaseSettingService
 {
     @ServiceMethod(method = "showcase.setting.get", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
-    public Object getShowcaseSetting(ShowcaseGetRequest request) {
+    public Object getShowcaseSetting(ShowcaseSettingGetRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
         ShowcaseSettingModel showcaseModel = new ShowcaseSettingModel();
@@ -37,7 +37,7 @@ public class ShowcaseService
 
 	    List<ShowcaseSetting> showcaseSettingList = showcaseModel.query(query);
 	    if (showcaseSettingList != null && showcaseSettingList.size() > 0) {
-		    ShowcaseGetResponse response = new ShowcaseGetResponse();
+		    ShowcaseSettingGetResponse response = new ShowcaseSettingGetResponse();
 		    response.setShowcaseSetting(showcaseSettingList.get(0));
 		    return response;
 	    }
@@ -47,7 +47,7 @@ public class ShowcaseService
     }
 
     @ServiceMethod(method = "showcase.setting.update", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
-    public Object updateShowcaseSetting(ShowcaseUpdateRequest request) {
+    public Object updateShowcaseSetting(ShowcaseSettingUpdateRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
         ShowcaseSettingModel showcaseModel = new ShowcaseSettingModel();
@@ -62,24 +62,24 @@ public class ShowcaseService
 		    update.put("is_launch", value);
 	    }
 
-	    value = request.getUsedExclude();
+	    value = request.getUsedInclude();
 	    if (value != null) {
 		    update.put("is_used_include", value);
 	    }
 
-	    value = request.getLaunch();
+	    value = request.getUsedExclude();
 	    if (value != null) {
 		    update.put("is_used_exclude", value);
 	    }
 
-	    value = request.getLaunch();
+	    value = request.getUsedLimitDiscount();
 	    if (value != null) {
 		    update.put("is_used_limit_discount", value);
 	    }
 
 	    List<ShowcaseSetting> showcaseSettingList = showcaseModel.update(query, update);
 		if (showcaseSettingList != null && showcaseSettingList.size() > 0) {
-			ShowcaseUpdateResponse response = new ShowcaseUpdateResponse();
+			ShowcaseSettingUpdateResponse response = new ShowcaseSettingUpdateResponse();
 			response.setShowcaseSetting(showcaseSettingList.get(0));
 			return response;
 		}

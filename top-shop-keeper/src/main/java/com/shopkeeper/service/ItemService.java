@@ -5,13 +5,16 @@ import com.rop.annotation.ServiceMethod;
 import com.rop.annotation.ServiceMethodBean;
 import com.rop.response.NotExistErrorResponse;
 import com.rop.session.SimpleSession;
+import com.shopkeeper.model.GroupModel;
 import com.shopkeeper.model.ItemModel;
+import com.shopkeeper.model.OnsaleTaskModel;
 import com.shopkeeper.service.domain.Item;
 import com.shopkeeper.service.request.ItemGetRequest;
 import com.shopkeeper.service.request.ItemUpdateRequest;
 import com.shopkeeper.service.request.ItemsGetRequest;
 import com.shopkeeper.service.response.ItemGetResponse;
 import com.shopkeeper.service.response.ItemUpdateResponse;
+import com.shopkeeper.service.response.ItemsGetResponse;
 import org.apache.commons.lang.StringUtils;
 import org.bson.types.ObjectId;
 
@@ -51,7 +54,7 @@ public class ItemService
     }
 
     @ServiceMethod(method = "item.update", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
-    public Object update(ItemUpdateRequest request) {
+    public Object updateItem(ItemUpdateRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
 
@@ -63,10 +66,39 @@ public class ItemService
 	    Map<String, Object> update = new HashMap<String, Object>();
 	    Object value = request.getGroupId();
 	    if (value != null) {
-	        update.put("group_id", value);
+		    GroupModel groupModel = new GroupModel();
+		    Map<String, Object> groupQuery = new HashMap<String, Object>();
+		    groupQuery.put("user_id", userId);
+		    try {
+		        groupQuery.put("_id", new ObjectId((String)value));
+		    } catch (IllegalArgumentException e) {
+			    return new NotExistErrorResponse();  // todo
+		    }
+		    long groupNum = groupModel.count(groupQuery);
+		    if (groupNum > 0) {
+	            update.put("group_id", value);
+		    }
+		    else {
+			    return new NotExistErrorResponse();
+		    }
 	    }
 	    value = request.getTaskId();
 	    if (value != null) {
+		    OnsaleTaskModel onsaleTaskModel = new OnsaleTaskModel();
+		    Map<String, Object> onsaleTaskQuery = new HashMap<String, Object>();
+		    onsaleTaskQuery.put("user_id", userId);
+		    try {
+			    onsaleTaskQuery.put("_id", new ObjectId((String)value));
+		    } catch (IllegalArgumentException e) {
+			    return new NotExistErrorResponse();  // todo
+		    }
+		    long groupNum = onsaleTaskModel.count(onsaleTaskQuery);
+		    if (groupNum > 0) {
+			    update.put("task_id", value);
+		    }
+		    else {
+			    return new NotExistErrorResponse();  //todo
+		    }
 		    update.put("task_id", value);
 	    }
 		value = request.getTimeOnsale();
@@ -108,26 +140,30 @@ public class ItemService
 	    if (value != null) {
 		    query.put("showcase_status", value);
 	    }
-	    String strNumIids = request.getNumIids();
-	    if (strNumIids != null) {
+	    value = request.isHasShowcase();
+	    if (value != null) {
+		    query.put("has_showcase", value);
+	    }
+
+	    List<String> numIids = request.getNumIids();
+	    if (numIids != null) {
 		    Map<String, Object> _in = new HashMap<String, Object>();
-	        String[] numIids = StringUtils.split(strNumIids, ",");
-	        List<ObjectId> itemObjectIdList = new LinkedList<ObjectId>();
-		    for (String groupId : numIids) {
+	        List<Long> itemObjectIdList = new LinkedList<Long>();
+		    for (String numIid : numIids) {
 			    try {
-				    itemObjectIdList.add(new ObjectId(groupId));
+				    itemObjectIdList.add(Long.parseLong(numIid));
 			    } catch (IllegalArgumentException e) {
 
 			    }
 		    }
 		    _in.put("$in", itemObjectIdList);
-		    query.put("_id", _in);
+		    query.put("num_iid", _in);
 	    }
 
 	    List<Item> itemList = itemModel.query(query);
 	    if (itemList != null && itemList.size() > 0) {
-		    ItemGetResponse response = new ItemGetResponse();
-		    response.setItem(itemList.get(0));
+		    ItemsGetResponse response = new ItemsGetResponse();
+		    response.setItems(itemList);
 		    return response;
 	    }
 	    else {

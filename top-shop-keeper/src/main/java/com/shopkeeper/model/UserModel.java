@@ -45,6 +45,11 @@ public class UserModel extends AbstractModel<User>
 
 	private void userInit(Long userId) {
 		try {
+			ShowcaseSettingModel showcaseSettingModel = new ShowcaseSettingModel();
+			Map<String, Object> update = new HashMap<String, Object>();
+			update.put("user_id", userId);
+			showcaseSettingModel.create(update);
+
 			String accessToken = this.getAccessToken(userId);
 			TopUserModel topUserModel = new TopUserModel();
 			topUserModel.updateFromTop(accessToken);
@@ -85,7 +90,7 @@ public class UserModel extends AbstractModel<User>
 			Map<String, Object> _query = new HashMap<String, Object>();
 			Map<String, Object> _in = new HashMap<String, Object>();
 			_in.put("$in", userIdList);
-			_query.put("_id", _in);
+			_query.put("user_id", _in);
 
 			TopUserModel topUserModel = new TopUserModel();
 			topUserModel.delete(_query);

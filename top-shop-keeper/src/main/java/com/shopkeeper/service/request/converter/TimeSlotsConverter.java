@@ -13,10 +13,10 @@ import java.util.List;
  * Date: 12-11-20
  * Time: 上午9:26
  */
-public class TimeSlotsConverter implements RopConverter<String, List<TimeSlot>>
+public class TimeSlotsConverter implements RopConverter<String, LinkedList<TimeSlot>>
 {
     @Override
-    public String unconvert(List<TimeSlot> target) {
+    public String unconvert(LinkedList<TimeSlot> target) {
         StringBuilder sb = new StringBuilder();
         for (TimeSlot timeSlot : target) {
             String week = timeSlot.getWeek();
@@ -29,7 +29,7 @@ public class TimeSlotsConverter implements RopConverter<String, List<TimeSlot>>
             return sb.substring(0, sb.length() - 1);
         }
         else {
-            return "";
+            return null;
         }
     }
 
@@ -39,17 +39,17 @@ public class TimeSlotsConverter implements RopConverter<String, List<TimeSlot>>
     }
 
     @Override
-    public Class<List<TimeSlot>> getTargetClass() {
-        List<TimeSlot> list = new LinkedList<TimeSlot>();
-        return (Class<List<TimeSlot>>) list.getClass();
+    public Class<LinkedList<TimeSlot>> getTargetClass() {
+	    LinkedList<TimeSlot> list = new LinkedList<TimeSlot>();
+        return (Class<LinkedList<TimeSlot>>) list.getClass();
     }
 
     @Override
-    public List<TimeSlot> convert(String source) {
+    public LinkedList<TimeSlot> convert(String source) {
         if (source == null) {
             return null;
         }
-        List<TimeSlot> timeSlotList = new LinkedList<TimeSlot>();
+	    LinkedList<TimeSlot> timeSlotList = new LinkedList<TimeSlot>();
         String[] strTimeSlots = StringUtils.split(source, ",");
         for (String strTimeSlot : strTimeSlots) {
             String[] weekHour = StringUtils.split(strTimeSlot, "-");

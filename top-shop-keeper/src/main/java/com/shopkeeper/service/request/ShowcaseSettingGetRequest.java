@@ -9,7 +9,7 @@ import com.rop.annotation.AliasName;
  * Date: 12-11-22
  * Time: 上午7:37
  */
-public class ShowcaseGetRequest extends AbstractRopRequest
+public class ShowcaseSettingGetRequest extends AbstractRopRequest
 {
 	@AliasName(name = "user_id")
 	private Long userId;

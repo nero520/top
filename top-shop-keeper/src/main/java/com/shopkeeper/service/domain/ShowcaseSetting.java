@@ -16,16 +16,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "showcase_setting")
 public class ShowcaseSetting
 {
-    @XmlElement(name = "used_include")
+    @XmlElement(name = "is_used_include")
     private Boolean usedInclude;
-    @XmlElement(name = "used_exclude")
+    @XmlElement(name = "is_used_exclude")
     private Boolean usedExclude;
-    @XmlElement(name = "used_limit_discount")
+    @XmlElement(name = "is_used_limit_discount")
     private Boolean usedLimitDiscount;
     @XmlElement(name = "is_launch")
     private Boolean isLaunch;
-    @XmlElement(name = "user_id")
-    private Long userId;
 
     public Boolean getUsedInclude() {
         return usedInclude;
@@ -57,13 +55,5 @@ public class ShowcaseSetting
 
     public void setLaunch(Boolean launch) {
         isLaunch = launch;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 }

@@ -9,10 +9,8 @@ import com.rop.annotation.AliasName;
  * Date: 12-11-22
  * Time: 上午8:36
  */
-public class ShowcaseUpdateRequest extends AbstractRopRequest
+public class ShowcaseSettingUpdateRequest extends AbstractRopRequest
 {
-	@AliasName(name = "user_id")
-	private Long userId;
     @AliasName(name = "is_used_include")
     private Boolean usedInclude;
     @AliasName(name = "is_used_exclude")
@@ -20,15 +18,7 @@ public class ShowcaseUpdateRequest extends AbstractRopRequest
     @AliasName(name = "is_used_limit_discount")
     private Boolean usedLimitDiscount;
     @AliasName(name = "is_launch")
-    private Boolean isLaunch;
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+    private Boolean launch;
 
     public Boolean getUsedInclude() {
         return usedInclude;
@@ -54,11 +44,11 @@ public class ShowcaseUpdateRequest extends AbstractRopRequest
         this.usedLimitDiscount = usedLimitDiscount;
     }
 
-    public Boolean getLaunch() {
-        return isLaunch;
-    }
+	public Boolean getLaunch() {
+		return launch;
+	}
 
-    public void setLaunch(Boolean launch) {
-        isLaunch = launch;
-    }
+	public void setLaunch(Boolean launch) {
+		this.launch = launch;
+	}
 }

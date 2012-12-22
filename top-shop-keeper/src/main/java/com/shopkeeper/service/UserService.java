@@ -11,11 +11,10 @@ import com.shopkeeper.model.UserModel;
 import com.shopkeeper.service.domain.TopUser;
 import com.shopkeeper.service.domain.User;
 import com.shopkeeper.service.request.LoginRequest;
+import com.shopkeeper.service.request.TopUserGetRequest;
+import com.shopkeeper.service.request.UserDeleteRequest;
 import com.shopkeeper.service.request.UserGetRequest;
-import com.shopkeeper.service.response.LoginResponse;
-import com.shopkeeper.service.response.LogoutResponse;
-import com.shopkeeper.service.response.TopUserGetResponse;
-import com.shopkeeper.service.response.UserGetResponse;
+import com.shopkeeper.service.response.*;
 import com.shopkeeper.utils.Utils;
 
 import java.util.HashMap;
@@ -104,7 +103,7 @@ public class UserService
     }
 
     @ServiceMethod(method = "top.user.get", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
-    public Object getTopUser(UserGetRequest request) {
+    public Object getTopUser(TopUserGetRequest request) {
         SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
         Long userId = (Long)session.getAttribute("user_id");
 	    TopUserModel topUserModel = new TopUserModel();
@@ -121,4 +120,24 @@ public class UserService
 		    return new NotExistErrorResponse();
 	    }
     }
+
+	@ServiceMethod(method = "user.delete", version = "1.0", needInSession = NeedInSessionType.DEFAULT)
+	public Object deleteUser(UserDeleteRequest request) {
+		SimpleSession session = (SimpleSession)request.getRopRequestContext().getSession();
+		Long userId = (Long)session.getAttribute("user_id");
+
+		UserModel userModel = new UserModel();
+		Map<String, Object> query = new HashMap<String, Object>();
+		query.put("user_id", userId);
+		List<User> userList = userModel.delete(query);
+		if (userList != null && userList.size() > 0) {
+			User user = userList.get(0);
+			UserDeleteResponse response = new UserDeleteResponse();
+			response.setUser(user);
+			return response;
+		}
+		else {
+			return new NotExistErrorResponse();
+		}
+	}
 }

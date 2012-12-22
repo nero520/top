@@ -29,8 +29,8 @@ public class Item
     private String status; // value: onsale, inventory
     @XmlElement(name = "time_onsale")
     private Date timeOnsale;
-    @XmlElement(name = "auto_showcase_status")
-    private String autoShowcaseStatus;
+    @XmlElement(name = "showcase_status")
+    private String showcaseStatus;
 
     // top fields
     @XmlElement
@@ -312,11 +312,11 @@ public class Item
         this.timeOnsale = timeOnsale;
     }
 
-    public String getAutoShowcaseStatus() {
-        return autoShowcaseStatus;
+    public String getShowcaseStatus() {
+        return showcaseStatus;
     }
 
-    public void setAutoShowcaseStatus(String autoShowcaseStatus) {
-        this.autoShowcaseStatus = autoShowcaseStatus;
+    public void setShowcaseStatus(String showcaseStatus) {
+        this.showcaseStatus = showcaseStatus;
     }
 }

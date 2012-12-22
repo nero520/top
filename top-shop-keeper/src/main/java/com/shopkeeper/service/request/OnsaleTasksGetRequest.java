@@ -2,6 +2,7 @@ package com.shopkeeper.service.request;
 
 import com.rop.AbstractRopRequest;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
