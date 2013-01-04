@@ -32,6 +32,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="rop" />
+        <module name="rop-sample" />
         <module name="top-shop-keeper" />
       </profile>
     </annotationProcessing>
